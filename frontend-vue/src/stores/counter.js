@@ -13,6 +13,6 @@ export const useCounter = defineStore('count', {
     },
     decrement() {
       this.count--;
-    },
+    }, 
   },
 });
