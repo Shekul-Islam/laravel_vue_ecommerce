@@ -1,9 +1,20 @@
 <script setup>
+import {Field, Form} from "vee-validate";
+import * as yup from 'yup';
 import { useAuth } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 
-import { reactive, ref } from '@vue/reactivity';
+import { reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
+
+
+const schema = yup.object({
+  phone: yup.string().required("phone field is required"),
+  password: yup.string().required(),
+});
+
+const router = useRouter()
 const auth = useAuth();
 const {errors} = storeToRefs(auth);
 
@@ -18,8 +29,14 @@ const toggleShow = () => {
   showPassword.value = !showPassword.value;
 };
 
-const onSubmit = async () => {
-await auth.login(form);
+const onSubmit = async (values, {setErrors}) => {
+const res = await auth.login(form);
+if (res.data){
+  router.push({name: "index"});
+} else {
+  setErrors(res);
+}
+
 };
 
 </script>
@@ -36,26 +53,38 @@ await auth.login(form);
                 <p>Use your credentials to access</p>
               </div>
               <div class="user-form-group" id="axiosForm">
-                <form class="user-form" @submit.prevent="onSubmit">
+
+                <Form class="user-form" @submit="onSubmit"
+                :validation-schema="schema"
+               v-slot="{errors, isSubmitting}"
+                >
+                
                   <!--v-if-->
                   <div class="form-group">
-                    <input
+                    <Field
+                      name="phone"
                       type="text"
                       class="form-control"
                       placeholder="phone no"
                       v-model="form.phone"
-                      :class="is-{'invalid':errors.phone}"
+                      :class="{'is-invalid':errors.phone}"
                     /><!--v-if-->
-                    <span class="text-danger" v-if="errors.phone">{{ errors.phone [0] }}</span>
+
+                    <ErrorMessage name="phone" class="text-danger" />
+                    <span class="text-danger" v-if="errors.phone">{{ errors.phone }}</span>
                   </div>
+
                   <div class="form-group">
-                    <input
+                    <Field
+                      name="password"
                       :type="showPassword ? 'text' : 'password' "
                       class="form-control"
                       placeholder="password"
                       v-model="form.password"
-                      :class="is-{'invalid':errors.password}"
+                      :class="{'is-invalid':errors.password}"
                     />
+
+                    <ErrorMessage name="password" />
                     <span class="view-password" @click="toggleShow"
                       ><i 
                       class="fas text-success"
@@ -65,9 +94,9 @@ await auth.login(form);
                       }"
                       ></i></span>
                       <!--v-if-->
-                    <span class="text-danger" v-if="errors.password">{{ errors.password [0] }}</span>
-
+                    <span class="text-danger" v-if="errors.password">{{ errors.password }}</span>
                   </div>
+
                   <div class="form-check mb-3">
                     <input
                       class="form-check-input"
@@ -89,7 +118,7 @@ await auth.login(form);
                       >
                     </p>
                   </div>
-                </form>
+                </Form>
               </div>
             </div>
             <div class="user-form-remind">
