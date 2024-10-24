@@ -6,7 +6,7 @@ import { storeToRefs } from 'pinia';
 
 import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
-
+import { ElNotification } from 'element-plus'
 
 
 const schema = yup.object({
@@ -33,6 +33,12 @@ const onSubmit = async (values, {setErrors}) => {
 const res = await auth.login(form);
 if (res.data){
   router.push({name: "index"});
+  ElNotification({
+    title: 'Success',
+    message: 'Logged in successfully',
+    type: 'success',
+  })
+
 } else {
   setErrors(res);
 }
