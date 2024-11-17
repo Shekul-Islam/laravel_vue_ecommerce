@@ -2,22 +2,25 @@
 import { useAuth } from '@/stores';
 import { storeToRefs } from 'pinia';
 import { ElNotification } from 'element-plus';
+import { useRouter } from 'vue-router';
 const auth = useAuth();
-const {user} = storeToRefs(auth);
+const {user, loading} = storeToRefs(auth);
+const router = useRouter();
+
+
 const userLogout = async () => {
 const res = await auth.logout();
-if (res.data){
-  router.push({name: "index"});
-  ElNotification({
-    title: 'Success',
-    message: 'Logout successfully',
-    type: 'success',
-    position: "top-right"
-  });
+console.log(res);
 
-} else {
-  setErrors(res);
-}
+// if (res.data){
+//   router.push({name: "index"});
+//   ElNotification({
+//     title: 'Success', 
+//     message: 'Logout successfully',
+//     type: 'success',
+//     position: "top-right"
+//   });
+// } 
 };
 
 
@@ -98,9 +101,19 @@ function cartShow() {
                 </li>
 
                 <li>
-                  <a href="javascript:void(0)"
-                  class="dropdown-item" @click="userLogout">
-                    Logout</a>
+                  <button 
+                  :disabled="loading"
+                  class="dropdown-item" 
+                  @click="userLogout"
+                  >
+                    Logout
+                  
+                    <span
+                      v-show="loading"
+                      class="spinner-border spinner-border-sm mr-1"
+                      ></span>
+
+                  </button>
                 </li>
               </ul>
             </li>

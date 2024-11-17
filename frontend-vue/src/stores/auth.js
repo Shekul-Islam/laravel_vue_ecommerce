@@ -1,10 +1,12 @@
 import { defineStore } from "pinia";
 import axiosInstance from "@/services/axiosService";
+import { Loading } from "element-plus/es/components/loading/src/service.mjs";
 export const useAuth = defineStore('auth', {
   state: () => ({
     user:{},
-    
+    Loading: false,
   }),
+
   persist: {
     path: ["user"],
   },
@@ -38,18 +40,21 @@ export const useAuth = defineStore('auth', {
   }
   },
 
+  
+
   async logout () {
+    this.Loading = true;
    try {
-    const res = await axiosInstance.post(
-      "/user/logout");
-
-
-     
-
+    const res = await axiosInstance.post("/user/logout");
+      console.log(res);
+      
    } catch (error) {
-    
+
+   }finally{
+    this.Loading = false;
    }
    },
  },
   
 });
+

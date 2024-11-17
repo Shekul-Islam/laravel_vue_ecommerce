@@ -116,7 +116,15 @@ if (res.data){
                     >
                   </div>
                   <div class="form-button">
-                    <button type="submit">login</button>
+                    <button type="submit" :disabled="isSubmitting">
+                      login
+                      
+                      <span
+                      v-show="isSubmitting"
+                      class="spinner-border spinner-border-sm mr-1"
+                      ></span>
+                    
+                    </button>
                    
                     <p>
                       Forgot your password?<a
