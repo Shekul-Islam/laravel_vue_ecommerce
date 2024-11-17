@@ -1,4 +1,27 @@
 <script setup>
+import { useAuth } from '@/stores';
+import { storeToRefs } from 'pinia';
+import { ElNotification } from 'element-plus';
+const auth = useAuth();
+const {user} = storeToRefs(auth);
+const userLogout = async () => {
+const res = await auth.logout();
+if (res.data){
+  router.push({name: "index"});
+  ElNotification({
+    title: 'Success',
+    message: 'Logout successfully',
+    type: 'success',
+    position: "top-right"
+  });
+
+} else {
+  setErrors(res);
+}
+};
+
+
+
 function search() {
   $(".header-form").toggleClass("active"),
     $(this).children(".fa-search").toggleClass("fa-times");
@@ -44,7 +67,7 @@ function cartShow() {
                 data-bs-toggle="dropdown"
                 ><i class="fas fa-user"></i
               ></a>
-              <ul class="dropdown-menu dropdown-menu-end">
+              <ul class="dropdown-menu dropdown-menu-end" v-if="!user.data">
                 <li>
                   <router-link :to="{ name: 'login' }" class="dropdown-item">
                     Login</router-link
@@ -55,6 +78,9 @@ function cartShow() {
                     Register</router-link
                   >
                 </li>
+             
+              </ul>
+              <ul class="dropdown-menu dropdown-menu-end" v-else>
                 <li>
                   <router-link :to="{ name: 'user.profile' }" class="dropdown-item">
                     My Profile</router-link
@@ -64,11 +90,17 @@ function cartShow() {
                 <li>
                   <router-link :to="{ name: 'user.orderlist' }" class="dropdown-item">
                     My Order List</router-link
-                  >
+                  > 
                 </li>
                 <li>
                   <router-link :to="{ name: 'user.wishlist' }" class="dropdown-item">
                     My Wish List</router-link>
+                </li>
+
+                <li>
+                  <a href="javascript:void(0)"
+                  class="dropdown-item" @click="userLogout">
+                    Logout</a>
                 </li>
               </ul>
             </li>

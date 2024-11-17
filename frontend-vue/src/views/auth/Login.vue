@@ -30,7 +30,9 @@ const toggleShow = () => {
 };
 
 const onSubmit = async (values, {setErrors}) => {
+  console.log(values);
 const res = await auth.login(form);
+console.log (res);
 if (res.data){
   router.push({name: "index"});
   ElNotification({

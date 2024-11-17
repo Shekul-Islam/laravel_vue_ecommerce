@@ -1,19 +1,22 @@
 import { defineStore } from "pinia";
-import axios from "axios";
+import axiosInstance from "@/services/axiosService";
 export const useAuth = defineStore('auth', {
   state: () => ({
     user:{},
-    errors: {} 
+    
   }),
+  persist: {
+    path: ["user"],
+  },
  actions: {
   async login(formData){
-  
+  // console.log(formData);
   try {
-    const res = await axios.post(
-      import.meta.env.VITE_API_URL + "/api/v1/user/login", 
+    const res = await axiosInstance.post(
+     "/user/login",
       formData
     );
-
+// console.log(res);
 
     if (res.status === 200) {
 
@@ -25,8 +28,8 @@ export const useAuth = defineStore('auth', {
     }
 
   } catch (error) {
+    // console.log(error);
     if (error.response.data){
-      // this.errors = error.response.data.errors;
 
       return new Promise((reject) => {
         reject(error.response.data.errors);
@@ -34,6 +37,19 @@ export const useAuth = defineStore('auth', {
     }
   }
   },
+
+  async logout () {
+   try {
+    const res = await axiosInstance.post(
+      "/user/logout");
+
+
+     
+
+   } catch (error) {
+    
+   }
+   },
  },
   
 });
