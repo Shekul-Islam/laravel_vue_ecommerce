@@ -19,6 +19,13 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+Route::get('/posts', function(){
+    return response()->json([
+        ['id'=>1, 'title'=>'laravel api', 'content' => 'laravel api using json'],
+        ['id'=>2, 'title'=>'data fetch', 'content'=> 'call data using vue']
+    ]);
+});
+
 
 
 
