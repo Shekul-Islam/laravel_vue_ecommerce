@@ -11,8 +11,8 @@ class TopbarController extends Controller
             'welcome_message' => 'Welcome to Ecomart in Your Dream Online Store!',
             'links' => [
                 'seller_apply' => '/seller/apply',
-                'faq' => '/faq',
-                'contact' => '/contact',
+                'faq' => 'Need Help',
+                'contact' => 'Contact Us',
             ],
         ]);
     }

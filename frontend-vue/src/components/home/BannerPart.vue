@@ -4,6 +4,27 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
+import axiosInstance from '@/services/axiosService';
+import { onMounted, ref } from 'vue';
+
+
+const sliderDatas = ref ("");
+
+const getHomePageData = async ()=> {
+try {
+  const res = await axiosInstance.get(`/sliders`)
+  sliderDatas.value = res.data.result;
+  console.log(res);
+}catch (error){
+  console.log(error);
+
+}
+};
+
+
+onMounted(()=>{
+  getHomePageData();
+});
 </script>
 
 
@@ -24,15 +45,16 @@ import { Pagination, Navigation, Autoplay } from "swiper/modules";
                 :modules="[Pagination, Navigation, Autoplay]"
                 class="mySwiper"
               >
-                <swiper-slide
-                  ><img src="@/assets/images/banner/01.jfif" alt=""
-                /></swiper-slide>
-                <swiper-slide
-                  ><img src="@/assets/images/banner/02.jfif" alt=""
-                /></swiper-slide>
-                <swiper-slide
-                  ><img src="@/assets/images/banner/03.jfif" alt=""
-                /></swiper-slide>
+                <swiper-slide v-for="(slider, index) in sliderDatas.data" :key="index">
+                 <div>
+                  <img :src="slider.image" width="100%" height="700px" alt=""/>
+                 </div>
+                </swiper-slide>
+                
+                <!-- <swiper-slide
+                  ><img :src="sliderDatas.data[2].image" alt=""
+                /></swiper-slide> -->
+
               </swiper>
             </div>
           </div>
@@ -44,5 +66,7 @@ import { Pagination, Navigation, Autoplay } from "swiper/modules";
 
 
 <style scoped>
+
+
 
 </style>

@@ -3,7 +3,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Controllers\TopbarController;
+use App\Http\Controllers\TopbarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +28,6 @@ Route::get('/posts', function(){
 });
 
 
-
-
+Route::get('/topbar', [TopbarController::class, 'index']);
 
 

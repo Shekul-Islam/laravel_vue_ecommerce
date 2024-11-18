@@ -1,22 +1,23 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useAuth } from "@/stores";
-import Index from "@/views/pages/home/Index.vue";
-import HomeLanding from "@/views/pages/home/HomeLanding.vue";
+// import Index from "@/views/pages/home/Index.vue";
+// import HomeLanding from "@/views/pages/home/HomeLanding.vue";
 import Shop from "@/views/pages/shop/Shop.vue";
 import { SellerPage, SellerList, SellerApply } from "@/views/pages/seller";
 import WishList from "@/views/pages/wishlist/WishList.vue";
 import { Login, Register } from "@/views/auth";
 import { MyProfile, MyOrderList, MyWishList, Checkout } from "@/views/user";
 import SingleProduct from "@/components/home/SingleProduct.vue";
+import HomePage from "../views/pages/home/HomePage.vue";
 
 
 const routes = [
   { path: "/", 
-    name: "index", 
-    component: Index, 
+    name: "index",
+    component: HomePage,
     meta: { title: "Home" },
   },
-  { path: "/shop", 
+  { path: "/shop",
     name: "shop", 
     component: Shop, 
     meta: { title: "Shop" },
@@ -89,12 +90,12 @@ const routes = [
   },
 
 
-  {
-    path: "/shekul",
-    name: "homeLandingPage",
-    component: HomeLanding,
-    meta: { title: "Global Bazar | Landing Page" },
-  },
+  // {
+  //   path: "/shekul",
+  //   name: "homeLandingPage",
+  //   component: HomeLanding,
+  //   meta: { title: "Global Bazar | Landing Page" },
+  // },
 ];
 
 const router = createRouter({

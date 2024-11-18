@@ -12,7 +12,7 @@ import IntroPart from './components/common/IntroPart.vue';
 import Footer from './components/common/Footer.vue';
 import { useRoute } from 'vue-router';
 import Register from './views/auth/Register.vue';
-
+import HomePage from './views/pages/home/HomePage.vue';
 
 const route = useRoute();
 

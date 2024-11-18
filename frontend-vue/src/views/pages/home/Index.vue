@@ -1,24 +1,43 @@
 <script setup>
-import BannerPart from '@/components/home/BannerPart.vue';
-import CategoryItems from '@/components/home/CategoryItems.vue';
-import RecentSoldItems from '@/components/home/RecentSoldItems.vue';
-import PopularItems from '@/components/home/PopularItems.vue';
-import FeatureItems from '@/components/home/FeatureItems.vue';
-import NewItems from '@/components/home/NewItems.vue';
+
+
+
+
+import axiosInstance from '@/services/axiosService';
+
+import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
+
+
+
+
+const route = useRoute();
+const homePageDatas = ref("");
+
+const getHomePageData = async ()=> {
+try {
+  const res = await axiosInstance.get(`/topbar`)
+  homePageDatas.value = res.data.result;
+  console.log(res);
+
+
+}catch (error){
+  console.log(error);
+
+}
+
+};
+
+onMounted(()=>{
+  getHomePageData();
+});
+
+
+
 </script>
 <template>
   <div>
-    <BannerPart/>
-
-    <CategoryItems/>
-
-    <RecentSoldItems/>
-
-    <PopularItems/>
-
-    <FeatureItems/>
-
-    <NewItems/>
+  
   </div>
 </template>
 
