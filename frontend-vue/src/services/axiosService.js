@@ -1,24 +1,39 @@
 import axios from "axios";
 import { useAuth } from "@/stores";
-import { storeToRefs } from "pinia";
+
+
+
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL + "/api/v1",
+  baseURL: import.meta.env.VITE_API_URL + "/api",
 });
 
-// Add a request interceptor
+
+
 axiosInstance.interceptors.request.use(
-  function (config) {
-    // console.log(config);
-  const user = storeToRefs(useAuth());
+ function (config)  {
+    const authInfo = useAuth();
+    const auth = authInfo.user ? `Bearer ${authInfo.user.token}` : "";
+    config.headers['Authorization'] = auth;
+    return config;
+  },
+  function (error) {
+    return error;
+  }
+);
 
-  const auth = user.data ? `Bearer ${authInfo.user.meta.token}` : "";
-  config.headers['Authorization'] = auth;
-  return config;
-}, 
-function (error) {
-  // Do something with request error
-  return Promise.reject(error);
-});
+axiosInstance.interceptors.response.use(
+  (response)=>{
+    return response;
+  },
+  (error)=> {
+    if (error.response && error.response.status === 401) {
+      const authInfo = useAuth();
+      authInfo.user = {};
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default axiosInstance;
+

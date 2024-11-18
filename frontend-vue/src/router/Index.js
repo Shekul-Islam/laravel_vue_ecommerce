@@ -1,12 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useAuth } from "@/stores";
-import Index from "../views/pages/home/Index.vue";
-import Shop from "../views/pages/shop/Shop.vue";
+import Index from "@/views/pages/home/Index.vue";
+import HomeLanding from "@/views/pages/home/HomeLanding.vue";
+import Shop from "@/views/pages/shop/Shop.vue";
 import { SellerPage, SellerList, SellerApply } from "@/views/pages/seller";
-import WishList from "../views/pages/wishlist/WishList.vue";
+import WishList from "@/views/pages/wishlist/WishList.vue";
 import { Login, Register } from "@/views/auth";
-import { MyProfile, MyOrderList, MyWishList, Checkout } from "../views/user";
-import SingleProduct from "../components/SingleProduct.vue";
+import { MyProfile, MyOrderList, MyWishList, Checkout } from "@/views/user";
+import SingleProduct from "@/components/home/SingleProduct.vue";
+
 
 const routes = [
   { path: "/", 
@@ -84,6 +86,14 @@ const routes = [
     name: "register",
     component: Register,
     meta: { title: "Register", guest: true },
+  },
+
+
+  {
+    path: "/shekul",
+    name: "homeLandingPage",
+    component: HomeLanding,
+    meta: { title: "Global Bazar | Landing Page" },
   },
 ];
 
