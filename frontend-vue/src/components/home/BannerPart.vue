@@ -4,33 +4,44 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
-import axiosInstance from '@/services/axiosService';
-import { onMounted, ref } from 'vue';
 
-
-const sliderDatas = ref ("");
-
-const getHomePageData = async ()=> {
-try {
-  const res = await axiosInstance.get(`/sliders`)
-  sliderDatas.value = res.data.result;
-  console.log(res);
-}catch (error){
-  console.log(error);
-
-}
-};
-
-
-onMounted(()=>{
-  getHomePageData();
+const props = defineProps({
+ albab: {
+    type: Object,
+    default: {}, 
+  },
 });
+
+
+// import axiosInstance from '@/services/axiosService';
+// import { onMounted, ref } from 'vue';
+
+
+// const sliderDatas = ref ("");
+
+// const getHomePageData = async ()=> {
+// try {
+//   const res = await axiosInstance.get(`/sliders`)
+//   sliderDatas.value = res.data.result;
+//   console.log(res);
+// }catch (error){
+//   console.log(error);
+
+// }
+// };
+
+
+// onMounted(()=>{
+//   getHomePageData();
+// });
+
 </script>
 
 
 <template>
   <div>
-    <section class="banner-part">
+    {{ albab.image }}
+    <section class="banner-part" >
       <div class="">
         <div class="row">
           <div class="col-lg-12 order-0 order-lg-1 order-xl-1">
@@ -45,16 +56,17 @@ onMounted(()=>{
                 :modules="[Pagination, Navigation, Autoplay]"
                 class="mySwiper"
               >
-                <swiper-slide v-for="(slider, index) in sliderDatas.data" :key="index">
+                <!-- <swiper-slide v-for="(slider, index) in sliderDatas.data" :key="index">
                  <div>
                   <img :src="slider.image" width="100%" height="700px" alt=""/>
                  </div>
+                </swiper-slide> -->
+
+                <swiper-slide >
+                  <img :src="albab.image" alt=""/>
+                  {{ console.log('tbdata:', tbdata) }}
                 </swiper-slide>
                 
-                <!-- <swiper-slide
-                  ><img :src="sliderDatas.data[2].image" alt=""
-                /></swiper-slide> -->
-
               </swiper>
             </div>
           </div>

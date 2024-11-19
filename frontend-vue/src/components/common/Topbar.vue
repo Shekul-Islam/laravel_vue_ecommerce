@@ -1,12 +1,35 @@
 <script setup>
 
+import axiosInstance from '@/services/axiosService';
+
+import {ref, onMounted} from 'vue';
+
+const topbarDatas = ref ();
+
+const topbarData = async ()=> {
+  try {
+    const res = await axiosInstance.get(`/sliders`)
+    console.log(res);
+    topbarDatas.value = res.data.result.data;
+    
+  } catch (error) {
+    console.log(error);
+    
+  }
+};
+
+onMounted (()=> {
+  topbarData();
+})
+
 </script>
 
 <template>
-  <div>
+ 
+  <div >
     <div class="header-top">
       <div class="container">
-        <div class="row">
+        <div class="row" >
           <div class="col-md-12 col-lg-5">
             <div class="header-top-welcome">
               <p>Welcome to Ecomart in Your Dream Online Store!</p>
