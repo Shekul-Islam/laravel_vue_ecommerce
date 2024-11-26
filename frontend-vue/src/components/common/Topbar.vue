@@ -1,25 +1,15 @@
 <script setup>
 
-import axiosInstance from '@/services/axiosService';
-
 import {ref, onMounted} from 'vue';
+import { useSettingStore } from '@/stores';
 
-const topbarDatas = ref ();
+const setting = useSettingStore();
 
-const topbarData = async ()=> {
-  try {
-    const res = await axiosInstance.get(`/sliders`)
-    console.log(res);
-    topbarDatas.value = res.data.result.data;
-    
-  } catch (error) {
-    console.log(error);
-    
-  }
-};
+console.log(setting?.settings);
+
 
 onMounted (()=> {
-  topbarData();
+  setting.getData();
 })
 
 </script>
@@ -29,18 +19,18 @@ onMounted (()=> {
   <div >
     <div class="header-top">
       <div class="container">
-        <div class="row" >
+        <div class="row">
           <div class="col-md-12 col-lg-5">
             <div class="header-top-welcome">
-              <p>Welcome to Ecomart in Your Dream Online Store!</p>
+             <p>{{ setting?.settings?.data?.find((i)=> i.key=="header_text_two").value }}</p>
             </div>
           </div>
           <div class="col-md-5 col-lg-3"></div>
           <div class="col-md-7 col-lg-4">
             <ul class="header-top-list">
               <li><router-link :to="{name: 'seller.apply'}" href="offer.html">Seller Apply</router-link></li>
-              <li><a href="faq.html">need help</a></li>
-              <li><a href="contact.html">contact us</a></li>
+              <li><a href="faq.html">{{ setting?.settings?.data?.find((i)=> i.key =="phone_number").value }}</a></li>
+              <li><a href="contact.html">{{ setting?.settings?.data?.find((i)=> i.key == "messenger_id").value  }}</a></li>
             </ul>
           </div>
         </div>

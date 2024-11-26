@@ -62,10 +62,16 @@ const props = defineProps({
                  </div>
                 </swiper-slide> -->
 
+
                 <swiper-slide >
+                  <img src="" alt=""/>
+                 
+                </swiper-slide>
+
+                <!-- <swiper-slide >
                   <img :src="albab.image" alt=""/>
                   {{ console.log('tbdata:', tbdata) }}
-                </swiper-slide>
+                </swiper-slide> -->
                 
               </swiper>
             </div>

@@ -53,9 +53,26 @@ onMounted(() => {
 </script>
 
 <template>
+
   <div>
     <span >
-      {{ topbarDatas.data[0] }}
+      
+      <span>
+        <BannerPart :albab="topbarDatas.data" />
+      </span>
+      <span>
+        <CategoryItems :albab="topbarDatas.data" />
+      </span>
+      <span><RecentSoldItems /></span>
+      <span><PopularItems /></span>
+      <span><FeatureItems /></span>
+      <span><NewItems /></span>
+    </span>
+  </div>
+
+  <!-- <div>
+    <span >
+      
       <span>
         <BannerPart :albab="topbarDatas.data[1]" />
       </span>
@@ -67,7 +84,7 @@ onMounted(() => {
       <span><FeatureItems /></span>
       <span><NewItems /></span>
     </span>
-  </div>
+  </div> -->
 
 
    <!-- <div>
