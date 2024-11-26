@@ -12,11 +12,15 @@ onMounted (()=> {
   setting.getData();
 })
 
+
+
 </script>
 
 <template>
+  
  
   <div >
+    {{setting?.settings }}
     <div class="header-top">
       <div class="container">
         <div class="row">
@@ -29,8 +33,8 @@ onMounted (()=> {
           <div class="col-md-7 col-lg-4">
             <ul class="header-top-list">
               <li><router-link :to="{name: 'seller.apply'}" href="offer.html">Seller Apply</router-link></li>
-              <li><a href="faq.html">{{ setting?.settings?.data?.find((i)=> i.key =="phone_number").value }}</a></li>
-              <li><a href="contact.html">{{ setting?.settings?.data?.find((i)=> i.key == "messenger_id").value  }}</a></li>
+              <li><a href="faq.html">{{ setting?.findSetting("phone_number") }}</a></li>
+              <li><a href="contact.html">{{ setting?.findSetting("messenger_id")  }}</a></li>
             </ul>
           </div>
         </div>
