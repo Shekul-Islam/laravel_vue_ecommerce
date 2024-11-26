@@ -55,12 +55,12 @@ onMounted(() => {
 <template>
   <div>
     <span >
-      {{ topbarDatas.data[0] }}
+      {{ topbarDatas.data }}
       <span>
-        <BannerPart :albab="topbarDatas.data[1]" />
+        <BannerPart :albab="topbarDatas.data" />
       </span>
       <span>
-        <CategoryItems :albab="topbarDatas.data[3]" />
+        <CategoryItems :albab="topbarDatas.data" />
       </span>
       <span><RecentSoldItems /></span>
       <span><PopularItems /></span>
