@@ -40,8 +40,8 @@ onMounted (()=> {
                 <li><a :href="setting?.findSetting('footer_email')" target="_blank">
                 <i class="fas fa-envelope"></i>
                 </a></li>
-                <li><a :href="setting?.findSetting('phone_number')" target="_blank">
-                <i class="fas fa-phone"></i>
+                <li><a :href="'tel:' + setting?.findSetting('phone_number')" target="_blank">
+                <i class="fas fa-phone"></i> {{ setting?.findSetting('phone_number') }}
                 </a></li>
               
             </ul>

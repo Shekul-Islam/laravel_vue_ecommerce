@@ -1,4 +1,18 @@
 <script setup>
+import { onMounted, watch } from 'vue';
+import {soldItemStore} from '@/stores';
+
+const soldStore = soldItemStore();
+
+watch (()=> soldStore?.soldItemData, ()=> {
+  console.log(soldStore?.soldItemData);
+  
+} )
+
+onMounted (()=>{
+  soldStore.soldData();
+})
+
 
 </script>
 
@@ -24,12 +38,12 @@
                 <button class="product-wish wish">
                   <i class="fas fa-heart"></i></button
                 ><router-link :to="{name: 'single-product'}" class="product-image" 
-                  ><img src="@/assets/images/product/01.jpg" alt="product"
+                  ><img :src="soldStore?.soldItemData?.data?.find((i) => i.name == 'Dr. Comfort Belt Sandal BS101').image" alt="Dr. Comfort Belt Sandal BS101"
                 /></router-link>
               </div>
               <div class="product-content">
                 <h6 class="product-name">
-                  <a href="product-video.html">Products Name</a>
+                  <a href="product-video.html">{{ soldStore?.soldItemData?.data?.find((i)=> i.name == 'Dr. Comfort Belt Sandal BS101').name }}</a>
                 </h6>
                 <h6 class="product-price">
                   <del>$34</del><span>$28<small></small></span>

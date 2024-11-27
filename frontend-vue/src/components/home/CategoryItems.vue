@@ -32,9 +32,9 @@ onMounted (() => {
           </div>
         </div>
 
-        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5" v-if="category?.categoryPageData?.data" >
-          <div class="col" >
-            <div class="product-card" >
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5" v-if="category?.categoryPageData?.data">
+          <div class="col">
+            <div class="product-card">
               <ul>
                 <li >
                   <a class="suggest-card" href="shop-4column.html">
