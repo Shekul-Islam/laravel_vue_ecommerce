@@ -5,17 +5,33 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
 
-const props = defineProps({
- albab: {
-    type: Object,
-    default: {},
-  },
-});
+import { ref, onMounted, watch} from "vue";
+import {useLandingPageStore} from "@/stores";
 
+const landing = useLandingPageStore ();
+
+watch(() => landing.landingPageData, () => {
+  console.log(landing.landingPageData);
+  
+})
+
+onMounted (()=> {
+  landing.homeData();
+})
+
+
+
+
+
+// const props = defineProps({
+//  albab: {
+//     type: Object,
+//     default: {}, 
+//   },
+// });
 
 // import axiosInstance from '@/services/axiosService';
 // import { onMounted, ref } from 'vue';
-
 
 // const sliderDatas = ref ("");
 
@@ -26,10 +42,8 @@ const props = defineProps({
 //   console.log(res);
 // }catch (error){
 //   console.log(error);
-
 // }
 // };
-
 
 // onMounted(()=>{
 //   getHomePageData();
@@ -40,8 +54,11 @@ const props = defineProps({
 
 <template>
   <div>
-    {{ albab.image }}
+    
     <section class="banner-part" >
+      <div>
+        <!-- {{ landing?.landingPageData?.data?.find(item => item.id === 15)?.image }} -->
+      </div>
       <div class="">
         <div class="row">
           <div class="col-lg-12 order-0 order-lg-1 order-xl-1">
@@ -62,10 +79,16 @@ const props = defineProps({
                  </div>
                 </swiper-slide> -->
 
-                <swiper-slide >
+
+                <swiper-slide v-for="item in landing.landingPageData" :key="item.id">
+                  <img :src="landing?.landingPageData?.data?.find(item => item.id === 15)?.image" alt=""/>
+                 
+                </swiper-slide>
+
+                <!-- <swiper-slide >
                   <img :src="albab.image" alt=""/>
                   {{ console.log('tbdata:', tbdata) }}
-                </swiper-slide>
+                </swiper-slide> -->
                 
               </swiper>
             </div>

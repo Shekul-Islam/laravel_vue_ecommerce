@@ -56,10 +56,7 @@ onMounted(() => {
 
   <div>
     <span >
-<<<<<<< HEAD
       {{ topbarDatas.data }}
-=======
-      
       <span>
         <BannerPart :albab="topbarDatas.data" />
       </span>
@@ -72,23 +69,6 @@ onMounted(() => {
       <span><NewItems /></span>
     </span>
   </div>
-
-  <!-- <div>
-    <span >
-      
->>>>>>> 06a5a79d8d19c8be2a3460355ccd21c2653c1732
-      <span>
-        <BannerPart :albab="topbarDatas.data" />
-      </span>
-      <span>
-        <CategoryItems :albab="topbarDatas.data" />
-      </span>
-      <span><RecentSoldItems /></span>
-      <span><PopularItems /></span>
-      <span><FeatureItems /></span>
-      <span><NewItems /></span>
-    </span>
-  </div> -->
 
 
    <!-- <div>

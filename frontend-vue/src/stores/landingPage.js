@@ -3,7 +3,7 @@ import axiosInstance from "@/services/axiosService";
 
 export const useLandingPageStore = defineStore("landing-page", {
   state: ()=> ({
-    landingPageDatas: {},
+    landingPageData: {},
   }),
 
   persist: true,
@@ -14,9 +14,9 @@ export const useLandingPageStore = defineStore("landing-page", {
      try {
       const res = await axiosInstance.get('/landing-pages');
       if (res?.data?.success){
-        this.landingPageDatas = res?.data?.result
+        this.landingPageData = res?.data?.result
 
-        console.log(this.landingPageDatas);
+        console.log(this.landingPageData);
         
       }
       console.log(res);
