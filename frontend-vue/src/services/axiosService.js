@@ -23,10 +23,10 @@ axiosInstance.interceptors.request.use(
 );
 
 axiosInstance.interceptors.response.use(
-  (response)=>{
+  function (response){
     return response;
   },
-  (error)=> {
+  function (error) {
     if (error.response && error.response.status === 401) {
       const authInfo = useAuth();
       authInfo.user = {};

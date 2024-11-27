@@ -8,7 +8,7 @@ import { Pagination, Navigation, Autoplay } from "swiper/modules";
 const props = defineProps({
  albab: {
     type: Object,
-    default: {}, 
+    default: {},
   },
 });
 
