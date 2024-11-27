@@ -10,8 +10,8 @@ import {useLandingPageStore} from "@/stores";
 
 const landing = useLandingPageStore ();
 
-watch(() => landing.landingPageDatas, () => {
-  console.log(landing.landingPageDatas);
+watch(() => landing.landingPageData, () => {
+  console.log(landing.landingPageData);
   
 })
 
@@ -57,7 +57,6 @@ onMounted (()=> {
     
     <section class="banner-part" >
       <div>
-        <!-- {{ landing?.landingPageDatas?.data?.find(item => item.id === 15)?.image }} -->
       </div>
       <div class="">
         <div class="row">
@@ -80,8 +79,8 @@ onMounted (()=> {
                 </swiper-slide> -->
 
 
-                <swiper-slide v-for="item in landing.landingPageDatas" :key="item.id">
-                  <img :src="landing?.landingPageDatas?.data?.find(item => item.id === 15)?.image" alt=""/>
+                <swiper-slide v-for="item in landing.landingPageData.data" :key="item.id" >
+                  <img :src="item.image" alt="item.image" height="1200px"/>
                  
                 </swiper-slide>
 

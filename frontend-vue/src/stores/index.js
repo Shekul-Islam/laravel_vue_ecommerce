@@ -1,3 +1,5 @@
 export * from "./auth"
 export * from "./setting"
-export * from "./landingPage"
+export * from "./landingpage"
+export * from "./category"
+export * from "./solditem"
