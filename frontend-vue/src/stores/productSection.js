@@ -12,7 +12,8 @@ export const soldItemStore = defineStore ("sold-item", {
   actions: {
     async soldData () {
     try {
-      const res = await axiosInstance.get('/products');
+      const res = await axiosInstance.get('/sections');
+      
       if (res?.data?.success) {
         this.soldItemData = res?.data?.result
       }

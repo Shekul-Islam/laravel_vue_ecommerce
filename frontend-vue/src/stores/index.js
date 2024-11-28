@@ -1,5 +1,8 @@
 export * from "./auth"
 export * from "./setting"
-export * from "./landingpage"
+export * from "./landingPage"
 export * from "./category"
-export * from "./solditem"
+export * from "./productSection"
+export * from "./login"
+export * from "./popularItem"
+

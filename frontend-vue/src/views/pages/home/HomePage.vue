@@ -2,7 +2,7 @@
 import {
   BannerPart,
   CategoryItems,
-  RecentSoldItems,
+  ProductSection,
   PopularItems,
   FeatureItems,
   NewItems,
@@ -63,9 +63,9 @@ onMounted(() => {
       <span>
         <CategoryItems :albab="topbarDatas.data" />
       </span>
-      <span><RecentSoldItems /></span>
-      <span><PopularItems /></span>
-      <span><FeatureItems /></span>
+      <span><ProductSection /></span>
+      <!-- <span><PopularItems /></span>
+      <span><FeatureItems /></span> -->
       <span><NewItems /></span>
     </span>
   </div>
@@ -79,7 +79,7 @@ onMounted(() => {
       <span>
         <CategoryItems :albab="topbarDatas.data[3]" />
       </span>
-      <span><RecentSoldItems /></span>
+      <span><ProductSection /></span>
       <span><PopularItems /></span>
       <span><FeatureItems /></span>
       <span><NewItems /></span>
@@ -96,7 +96,7 @@ onMounted(() => {
       <span>
         <CategoryItems :tbdata="tbdata" />
       </span>
-      <span><RecentSoldItems /></span>
+      <span><ProductSection /></span>
       <span><PopularItems /></span>
       <span><FeatureItems /></span>
       <span><NewItems /></span>
