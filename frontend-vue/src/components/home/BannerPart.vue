@@ -80,8 +80,9 @@ onMounted (()=> {
                 </swiper-slide> -->
 
 
-                <swiper-slide v-for="item in landing.landingPageData" :key="item.id">
-                  <img :src="landing?.landingPageData?.data?.find(item => item.id === 15)?.image" alt=""/>
+                <swiper-slide v-for="item in landing.landingPageData.data" :key="item.id">
+                  
+                  <img :src="item.image" alt="item.image"/>
                  
                 </swiper-slide>
 
