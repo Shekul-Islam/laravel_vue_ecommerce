@@ -9,13 +9,15 @@
         <div class="row">
           <div class="col-sm-6 col-xl-3">
             <div class="footer-widget">
-              <a class="footer-logo" href="#"
-                ><img src="@/assets/images/logo.png" alt="logo"
-              /></a>
+              <a class="footer-logo" href="#">
+                <img src="@/assets/images/logo.png" alt="logo"/>
+              </a>
+
               <p class="footer-desc">
                 Adipisci asperiores ipsum ipsa repellat consequatur repudiandae
                 quisquam assumenda dolor perspiciatis sit ipsum dolor amet.
               </p>
+
               <ul class="footer-social">
                 <li><a class="icofont-facebook" href="#"></a></li>
                 <li><a class="icofont-twitter" href="#"></a></li>
@@ -25,6 +27,7 @@
               </ul>
             </div>
           </div>
+
           <div class="col-sm-6 col-xl-3">
             <div class="footer-widget contact">
               <h3 class="footer-title">contact us</h3>
@@ -36,17 +39,21 @@
                     ><span>globalbazar@gmail.com</span>
                   </p>
                 </li>
+
                 <li>
                   <i class="icofont-ui-touch-phone"></i>
                   <p><span>+8801722260010</span><span>+8801xxxxxxxx</span></p>
                 </li>
+
                 <li>
                   <i class="icofont-location-pin"></i>
                   <p>1Hd- 50, 010 Rangpur,Bangladesh</p>
                 </li>
+
               </ul>
             </div>
           </div>
+
           <div class="col-sm-6 col-xl-3">
             <div class="footer-widget">
               <h3 class="footer-title">quick Links</h3>
@@ -68,14 +75,17 @@
               </div>
             </div>
           </div>
+          
           <div class="col-sm-6 col-xl-3">
             <div class="footer-widget">
               <h3 class="footer-title">Download App</h3>
+
               <p class="footer-desc">
                 Lorem ipsum dolor sit amet tenetur dignissimos ipsum eligendi
                 autem obcaecati minus ducimus totam reprehenderit
                 exercitationem!
               </p>
+
               <div class="footer-app">
                 <a href="#"
                   ><img
@@ -85,9 +95,11 @@
                   ><img src="@/assets/images/app-store.png" alt="app"
                 /></a>
               </div>
+              
             </div>
           </div>
         </div>
+
         <div class="row">
           <div class="col-12">
             <div class="footer-bottom">

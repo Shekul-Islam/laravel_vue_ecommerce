@@ -12,9 +12,10 @@ export const newProductStore = defineStore ("new-product", {
     actions: {
         async productData () {
             try {   
-            const res = await axiosInstance.get("/products", {params: {Pagination:5}});
+            const res = await axiosInstance.get("/products", {params: {paginate_size:10}});
             if(res?.data?.success){
                 this.newProduct = res?.data?.result
+                
             }
             } catch (error) {
                 console.log(error);

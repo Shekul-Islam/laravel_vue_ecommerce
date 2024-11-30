@@ -16,9 +16,9 @@ export const categoryStore = defineStore ("category-item", {
         if (res?.data?.success){
           this.categoryPageData = res?.data?.result
 
-          console.log(this.categoryPageData);
+         
         }
-       console.log(res);
+       
         
         
       } catch (error) {

@@ -49,7 +49,7 @@ onMounted(() => {
 
                 <h6 class="product-price">
                   <span v-if="data?.variations?.data?.length">
-                    <span>{{ data?.variation_price_range?.min_price }} Tk <span v-if="data?.variation_price_range?.max_price != data?.variation_price_range?.min_price"> - {{ data?.variation_price_range?.max_price   }} Tk</span></span>
+                    <span>{{ data?.variation_price_range?.min_price }} Tk <span v-if="data?.variation_price_range?.max_price != data?.variation_price_range?.min_price"> - {{ data?.variation_price_range?.max_price }} Tk</span></span>
                   </span>
 
                   <span v-else>

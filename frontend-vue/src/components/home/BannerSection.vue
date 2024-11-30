@@ -5,23 +5,16 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
 
-import { ref, onMounted, watch} from "vue";
+import { ref, onMounted} from "vue";
 import {useLandingPageStore} from "@/stores";
 
 const landing = useLandingPageStore ();
-
-watch(() => landing.landingPageData, () => {
-  console.log(landing.landingPageData);
-  
-})
 
 onMounted (()=> {
   landing.homeData();
 })
 
 </script>
-
-
 <template>
   <div>
     <section class="banner-part" >

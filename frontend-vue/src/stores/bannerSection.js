@@ -14,10 +14,8 @@ export const useLandingPageStore = defineStore("landing-page", {
       const res = await axiosInstance.get('/sliders');
       if (res?.data?.success){
         this.landingPageData = res?.data?.result
-
-        console.log(this.landingPageData);
+        
       }
-      console.log(res);
       
      } catch (error) {
       console.log(error);

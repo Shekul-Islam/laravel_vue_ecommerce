@@ -39,7 +39,6 @@ onMounted(() => {
 
   <div>
     <span >
-      {{ topbarDatas.data }}
       <span>
         <BannerSection :albab="topbarDatas.data" />
       </span>
@@ -57,7 +56,6 @@ onMounted(() => {
       </span>
     </span>
   </div>
-
   
 </template>
 

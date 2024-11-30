@@ -40,8 +40,6 @@ export const useAuth = defineStore('auth', {
   }
   },
 
-  
-
   async logout () {
     this.Loading = true;
    try {

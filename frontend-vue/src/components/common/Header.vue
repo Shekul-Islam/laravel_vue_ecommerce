@@ -3,25 +3,25 @@ import { useAuth } from '@/stores';
 import { storeToRefs } from 'pinia';
 import { ElNotification } from 'element-plus';
 import { useRouter } from 'vue-router';
+
+
+import { onMounted } from 'vue';
+import { useSettingStore } from '@/stores';
+
 const auth = useAuth();
 const {user, loading} = storeToRefs(auth);
 const router = useRouter();
-
-
 const userLogout = async () => {
 const res = await auth.logout();
 console.log(res);
-
-// if (res.data){
-//   router.push({name: "index"});
-//   ElNotification({
-//     title: 'Success', 
-//     message: 'Logout successfully',
-//     type: 'success',
-//     position: "top-right"
-//   });
-// } 
 };
+
+
+const setting = useSettingStore();
+
+onMounted (()=> {
+  setting.getData();
+})
 
 
 
@@ -40,22 +40,28 @@ function cartShow() {
 </script>
 
 <template>
+
   <div>
     <header class="header-part">
       <div class="container">
-        <div class="header-content">
+        <div class="header-content" v-if="setting?.settings?.data">
           <div class="header-media-group">
             <button class="header-user" @click="menu">
-              <img src="@/assets/images/menu.png" alt="user" /></button
-            ><router-link :to="{ name: 'index' }"
-              ><img src="@/assets/images/logo.png" alt="logo" /></router-link
-            ><button class="header-src" @click="search">
+              <img src="@/assets/images/menu.png" alt="user" />
+            </button>
+
+              <router-link :to="{ name: 'index' }">
+                <img :src="setting?.settings?.data" alt="logo"/>
+              </router-link>
+              
+              <button class="header-src" @click="search">
               <i class="fas fa-search"></i>
             </button>
           </div>
-          <router-link :to="{ name: 'index' }" class="header-logo"
-            ><img src="@/assets/images/logo.png" alt="logo"
-          /></router-link>
+
+          <router-link :to="{ name: 'index' }" class="header-logo">
+            <img src="@/assets/images/logo.png" alt="logo"/>
+          </router-link>
 
           <form class="header-form">
             <input type="text" placeholder="Search anything..." /><button>
