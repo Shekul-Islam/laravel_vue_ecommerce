@@ -2,13 +2,7 @@
 
 <template>
   <div>
-    <section
-      class="single-banner inner-section"
-      style="
-        background: url('@/assets/website/images/single-banner.jpg') center center
-          no-repeat;
-      "
-    >
+    <section class="single-banner inner-section" style="background: url('@/assets/website/images/single-banner.jpg') center center no-repeat;">
       <div class="container">
         <h2>girls-cloth</h2>
         <ol class="breadcrumb"></ol>

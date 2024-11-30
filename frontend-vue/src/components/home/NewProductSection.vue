@@ -1,9 +1,20 @@
 <script setup>
+import { onMounted } from "vue";
+import { newProductStore } from "@/stores";
+
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
+
+
+const product = newProductStore();
+
+
+onMounted (()=> {
+  product.productData ();
+})
 </script>
 
 
@@ -38,21 +49,25 @@ import { Pagination, Navigation, Autoplay } from "swiper/modules";
                         <div class="product-label">
                           <label class="label-text new">New</label>
                         </div>
+
                         <button class="product-wish wish">
-                          <i class="fas fa-heart"></i></button
-                        ><a class="product-image" href="product-video.html"
-                          ><img
-                            src="@/assets/images/product/01.jpg"
-                            alt="product"
-                        /></a>
+                          <i class="fas fa-heart"></i>
+                        </button>
+
+                       <a class="product-image" href="product-video.html">
+                           <img src="@/assets/images/product/01.jpg" alt="product"/>
+                       </a>
                       </div>
+
                       <div class="product-content">
                         <h6 class="product-name">
                           <a href="product-video.html">Products Name</a>
                         </h6>
+
                         <h6 class="product-price">
                           <del>$34</del><span>$28<small></small></span>
                         </h6>
+
                         <button class="product-add" title="Add to Cart">
                           <i class="fas fa-shopping-basket"></i><span>Add</span>
                         </button>

@@ -27,6 +27,4 @@ export const categoryStore = defineStore ("category-item", {
       }
     }
   }
-
-
 })

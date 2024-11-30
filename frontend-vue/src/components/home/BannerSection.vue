@@ -19,45 +19,13 @@ onMounted (()=> {
   landing.homeData();
 })
 
-
-
-
-
-// const props = defineProps({
-//  albab: {
-//     type: Object,
-//     default: {}, 
-//   },
-// });
-
-// import axiosInstance from '@/services/axiosService';
-// import { onMounted, ref } from 'vue';
-
-// const sliderDatas = ref ("");
-
-// const getHomePageData = async ()=> {
-// try {
-//   const res = await axiosInstance.get(`/sliders`)
-//   sliderDatas.value = res.data.result;
-//   console.log(res);
-// }catch (error){
-//   console.log(error);
-// }
-// };
-
-// onMounted(()=>{
-//   getHomePageData();
-// });
-
 </script>
 
 
 <template>
   <div>
-    
     <section class="banner-part" >
       <div>
-        <!-- {{ landing?.landingPageData?.data?.find(item => item.id === 15)?.image }} -->
       </div>
       <div class="">
         <div class="row">
@@ -73,23 +41,10 @@ onMounted (()=> {
                 :modules="[Pagination, Navigation, Autoplay]"
                 class="mySwiper"
               >
-                <!-- <swiper-slide v-for="(slider, index) in sliderDatas.data" :key="index">
-                 <div>
-                  <img :src="slider.image" width="100%" height="700px" alt=""/>
-                 </div>
-                </swiper-slide> -->
-
-
+                
                 <swiper-slide v-for="item in landing.landingPageData.data" :key="item.id">
-                  
                   <img :src="item.image" alt="item.image"/>
-                 
                 </swiper-slide>
-
-                <!-- <swiper-slide >
-                  <img :src="albab.image" alt=""/>
-                  {{ console.log('tbdata:', tbdata) }}
-                </swiper-slide> -->
                 
               </swiper>
             </div>
@@ -102,7 +57,6 @@ onMounted (()=> {
 
 
 <style scoped>
-
 
 
 </style>

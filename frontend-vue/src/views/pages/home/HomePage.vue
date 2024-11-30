@@ -1,35 +1,18 @@
 <script setup>
 import {
-  BannerPart,
-  CategoryItems,
-  RecentSoldItems,
-  PopularItems,
-  FeatureItems,
-  NewItems,
+  BannerSection,
+  CategorySection,
+  ProductSection,
+  NewProductSection,
 } from "@/components/home";
 
 import axiosInstance from "@/services/axiosService";
-
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 
+
 const route = useRoute();
-const homePageDatas = ref("");
 const topbarDatas = ref("");
-
-const getHomePageData = async () => {
-  try {
-    const res = await axiosInstance.get(`/posts`);
-    homePageDatas.value = res.data.result;
-    console.log(res);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-onMounted(() => {
-  getHomePageData();
-});
 
 // topbar-api
 
@@ -58,34 +41,24 @@ onMounted(() => {
     <span >
       {{ topbarDatas.data }}
       <span>
-        <BannerPart :albab="topbarDatas.data" />
+        <BannerSection :albab="topbarDatas.data" />
       </span>
+
       <span>
-        <CategoryItems :albab="topbarDatas.data" />
+        <CategorySection :albab="topbarDatas.data" />
       </span>
-      <span><RecentSoldItems /></span>
-      <span><PopularItems /></span>
-      <span><FeatureItems /></span>
-      <span><NewItems /></span>
+
+      <span>
+        <ProductSection/>
+        </span>
+
+      <span>
+        <NewProductSection/>
+      </span>
     </span>
   </div>
 
-
-   <!-- <div>
-    <span v-for="(tbdata, index) in topbarDatas.data" :key="index">
-      {{ tbdata }}
-      <span>
-        <BannerPart :tbdata="tbdata" />
-      </span>
-      <span>
-        <CategoryItems :tbdata="tbdata" />
-      </span>
-      <span><RecentSoldItems /></span>
-      <span><PopularItems /></span>
-      <span><FeatureItems /></span>
-      <span><NewItems /></span>
-    </span>
-  </div> -->
+  
 </template>
 
 <style scoped></style>

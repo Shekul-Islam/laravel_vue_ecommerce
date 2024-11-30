@@ -5,7 +5,6 @@ export const useLandingPageStore = defineStore("landing-page", {
   state: ()=> ({
     landingPageData: {},
   }),
-
   persist: true,
 
 
@@ -17,15 +16,12 @@ export const useLandingPageStore = defineStore("landing-page", {
         this.landingPageData = res?.data?.result
 
         console.log(this.landingPageData);
-        
       }
       console.log(res);
       
      } catch (error) {
       console.log(error);
-      
      } 
     }
-
   }
 })
