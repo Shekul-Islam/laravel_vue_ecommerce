@@ -1,25 +1,38 @@
 <script setup>
+import { onMounted } from 'vue';
+import { useSettingStore } from '@/stores';
+
+const footer = useSettingStore();
+
+
+onMounted(()=> {
+  footer?.getData();
+})
 
 </script>
 
 <template>
   <div>
-    <footer class="footer-part">
+    
+    <footer class="footer-part" >
       <div class="container">
         <div class="row">
           <div class="col-sm-6 col-xl-3">
             <div class="footer-widget">
-              <a class="footer-logo" href="#">
-                <img src="@/assets/images/logo.png" alt="logo"/>
+            <div>
+              <a class="footer-logo">
+                <img :src="footer.findSetting('footer_logo')" alt="">
+                <!-- {{ footer?.settings?.data?.find((img)=> img.key == "footer_logo")?.value }} -->
               </a>
-
+            </div>
+              
               <p class="footer-desc">
-                Adipisci asperiores ipsum ipsa repellat consequatur repudiandae
-                quisquam assumenda dolor perspiciatis sit ipsum dolor amet.
+               {{ footer.findSetting("footer_address") }}
+
               </p>
 
               <ul class="footer-social">
-                <li><a class="icofont-facebook" href="#"></a></li>
+                <li><a class="icofont-facebook" :href="footer?.settings"></a></li>
                 <li><a class="icofont-twitter" href="#"></a></li>
                 <li><a class="icofont-linkedin" href="#"></a></li>
                 <li><a class="icofont-instagram" href="#"></a></li>
@@ -35,19 +48,18 @@
                 <li>
                   <i class="icofont-ui-email"></i>
                   <p>
-                    <span>support@globalbazar.com</span
-                    ><span>globalbazar@gmail.com</span>
+                    <span>{{footer?.settings?.data?.find((email)=> email.key == "footer_email")?.value}}</span>
                   </p>
                 </li>
 
                 <li>
                   <i class="icofont-ui-touch-phone"></i>
-                  <p><span>+8801722260010</span><span>+8801xxxxxxxx</span></p>
+                  <p><span>{{footer?.settings?.data?.find((phone)=> phone.key == "phone_number")?.value}}</span><span>{{footer?.settings?.data?.find((whatsapp)=> whatsapp.key == "whatsapp_number")?.value}}</span></p>
                 </li>
 
                 <li>
                   <i class="icofont-location-pin"></i>
-                  <p>1Hd- 50, 010 Rangpur,Bangladesh</p>
+                  <p> {{ footer?.settings?.data?.find(( local) => local.key == "footer_address")?.value }}</p>
                 </li>
 
               </ul>
@@ -104,8 +116,8 @@
           <div class="col-12">
             <div class="footer-bottom">
               <p class="footer-copytext">
-                &copy; All Copyrights Reserved by
-                <a target="_blank" href="https://w3coders.net">W3 Coders</a>
+                &copy; {{ footer?.settings?.data?.find((i)=> i.key == "footer_description").value }}
+                <a target="_blank" href="https://w3coders.net"></a>
               </p>
               <div class="footer-card">
                 <a href="#"
@@ -119,10 +131,10 @@
                 ><a href="#"
                   ><img
                     src="@/assets/images/payment/jpg/03.jpg"
-                    alt="payment" /></a
-                ><a href="#"
-                  ><img src="@/assets/images/payment/jpg/04.jpg" alt="payment"
-                /></a>
+                    alt="payment" /></a>
+                    <a href="#">
+                      <img src="@/assets/images/payment/jpg/04.jpg" alt="payment"/>
+                    </a>
               </div>
             </div>
           </div>

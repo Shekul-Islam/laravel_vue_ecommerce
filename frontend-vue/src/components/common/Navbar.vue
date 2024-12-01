@@ -27,50 +27,35 @@ onMounted (() => {
                   <router-link :to="{ name: 'index' }" class="navbar-link">home</router-link>
                 </li>
 
-                <li class="navbar-item dropdown-megamenu">
+                <li class="navbar-item dropdown-megamenue">
                   <a class="navbar-link dropdown-arrow" href="#">Categories</a>
-                  <div class="megamenu">
+                  <div class="megamenue">
                     <div class="container">
                       <div class="row row-cols-5">
-
                         <div class="col" v-for="(data, index) in category?.categoryPageData?.data" :key="index">
-                          <div class="megamenu-wrap">
-                            <h5 class="megamenu-title">{{data?.name}}</h5>
-                            <ul class="megamenu-list" v-if="data?.sub_categories?.length">
+                          <div class="megamenue-wrap">
+                            <h5 class="megamenue-title">{{data?.name}}</h5>
+                            <ul class="megamenue-list" v-if="data?.sub_categories?.length">
                               <li v-for="(subData, i) in data?.sub_categories" :key="i">
                                 <a href="#">{{subData?.name}}</a>
                               </li>
                             </ul>
                           </div>
                         </div> 
-
-
-
-                        <!-- <div class="col">
-                          <div class="megamenu-wrap">
-                            <h5 class="megamenu-title">vegetables</h5>
-                            <ul class="megamenu-list">
-                              <li><a href="#">carrot</a></li>
-                              <li><a href="#">broccoli</a></li>
-                              <li><a href="#">asparagus</a></li>
-                              <li><a href="#">cauliflower</a></li>
-                              <li><a href="#">eggplant</a></li>
-                            </ul>
-                          </div>
-                        </div> -->
-
-                   
-
                       </div>
                     </div>
                   </div>
                 </li>
 
-                <li class="navbar-item dropdown-megamenu">
+                <li class="navbar-item dropdown-megamenue">
                   <router-link :to="{name: 'shop'}" class="navbar-link" >Shop</router-link>
                 </li>
 
-                <li class="navbar-item dropdown-megamenu">
+                <li class="navbar-item dropdown-megamenue">
+                  <router-link :to="{name: 'shop'}" class="navbar-link" >Blog</router-link>
+                </li>
+
+                <li class="navbar-item dropdown-megamenue">
                   <router-link :to="{name: 'seller-page'}" class="navbar-link" >Seller</router-link>
                 </li>
               </ul>

@@ -10,8 +10,7 @@ const newsLetter = new URL ('@/assets/images/newsletter.jpg', import.meta.url).h
       :style="{ 
         background: 'url(' + newsLetter +') center center no-repeat'
 
-      }"
-    >
+      }">
       <div class="container">
         <div class="row align-items-center">
           <div class="col-md-5 col-lg-6 col-xl-7">
@@ -24,8 +23,8 @@ const newsLetter = new URL ('@/assets/images/newsletter.jpg', import.meta.url).h
             <form class="news-form">
               <input
                 type="text"
-                placeholder="Enter Your Email Address"
-              /><button>
+                placeholder="Enter Your Email Address"/>
+              <button>
                 <span><i class="icofont-ui-email"></i>Subscribe</span>
               </button>
             </form>

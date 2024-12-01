@@ -40,8 +40,8 @@ const cartClose = () => {
             <div class="cart-action-group">
               <div class="product-action">
                 <button class="action-minus" title="Quantity Minus">
-                  <i class="icofont-minus"></i></button
-                ><input
+                  <i class="icofont-minus"></i>
+                </button><input
                   class="action-input"
                   title="Quantity Number"
                   type="text"

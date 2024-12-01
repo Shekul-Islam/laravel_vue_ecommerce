@@ -71,8 +71,7 @@ function cateClose() {
         </li>
         <li class="category-item">
           <a class="category-link dropdown-link" href="#"
-            ><i class="flaticon-salad"></i><span>diet foods</span></a
-          >
+            ><i class="flaticon-salad"></i><span>diet foods</span></a>
           <ul class="dropdown-list">
             <li><a href="#">Salmon</a></li>
             <li><a href="#">Potatoes</a></li>
