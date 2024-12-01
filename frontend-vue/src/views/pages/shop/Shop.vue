@@ -22,7 +22,6 @@ onMounted(()=> {
 
 <template>
   <div>
-    {{ brands }}
     <section class="inner-section single-banner" :style="{ background: 'url(' + bannerImage + ') center center no-repeat', }">
       <div class="container">
         <h2>Shop Page</h2>
@@ -74,89 +73,13 @@ onMounted(()=> {
               <form>
                 <input class="shop-widget-search" type="text" placeholder="Search..."/>
                 <ul class="shop-widget-list shop-widget-scroll">
-                  <li v-for=" (categories, i) in shop?.shops?.brands" :key="i">
+                  <li v-for=" (category, i) in shop?.shops?.categories" :key="i">
                     <div class="shop-widget-content">
-                      <input type="checkbox" id="cate1" /><label for="cate1">{{categories?.name}}</label>
+                      <input type="checkbox" id="cate1"/><label for="cate1">{{category?.name}}</label>
                     </div>
-                    <span class="shop-widget-number">({{brands?.products_count}})</span>
+                    <span class="shop-widget-number">({{category?.products_count}})</span>
                   </li>
 
-                  <li>
-                    <div class="shop-widget-content">
-                      <input type="checkbox" id="cate2" /><label for="cate2">groceries</label>
-                    </div>
-                    <span class="shop-widget-number">(28)</span>
-                  </li>
-
-                  <li>
-                    <div class="shop-widget-content">
-                      <input type="checkbox" id="cate3" /><label for="cate3">fruits</label>
-                    </div>
-                    <span class="shop-widget-number">(35)</span>
-                  </li>
-
-                  <li>
-                    <div class="shop-widget-content">
-                      <input type="checkbox" id="cate4" /><label for="cate4">dairy farm</label>
-                    </div>
-                    <span class="shop-widget-number">(47)</span>
-                  </li>
-
-                  <li>
-                    <div class="shop-widget-content">
-                      <input type="checkbox" id="cate5" /><label for="cate5">sea foods</label>
-                    </div>
-                    <span class="shop-widget-number">(59)</span>
-                  </li>
-
-                  <li>
-                    <div class="shop-widget-content">
-                      <input type="checkbox" id="cate6" /><label for="cate6">diet foods</label>
-                    </div>
-                    <span class="shop-widget-number">(64)</span>
-                  </li>
-
-                  <li>
-                    <div class="shop-widget-content">
-                      <input type="checkbox" id="cate7" /><label for="cate7">dry foods</label>
-                    </div>
-                    <span class="shop-widget-number">(77)</span>
-                  </li>
-
-                  <li>
-                    <div class="shop-widget-content">
-                      <input type="checkbox" id="cate8" /><label for="cate8">fast foods</label>
-                    </div>
-                    <span class="shop-widget-number">(85)</span>
-                  </li>
-
-                  <li>
-                    <div class="shop-widget-content">
-                      <input type="checkbox" id="cate9" /><label for="cate9">drinks</label>
-                    </div>
-                    <span class="shop-widget-number">(92)</span>
-                  </li>
-
-                  <li>
-                    <div class="shop-widget-content">
-                      <input type="checkbox" id="cate10" /><label for="cate10">coffee</label>
-                    </div>
-                    <span class="shop-widget-number">(21)</span>
-                  </li>
-
-                  <li>
-                    <div class="shop-widget-content">
-                      <input type="checkbox" id="cate11" /><label for="cate11">meats</label>
-                    </div>
-                    <span class="shop-widget-number">(14)</span>
-                  </li>
-
-                  <li>
-                    <div class="shop-widget-content">
-                      <input type="checkbox" id="cate12" /><label for="cate12">fishes</label>
-                    </div>
-                    <span class="shop-widget-number">(56)</span>
-                  </li>
                 </ul>
 
                 <button class="shop-widget-btn">
