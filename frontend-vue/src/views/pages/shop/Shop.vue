@@ -1,28 +1,30 @@
 <script setup>
-import { onMounted, watch } from 'vue';
+import { onMounted } from 'vue';
 import { shopStore } from '@/stores';
+import { productStore } from '@/stores';
 
 const shop = shopStore();
+const product = productStore();
 
 // const attributes = shop?.shops?.attributes;
 // const brands = shop?.shops?.brands;
 // const categories = shop?.shops?.categories;
 
-const bannerImage = new URL(
-  "@/assets/images/single-banner.jpg",
-  import.meta.url
-).href;
+const bannerImage = new URL("@/assets/images/single-banner.jpg", import.meta.url).href;
 
 
 onMounted(()=> {
   shop?.shopData();
 })
 
+onMounted(()=> {
+  product?.productsData();
+})
+
 </script>
 
 <template>
   <div>
-    {{ brands }}
     <section class="inner-section single-banner" :style="{ background: 'url(' + bannerImage + ') center center no-repeat', }">
       <div class="container">
         <h2>Shop Page</h2>
@@ -74,88 +76,11 @@ onMounted(()=> {
               <form>
                 <input class="shop-widget-search" type="text" placeholder="Search..."/>
                 <ul class="shop-widget-list shop-widget-scroll">
-                  <li v-for=" (categories, i) in shop?.shops?.brands" :key="i">
+                  <li v-for=" (categories, i) in shop?.shops?.categories" :key="i">
                     <div class="shop-widget-content">
-                      <input type="checkbox" id="cate1" /><label for="cate1">{{categories?.name}}</label>
+                      <input type="checkbox" id="cate1"/><label for="cate1">{{categories?.name}}</label>
                     </div>
-                    <span class="shop-widget-number">({{brands?.products_count}})</span>
-                  </li>
-
-                  <li>
-                    <div class="shop-widget-content">
-                      <input type="checkbox" id="cate2" /><label for="cate2">groceries</label>
-                    </div>
-                    <span class="shop-widget-number">(28)</span>
-                  </li>
-
-                  <li>
-                    <div class="shop-widget-content">
-                      <input type="checkbox" id="cate3" /><label for="cate3">fruits</label>
-                    </div>
-                    <span class="shop-widget-number">(35)</span>
-                  </li>
-
-                  <li>
-                    <div class="shop-widget-content">
-                      <input type="checkbox" id="cate4" /><label for="cate4">dairy farm</label>
-                    </div>
-                    <span class="shop-widget-number">(47)</span>
-                  </li>
-
-                  <li>
-                    <div class="shop-widget-content">
-                      <input type="checkbox" id="cate5" /><label for="cate5">sea foods</label>
-                    </div>
-                    <span class="shop-widget-number">(59)</span>
-                  </li>
-
-                  <li>
-                    <div class="shop-widget-content">
-                      <input type="checkbox" id="cate6" /><label for="cate6">diet foods</label>
-                    </div>
-                    <span class="shop-widget-number">(64)</span>
-                  </li>
-
-                  <li>
-                    <div class="shop-widget-content">
-                      <input type="checkbox" id="cate7" /><label for="cate7">dry foods</label>
-                    </div>
-                    <span class="shop-widget-number">(77)</span>
-                  </li>
-
-                  <li>
-                    <div class="shop-widget-content">
-                      <input type="checkbox" id="cate8" /><label for="cate8">fast foods</label>
-                    </div>
-                    <span class="shop-widget-number">(85)</span>
-                  </li>
-
-                  <li>
-                    <div class="shop-widget-content">
-                      <input type="checkbox" id="cate9" /><label for="cate9">drinks</label>
-                    </div>
-                    <span class="shop-widget-number">(92)</span>
-                  </li>
-
-                  <li>
-                    <div class="shop-widget-content">
-                      <input type="checkbox" id="cate10" /><label for="cate10">coffee</label>
-                    </div>
-                    <span class="shop-widget-number">(21)</span>
-                  </li>
-
-                  <li>
-                    <div class="shop-widget-content">
-                      <input type="checkbox" id="cate11" /><label for="cate11">meats</label>
-                    </div>
-                    <span class="shop-widget-number">(14)</span>
-                  </li>
-
-                  <li>
-                    <div class="shop-widget-content">
-                      <input type="checkbox" id="cate12" /><label for="cate12">fishes</label>
-                    </div>
-                    <span class="shop-widget-number">(56)</span>
+                    <span class="shop-widget-number">({{categories?.products_count}})</span>
                   </li>
                 </ul>
 
@@ -168,7 +93,7 @@ onMounted(()=> {
 
           <div class="col-lg-9">
             <div class="row">
-              <div class="col-lg-12">
+              <div class="col-lg-12" >
                 <div class="top-filter">
                   <div class="filter-show">
                     <label class="filter-label">Show :</label>
@@ -178,6 +103,7 @@ onMounted(()=> {
                       <option value="3">36</option>
                     </select>
                   </div>
+
                   <div class="filter-short">
                     <label class="filter-label">Short by :</label
                     ><select class="form-select filter-select">
@@ -191,13 +117,14 @@ onMounted(()=> {
               </div>
             </div>
 
-            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4">
-              <div class="col">
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4" >
+              <div class="col"  v-for="(data, id) in product?.products" :key="id">
                 <div class="product-card product-disable">
                   <div class="product-media">
 
                     <div class="product-label">
                       <label class="label-text rate">Popular</label>
+                      
                       <label class="view-label off">-2%</label>
                     </div>
 
@@ -206,13 +133,13 @@ onMounted(()=> {
                     </button>
 
                     <a class="product-image" href="product-video.html">
-                      <img src="@/assets/images/product/06.jpg" alt="product"/>
+                      <img :src="data?.image" alt="product"/>
                     </a>
                   </div>
 
                   <div class="product-content">
                     <h6 class="product-name">
-                      <a href="product-video.html">Products Name</a>
+                      <a href="product-video.html">{{data?.name}}</a>
                     </h6>
                     <h6 class="product-price">
                       <del>$34</del><span>$28<small></small></span>
@@ -224,416 +151,6 @@ onMounted(()=> {
                 </div>
               </div>
 
-              <div class="col">
-                <div class="product-card">
-                  <div class="product-media">
-                    <div class="product-label">
-                      <label class="label-text rate">Popular</label>
-                      <label class="view-label off">-2%</label>
-                    </div>
-
-                    <button class="product-wish wish">
-                      <i class="fas fa-heart"></i>
-                    </button>
-
-                    <a class="product-image" href="product-video.html">
-                        <img src="@/assets/images/product/13.png" alt="product"/>
-                    </a>
-                  </div>
-
-                  <div class="product-content">
-                    <h6 class="product-name">
-                      <a href="product-video.html">Products Name</a>
-                    </h6>
-                    <h6 class="product-price">
-                      <del>$34</del><span>$28<small></small></span>
-                    </h6>
-                    <button class="product-add" title="Add to Cart">
-                      <i class="fas fa-shopping-basket"></i><span>Add</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col">
-                <div class="product-card">
-                  <div class="product-media">
-                    <div class="product-label">
-                      <label class="label-text rate">Popular</label>
-                      <label class="view-label off">-2%</label>
-                    </div>
-                    <button class="product-wish wish">
-                      <i class="fas fa-heart"></i>
-                    </button>
-                      <a class="product-image" href="product-video.html">
-                        <img src="@/assets/images/product/12.png" alt="product"/>
-                      </a>
-                  </div>
-
-                  <div class="product-content">
-                    <h6 class="product-name">
-                      <a href="product-video.html">Products Name</a>
-                    </h6>
-                    <h6 class="product-price">
-                      <del>$34</del><span>$28<small></small></span>
-                    </h6>
-                    <button class="product-add" title="Add to Cart">
-                      <i class="fas fa-shopping-basket"></i><span>Add</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col">
-                <div class="product-card">
-                  <div class="product-media">
-                    <div class="product-label">
-                      <label class="label-text rate">Popular</label>
-                      <label class="view-label off">-2%</label>
-                    </div>
-                    <button class="product-wish wish">
-                      <i class="fas fa-heart"></i>
-                    </button>
-                    <a class="product-image" href="product-video.html">
-                      <img src="@/assets/images/product/03.jpg" alt="product"/>
-                    </a>
-                  </div>
-                  <div class="product-content">
-                    <h6 class="product-name">
-                      <a href="product-video.html">Products Name</a>
-                    </h6>
-                    <h6 class="product-price">
-                      <del>$34</del><span>$28<small></small></span>
-                    </h6>
-                    <button class="product-add" title="Add to Cart">
-                      <i class="fas fa-shopping-basket"></i><span>Add</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col">
-                <div class="product-card">
-                  <div class="product-media">
-                    <div class="product-label">
-                      <label class="label-text rate">Popular</label>
-                      <label class="view-label off">-2%</label>
-                    </div>
-                    <button class="product-wish wish">
-                      <i class="fas fa-heart"></i></button
-                    ><a class="product-image" href="product-video.html"
-                      ><img src="@/assets/images/product/03.jpg" alt="product"
-                    /></a>
-                  </div>
-                  <div class="product-content">
-                    <h6 class="product-name">
-                      <a href="product-video.html">Products Name</a>
-                    </h6>
-                    <h6 class="product-price">
-                      <del>$34</del><span>$28<small></small></span>
-                    </h6>
-                    <button class="product-add" title="Add to Cart">
-                      <i class="fas fa-shopping-basket"></i><span>Add</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col">
-                <div class="product-card">
-                  <div class="product-media">
-                    <div class="product-label">
-                      <label class="label-text rate">Popular</label>
-                      <label class="view-label off">-2%</label>
-                    </div>
-                    <button class="product-wish wish">
-                      <i class="fas fa-heart"></i></button
-                    ><a class="product-image" href="product-video.html"
-                      ><img src="@/assets/images/product/03.jpg" alt="product"
-                    /></a>
-                  </div>
-                  <div class="product-content">
-                    <h6 class="product-name">
-                      <a href="product-video.html">Products Name</a>
-                    </h6>
-                    <h6 class="product-price">
-                      <del>$34</del><span>$28<small></small></span>
-                    </h6>
-                    <button class="product-add" title="Add to Cart">
-                      <i class="fas fa-shopping-basket"></i><span>Add</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col">
-                <div class="product-card">
-                  <div class="product-media">
-                    <div class="product-label">
-                      <label class="label-text rate">Popular</label>
-                      <label class="view-label off">-2%</label>
-                    </div>
-                    <button class="product-wish wish">
-                      <i class="fas fa-heart"></i></button
-                    ><a class="product-image" href="product-video.html"
-                      ><img src="@/assets/images/product/03.jpg" alt="product"
-                    /></a>
-                  </div>
-                  <div class="product-content">
-                    <h6 class="product-name">
-                      <a href="product-video.html">Products Name</a>
-                    </h6>
-                    <h6 class="product-price">
-                      <del>$34</del><span>$28<small></small></span>
-                    </h6>
-                    <button class="product-add" title="Add to Cart">
-                      <i class="fas fa-shopping-basket"></i><span>Add</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col">
-                <div class="product-card">
-                  <div class="product-media">
-                    <div class="product-label">
-                      <label class="label-text rate">Popular</label>
-                      <label class="view-label off">-2%</label>
-                    </div>
-                    <button class="product-wish wish">
-                      <i class="fas fa-heart"></i></button
-                    ><a class="product-image" href="product-video.html"
-                      ><img src="@/assets/images/product/09.jpg" alt="product"
-                    /></a>
-                  </div>
-                  <div class="product-content">
-                    <h6 class="product-name">
-                      <a href="product-video.html">Products Name</a>
-                    </h6>
-                    <h6 class="product-price">
-                      <del>$34</del><span>$28<small></small></span>
-                    </h6>
-                    <button class="product-add" title="Add to Cart">
-                      <i class="fas fa-shopping-basket"></i><span>Add</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col">
-                <div class="product-card">
-                  <div class="product-media">
-                    <div class="product-label">
-                      <label class="label-text rate">Popular</label>
-                      <label class="view-label off">-2%</label>
-                    </div>
-                    <button class="product-wish wish">
-                      <i class="fas fa-heart"></i></button
-                    ><a class="product-image" href="product-video.html"
-                      ><img src="@/assets/images/product/03.jpg" alt="product"
-                    /></a>
-                  </div>
-                  <div class="product-content">
-                    <h6 class="product-name">
-                      <a href="product-video.html">Products Name</a>
-                    </h6>
-                    <h6 class="product-price">
-                      <del>$34</del><span>$28<small></small></span>
-                    </h6>
-                    <button class="product-add" title="Add to Cart">
-                      <i class="fas fa-shopping-basket"></i><span>Add</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col">
-                <div class="product-card">
-                  <div class="product-media">
-                    <div class="product-label">
-                      <label class="label-text rate">Popular</label>
-                      <label class="view-label off">-2%</label>
-                    </div>
-                    <button class="product-wish wish">
-                      <i class="fas fa-heart"></i></button
-                    ><a class="product-image" href="product-video.html"
-                      ><img src="@/assets/images/product/03.jpg" alt="product"
-                    /></a>
-                  </div>
-                  <div class="product-content">
-                    <h6 class="product-name">
-                      <a href="product-video.html">Products Name</a>
-                    </h6>
-                    <h6 class="product-price">
-                      <del>$34</del><span>$28<small></small></span>
-                    </h6>
-                    <button class="product-add" title="Add to Cart">
-                      <i class="fas fa-shopping-basket"></i><span>Add</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col">
-                <div class="product-card">
-                  <div class="product-media">
-                    <div class="product-label">
-                      <label class="label-text rate">Popular</label>
-                      <label class="view-label off">-2%</label>
-                    </div>
-                    <button class="product-wish wish">
-                      <i class="fas fa-heart"></i></button
-                    ><a class="product-image" href="product-video.html"
-                      ><img src="@/assets/images/product/07.jpg" alt="product"
-                    /></a>
-                  </div>
-                  <div class="product-content">
-                    <h6 class="product-name">
-                      <a href="product-video.html">Products Name</a>
-                    </h6>
-                    <h6 class="product-price">
-                      <del>$34</del><span>$28<small></small></span>
-                    </h6>
-                    <button class="product-add" title="Add to Cart">
-                      <i class="fas fa-shopping-basket"></i><span>Add</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col">
-                <div class="product-card">
-                  <div class="product-media">
-                    <div class="product-label">
-                      <label class="label-text rate">Popular</label>
-                      <label class="view-label off">-2%</label>
-                    </div>
-                    <button class="product-wish wish">
-                      <i class="fas fa-heart"></i></button
-                    ><a class="product-image" href="product-video.html"
-                      ><img src="@/assets/images/product/03.jpg" alt="product"
-                    /></a>
-                  </div>
-                  <div class="product-content">
-                    <h6 class="product-name">
-                      <a href="product-video.html">Products Name</a>
-                    </h6>
-                    <h6 class="product-price">
-                      <del>$34</del><span>$28<small></small></span>
-                    </h6>
-                    <button class="product-add" title="Add to Cart">
-                      <i class="fas fa-shopping-basket"></i><span>Add</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col">
-                <div class="product-card">
-                  <div class="product-media">
-                    <div class="product-label">
-                      <label class="label-text rate">Popular</label>
-                      <label class="view-label off">-2%</label>
-                    </div>
-                    <button class="product-wish wish">
-                      <i class="fas fa-heart"></i></button
-                    ><a class="product-image" href="product-video.html"
-                      ><img src="@/assets/images/product/04.jpg" alt="product"
-                    /></a>
-                  </div>
-                  <div class="product-content">
-                    <h6 class="product-name">
-                      <a href="product-video.html">Products Name</a>
-                    </h6>
-                    <h6 class="product-price">
-                      <del>$34</del><span>$28<small></small></span>
-                    </h6>
-                    <button class="product-add" title="Add to Cart">
-                      <i class="fas fa-shopping-basket"></i><span>Add</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col">
-                <div class="product-card">
-                  <div class="product-media">
-                    <div class="product-label">
-                      <label class="label-text rate">Popular</label>
-                      <label class="view-label off">-2%</label>
-                    </div>
-                    <button class="product-wish wish">
-                      <i class="fas fa-heart"></i></button
-                    ><a class="product-image" href="product-video.html"
-                      ><img src="@/assets/images/product/02.jpg" alt="product"
-                    /></a>
-                  </div>
-                  <div class="product-content">
-                    <h6 class="product-name">
-                      <a href="product-video.html">Products Name</a>
-                    </h6>
-                    <h6 class="product-price">
-                      <del>$34</del><span>$28<small></small></span>
-                    </h6>
-                    <button class="product-add" title="Add to Cart">
-                      <i class="fas fa-shopping-basket"></i><span>Add</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="product-card">
-                  <div class="product-media">
-                    <div class="product-label">
-                      <label class="label-text rate">Popular</label>
-                      <label class="view-label off">-2%</label>
-                    </div>
-                    <button class="product-wish wish">
-                      <i class="fas fa-heart"></i></button
-                    ><a class="product-image" href="product-video.html"
-                      ><img src="@/assets/images/product/01.jpg" alt="product"
-                    /></a>
-                  </div>
-                  <div class="product-content">
-                    <h6 class="product-name">
-                      <a href="product-video.html">Products Name</a>
-                    </h6>
-                    <h6 class="product-price">
-                      <del>$34</del><span>$28<small></small></span>
-                    </h6>
-                    <button class="product-add" title="Add to Cart">
-                      <i class="fas fa-shopping-basket"></i><span>Add</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col">
-                <div class="product-card">
-                  <div class="product-media">
-                    <div class="product-label">
-                      <label class="label-text rate">Popular</label>
-                      <label class="view-label off">-2%</label>
-                    </div>
-                    <button class="product-wish wish">
-                      <i class="fas fa-heart"></i></button
-                    ><a class="product-image" href="product-video.html"
-                      ><img src="@/assets/images/product/05.jpg" alt="product"
-                    /></a>
-                  </div>
-                  <div class="product-content">
-                    <h6 class="product-name">
-                      <a href="product-video.html">Products Name</a>
-                    </h6>
-                    <h6 class="product-price">
-                      <del>$34</del><span>$28<small></small></span>
-                    </h6>
-                    <button class="product-add" title="Add to Cart">
-                      <i class="fas fa-shopping-basket"></i><span>Add</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
             </div>
             <div class="row">
               <div class="col-lg-12">

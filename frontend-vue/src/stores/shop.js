@@ -24,3 +24,4 @@ export const shopStore = defineStore ("shop-page", {
     }
   }
 })
+
