@@ -10,6 +10,7 @@ import { Login, Register } from "@/views/auth";
 import { MyProfile, MyOrderList, MyWishList, Checkout } from "@/views/user";
 import SingleProduct from "@/components/home/SingleProduct.vue";
 import HomePage from "../views/pages/home/HomePage.vue";
+import Invoice from "../views/user/Invoice.vue";
 
 
 const routes = [
@@ -56,6 +57,12 @@ const routes = [
     path: "/user/checkout",
     name: "user.checkout",
     component: Checkout,
+    meta: { title: " Checkout" },
+  },
+  {
+    path: "/user/invoice",
+    name: "user.invoice",
+    component: Invoice,
     meta: { title: " Checkout" },
   },
   {

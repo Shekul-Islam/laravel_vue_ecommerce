@@ -20,7 +20,6 @@ onMounted(()=> {
 
 <template>
   <div>
-    {{ category }}
         <!--=====================================
                     BANNER PART START
         =======================================-->
@@ -175,26 +174,21 @@ onMounted(()=> {
                         </div>
                         <div class="blog-widget">
                             <h3 class="blog-widget-title">top categories</h3>
+
                             <ul class="blog-widget-category" v-for="(cate, index) in category?.categoryPageData?.data" :key="index">
-                                <li><a href="#">{{cate.name}}<span>22</span></a></li>
-                               
+                                <li><a href="#">{{cate.name}}<span>({{cate.products_count}})</span></a></li>
                             </ul>
+
                         </div>
+
                         <div class="blog-widget">
                             <h3 class="blog-widget-title">popular tags</h3>
-                            <ul class="blog-widget-tag">
-                                <li><a href="#">farming</a></li>
-                                <li><a href="#">organic</a></li>
-                                <li><a href="#">food</a></li>
-                                <li><a href="#">healthy</a></li>
-                                <li><a href="#">agriculture</a></li>
-                                <li><a href="#">vegetables</a></li>
-                                <li><a href="#">grocery</a></li>
-                                <li><a href="#">vegan</a></li>
-                                <li><a href="#">life</a></li>
-                                <li><a href="#">enjoy</a></li>
+                            <ul class="blog-widget-tag" v-for="(tag, T) in category?.categoryPageData?.data " :key="T">
+                                <li><a href="#">{{tag.slug}}</a></li>
+                                
                             </ul>
                         </div>
+
                         <div class="blog-widget">
                             <h3 class="blog-widget-title">follow us</h3>
                             <ul class="blog-widget-social">

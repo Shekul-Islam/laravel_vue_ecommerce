@@ -15,6 +15,9 @@ export const categoryStore = defineStore ("category-item", {
         const res = await axiosInstance.get('/categories');
         if (res?.data?.success){
           this.categoryPageData = res?.data?.result
+
+          console.log(this.categoryPageData);
+          
           
          
         }

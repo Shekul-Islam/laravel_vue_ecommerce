@@ -1,19 +1,57 @@
 <script setup>
+// All Import File  Code Is Here......................................................................................................
+import { ref } from "vue";
+import { storeToRefs } from "pinia";
+import { useCart, useCommonIsToggleFunctionality } from "@/stores";
+// All Variable  Code Is Here.....................................................................................................
+const cart = useCart();
+const { cartItemCount, cartItem, totalPrice } = storeToRefs(cart);
+// const commonIsToggleFunctionality = useCommonIsToggleFunctionality();
+// const { cartSideBar } = storeToRefs(commonIsToggleFunctionality);
+
+
 const cartClose = () => {
   $("body").css("overflow", "inherit"),
     $(".cart-sidebar").removeClass("active"),
     $(".backdrop").fadeOut();
 };
 
+// coupon 
+const showCouponForm  = ref(false);
+// API Calling Code Is Here.....................................................................................................
+
+// All Function  Code Is Here.....................................................................................................
+// coupon 
+
+const cartSideBar = ref(false);
+
+const toggleSidebar = () => {
+  cartSideBar.value = !cartSideBar.value;
+};
+
+const toggleCouponForm = () => {
+  showCouponForm.value = !showCouponForm.value;
+}
 
 
+const deleteCart = (index) => {
+  cart.destroy(index);
+};
 
+const cartDecrement = (index) => {
+  cart.decrement(index);
+};
 
-
+const cartIncrement = (index) => {
+  cart.increment(index);
+};
 </script>
 
+
 <template>
-  <div>
+  <div class="backdrop" 
+       :style="{ display: cartSideBar ? 'block' : 'none' }" 
+       @click="toggleSidebar">
     <aside class="cart-sidebar">
       <div class="cart-header">
         <div class="cart-total">

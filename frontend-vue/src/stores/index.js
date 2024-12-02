@@ -8,5 +8,7 @@ export * from "./newProductSection"
 export * from "./shop"
 export * from "./product"
 export * from "./blog"
+export * from "./cart"
+export * from "./commonIsToggleFunctionality"
 
 
