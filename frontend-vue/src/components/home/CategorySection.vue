@@ -9,7 +9,7 @@ const category = categoryStore();
 watch (()=> category.categoryData, ()=> {
 
   console.log(category?.categoryData);
-  
+
 })
 
 onMounted (() => {

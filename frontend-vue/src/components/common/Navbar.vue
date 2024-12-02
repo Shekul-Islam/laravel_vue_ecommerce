@@ -52,7 +52,7 @@ onMounted (() => {
                 </li>
 
                 <li class="navbar-item dropdown-megamenue">
-                  <router-link :to="{name: 'shop'}" class="navbar-link" >Blog</router-link>
+                  <router-link :to="{name: 'blog'}" class="navbar-link" >Blog</router-link>
                 </li>
 
                 <li class="navbar-item dropdown-megamenue">

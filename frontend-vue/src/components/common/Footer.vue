@@ -28,7 +28,7 @@ onMounted(()=> {
               
               <p class="footer-desc">
                {{ footer.findSetting("footer_address") }}
-
+               
               </p>
 
               <ul class="footer-social">

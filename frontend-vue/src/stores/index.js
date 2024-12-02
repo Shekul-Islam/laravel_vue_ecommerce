@@ -7,5 +7,6 @@ export * from "./login"
 export * from "./newProductSection"
 export * from "./shop"
 export * from "./product"
+export * from "./blog"
 
 

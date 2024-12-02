@@ -6,9 +6,7 @@ import { productStore } from '@/stores';
 const shop = shopStore();
 const product = productStore();
 
-// const attributes = shop?.shops?.attributes;
-// const brands = shop?.shops?.brands;
-// const categories = shop?.shops?.categories;
+
 
 const bannerImage = new URL("@/assets/images/single-banner.jpg", import.meta.url).href;
 

@@ -3,6 +3,7 @@ import { useAuth } from "@/stores";
 // import Index from "@/views/pages/home/Index.vue";
 // import HomeLanding from "@/views/pages/home/HomeLanding.vue";
 import Shop from "@/views/pages/shop/Shop.vue";
+import Blog from "@/views/pages/blog/Blog.vue";
 import { SellerPage, SellerList, SellerApply } from "@/views/pages/seller";
 import WishList from "@/views/pages/wishlist/WishList.vue";
 import { Login, Register } from "@/views/auth";
@@ -21,6 +22,11 @@ const routes = [
     name: "shop", 
     component: Shop, 
     meta: { title: "Shop" },
+  },
+  { path: "/blog",
+    name: "blog", 
+    component: Blog, 
+    meta: { title: "blog" },
   },
   {
     path: "/single-product",
