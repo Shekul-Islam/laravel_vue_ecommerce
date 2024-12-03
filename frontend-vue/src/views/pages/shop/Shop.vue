@@ -15,24 +15,24 @@ const isloadings = ref(loadings);
 const quantityInput = ref(1);
 const getAttributeDatas = ref();
 
-const shop = useShop();
+const shop = useShop(); 
 const { products, sideBar, loading } = storeToRefs(shop);
 
-// const searchBrandQuery = ref("");
-// const searchCategoryQuery = ref("");
+const searchBrandQuery = ref("");
+const searchCategoryQuery = ref("");
 
-// const productType = ref("");
-// const selectedBrandIds = ref([]);
-// const selectedCategoryIds = ref([]);
-// const selectedAttributeIds = ref([]);
-// const selectedSubCategoryIds = ref("");
-// const sortingPrice = ref([]);
-// const searchQuery = ref("");
-// const paginateSize = ref("");
+const productType = ref("");
+const selectedBrandIds = ref([]);
+const selectedCategoryIds = ref([]);
+const selectedAttributeIds = ref([]);
+const selectedSubCategoryIds = ref("");
+const sortingPrice = ref([]);
+const searchQuery = ref("");
+const paginateSize = ref("");
 
-// const isloading = ref(loading);
-// const color = "white";
-// const size = "8px";
+const isloading = ref(loading);
+const color = "white";
+const size = "8px";
 
 
 const bannerImage = new URL("@/assets/images/single-banner.jpg", import.meta.url).href;
@@ -111,75 +111,75 @@ const banners = ref('');
 //   notify.Success(`${tProduct.name} Successfully Added Your Cart product`);
 // }
 
-// const searchCategories = computed(() => {
-//   return shop.sideBar.result.categories.filter((category) => {
-//     return category.name
-//       .toLowerCase()
-//       .match(searchCategoryQuery.value.toLocaleLowerCase());
-//   });
-// });
+const searchCategories = computed(() => {
+  return shop.sideBar.result.categories.filter((category) => {
+    return category.name
+      .toLowerCase()
+      .match(searchCategoryQuery.value.toLocaleLowerCase());
+  });
+});
 
-// const searchBrands = computed(() => {
-//   return shop.sideBar.result.brands.filter((brand) => {
-//     return brand.name.toLowerCase().match(searchBrandQuery.value.toLowerCase());
-//   });
-// });
+const searchBrands = computed(() => {
+  return shop.sideBar.result.brands.filter((brand) => {
+    return brand.name.toLowerCase().match(searchBrandQuery.value.toLowerCase());
+  });
+});
 
 
-// const getProducts = () => {
-//   products.value = [];
-//   shop.getData(
-//     productType.value,
-//     selectedBrandIds.value,
-//     selectedCategoryIds.value,
-//     selectedSubCategoryIds.value,
-//     selectedAttributeIds.value,
-//     sortingPrice.value,
-//     searchQuery.value,
-//     paginateSize.value,
-//   );
-// };
+const getProducts = () => {
+  products.value = [];
+  shop.getData(
+    productType.value,
+    selectedBrandIds.value,
+    selectedCategoryIds.value,
+    selectedSubCategoryIds.value,
+    selectedAttributeIds.value,
+    sortingPrice.value,
+    searchQuery.value,
+    paginateSize.value,
+  );
+};
 
-// function clearFilter(data) {
-//   if (data == "brand") {
-//     selectedBrandIds.value = [];
-//   }else if(data == "category") {
-//     selectedCategoryIds.value = [];
-//   } else {
-//     selectedAttributeIds.value = [];
-//   }
+function clearFilter(data) {
+  if (data == "brand") {
+    selectedBrandIds.value = [];
+  }else if(data == "category") {
+    selectedCategoryIds.value = [];
+  } else {
+    selectedAttributeIds.value = [];
+  }
 
-//   getProducts();
-// }
+  getProducts();
+}
 
 // Category wise product showing
 
-// const queryProducts = () => {
-//   selectedCategoryIds.value = [];
-//   selectedBrandIds.value = [];
-//   selectedAttributeIds.value = [];
-//   if (route.query.attribute) {
-//     selectedAttributeIds.value.push(route.query.attribute);
-//   }
-//   if (route.query.category) {
-//     selectedCategoryIds.value.push(route.query.category);
-//   }
-//   if (route.query.subCategory) {
-//     selectedSubCategoryIds.value = route.query.subCategory;
-//   }
-//   if (route.query.brand) {
-//     selectedBrandIds.value.push(route.query.brand);
-//   }
-//   if (route.query.recent) {
-//     productType.value = route.query.recent;
-//   }
-//   if (route.query.top) {
-//     productType.value = route.query.top;
-//   }
-//   if (route.query.feature) {
-//     productType.value = route.query.feature;
-//   }
-// };
+const queryProducts = () => {
+  selectedCategoryIds.value = [];
+  selectedBrandIds.value = [];
+  selectedAttributeIds.value = [];
+  if (route.query.attribute) {
+    selectedAttributeIds.value.push(route.query.attribute);
+  }
+  if (route.query.category) {
+    selectedCategoryIds.value.push(route.query.category);
+  }
+  if (route.query.subCategory) {
+    selectedSubCategoryIds.value = route.query.subCategory;
+  }
+  if (route.query.brand) {
+    selectedBrandIds.value.push(route.query.brand);
+  }
+  if (route.query.recent) {
+    productType.value = route.query.recent;
+  }
+  if (route.query.top) {
+    productType.value = route.query.top;
+  }
+  if (route.query.feature) {
+    productType.value = route.query.feature;
+  }
+};
 
 
 watch(
@@ -194,6 +194,7 @@ watch(
 function closeCategorySideBar() {
         $('.category-sidebar').removeClass('active');
         $('.backdrop').fadeOut();
+
 }
 
 // attribute data 
@@ -205,10 +206,10 @@ const getAttributeData = async() => {
 onMounted(() => {
   closeCategorySideBar()
   getAttributeData()
-  // queryProducts();
+  queryProducts();
   shop.getData();
   shop.sideBarData();
-  // getProducts();
+  getProducts();
   $(document).ready(function () {
     $(".venobox").venobox();
   });
@@ -220,8 +221,6 @@ onMounted(() => {
 <template>
   
   <div>
-    <!-- {{ products?.data }}<br> -->
-    {{ shop }}
     <section class="inner-section single-banner" :style="{ background: 'url(' + bannerImage + ') center center no-repeat', }">
       <div class="container">
         <h2>Shop Page</h2>
@@ -237,8 +236,8 @@ onMounted(() => {
               <h6 class="shop-widget-title">Filter by Price</h6>
               <form>
                 <div class="shop-widget-group" v-if="shop?.sideBar">
-                  <input type="text" :placeholder="`Min - ${shop?.sideBar?.min_sell_price}`">
-                  <input type="text" :placeholder="`Max - ${shop?.sideBar?.max_sell_price }`"/>
+                  <input type="text" v-model="sortingPrice[0]" :placeholder="`Min - ${shop?.sideBar?.min_sell_price}`">
+                  <input type="text" v-model="sortingPrice[1]" :placeholder="`Max - ${shop?.sideBar?.max_sell_price }`"/>
                 </div>
 
                 <button class="shop-widget-btn" @click.prevent="getProducts">
@@ -251,23 +250,22 @@ onMounted(() => {
               <h6 class="shop-widget-title">Filter by Brand</h6>
               <form>
                 <input class="shop-widget-search" type="text" placeholder="Search..."/>
-                <ul class="shop-widget-list shop-widget-scroll">
-                
-                  <li v-for=" (getAttributeData, index) in shop?.sideBar?.brands" :key="index">
-                    
-                    <div class="shop-widget-content">
-                      <input type="checkbox" id="brand1"/><label for="brand1">{{getAttributeData?.name}}</label>
-                    </div>
-                    <span class="shop-widget-number">({{getAttributeData?.products_count}})</span>
-                  </li>
-                </ul>
+
+                  <ul class="shop-widget-list shop-widget-scroll" >
+                    <li v-for=" (brand, index) in searchBrands" :key="index">
+                      <div class="shop-widget-content">
+                        <input type="checkbox" id="brand1"/><label for="brand1">{{brand?.name}}</label>
+                      </div>
+                      <span class="shop-widget-number">({{brand?.products_count}})</span>
+                    </li>
+                  </ul>
 
                 <button class="shop-widget-btn">
                   <i class="far fa-trash-alt"></i><span>clear filter</span>
                 </button>
-                
               </form>
             </div>
+
 
             <div class="shop-widget">
               <h6 class="shop-widget-title">Filter by Category</h6>
@@ -275,7 +273,7 @@ onMounted(() => {
               <form>
                 <input class="shop-widget-search" type="text" placeholder="Search..."/>
                 <ul class="shop-widget-list shop-widget-scroll">
-                  <li v-for=" (category, i) in shop?.shops?.categories" :key="i">
+                  <li v-for="(category, catIndex) in searchCategories" :key="catIndex">
                     <div class="shop-widget-content">
                       <input type="checkbox" id="cate1"/><label for="cate1">{{category?.name}}</label>
                     </div>
