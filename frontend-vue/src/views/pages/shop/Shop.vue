@@ -48,14 +48,14 @@ const banners = ref('');
 
 // API Calling Code Is Here.....................................................................................................
 
-// function onEnter(el, done) {
-//   gsap.to(el, {
-//     opacity: 1,
-//     height: "1.6em",
-//     delay: el.dataset.index * 0.15,
-//     onComplete: done,
-//   });
-// }
+function onEnter(el, done) {
+  gsap.to(el, {
+    opacity: 1,
+    height: "1.6em",
+    delay: el.dataset.index * 0.15,
+    onComplete: done,
+  });
+}
 
 watch(
   () => [...searchQuery.value],
@@ -215,11 +215,9 @@ onMounted(() => {
   });
 });
 
-
 </script>
 
 <template>
-  
   <div>
     <section class="inner-section single-banner" :style="{ background: 'url(' + bannerImage + ') center center no-repeat', }">
       <div class="container">
@@ -252,7 +250,7 @@ onMounted(() => {
                 <input class="shop-widget-search" type="text" placeholder="Search..."/>
 
                   <ul class="shop-widget-list shop-widget-scroll" >
-                    <li v-for=" (brand, index) in searchBrands" :key="index">
+                    <li v-for=" (brand, brandIndex) in searchBrands" :key="brandIndex">
                       <div class="shop-widget-content">
                         <input type="checkbox" id="brand1"/><label for="brand1">{{brand?.name}}</label>
                       </div>
@@ -269,17 +267,16 @@ onMounted(() => {
 
             <div class="shop-widget">
               <h6 class="shop-widget-title">Filter by Category</h6>
-
               <form>
                 <input class="shop-widget-search" type="text" placeholder="Search..."/>
                 <ul class="shop-widget-list shop-widget-scroll">
-                  <li v-for="(category, catIndex) in searchCategories" :key="catIndex">
+                  <li v-for="(category, index) in searchCategories" :key="index" >
                     <div class="shop-widget-content">
-                      <input type="checkbox" id="cate1"/><label for="cate1">{{category?.name}}</label>
+                      <input type="checkbox" :id="`cate${index}`" :value="category.id" @change="getProducts"
+                      v-model="selectedCategoryIds"/><label :for="`cate${index}`">{{category?.name}}</label>
                     </div>
                     <span class="shop-widget-number">({{category?.products_count}})</span>
                   </li>
-
                 </ul>
 
                 <button class="shop-widget-btn">
@@ -339,9 +336,15 @@ onMounted(() => {
                     <h6 class="product-name">
                       <a href="product-video.html">{{product?.name}}</a>
                     </h6>
+                    <h6 class="product-category">
+                      <a href="">{{ product?.category?.name }}</a>
+                    </h6>
+                    <h6 class="product-brand">
+                      <a href="">{{ product?.brand?.name }}</a>
+                    </h6>
                     <h6 class="product-price">
 
-                      <span v-if="product?.variations?.data?.length > 0">
+                      <span v-if="product?.variations?.data?.length>0">
                         <span>{{ product?.variation_price_range?.min_price }} tk <span v-if="product?.variation_price_range?.max_sell_price != product?.variation_price_range?.min_sell_price"> - {{ product?.max_sell_price }} tk</span></span>
                       </span>
 
@@ -351,14 +354,14 @@ onMounted(() => {
                       </span>
                       
                     </h6>
-                    <button class="product-add" title="Add to Cart">
-                      <i class="fas fa-shopping-basket"></i><span>Add</span>
+                    <button class="product-add" title="View Details">
+                      <i class="fas fa-shopping-basket"></i><span>Product Preview</span>
                     </button>
                   </div>
                 </div>
               </div>
-
             </div>
+
             <div class="row">
               <div class="col-lg-12">
                 <div class="bottom-paginate">

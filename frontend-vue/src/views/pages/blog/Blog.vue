@@ -1,21 +1,79 @@
 <script setup>
-import { onMounted } from "vue";
-import {useBlogStore} from "@/stores";
-import {categoryStore} from "@/stores";
+import { ref, onMounted, computed } from "vue";
+import { useBlog, useCategory } from '@/stores'
+import { storeToRefs } from 'pinia';
+
+const blog = useBlog();
+const category = useCategory();
+const {categories} = storeToRefs(category);
+// getBlogPost data start
+const blogPostData = ref()
+// getBlogPost data end
+// tag data start
+const tagData = ref()
+const tagId = ref()
+// tag data end
+
+//searchingn in blog post start
+const searchBlogPost = ref()
+//searchingn in blog post end
+
+// getBlogPost data start
+const getBlogPost = async (tagID = '', BlogPost) => {
+    const res = await blog.getBlogPost(tagID, BlogPost); 
+    if (res.success) {
+        blogPostData.value = res.result.data
+        tagId.value = tagID
+    }
+}
 
 
-const data = useBlogStore();
-const category = categoryStore();
+
+const searchQuery = async() => {
+    getBlogPost('', searchBlogPost.value)
+}
+
+
+
+// Define a computed property to format the date
+const formattedDate = (createdAtString) => {
+  const createdAtDate = new Date(createdAtString);
+  return createdAtDate.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "2-digit"
+  });
+};
+// getBlogPost data end
+
+
+// tag data start
+const getTags = async () => {
+    const res = await blog.getTag(); 
+    if (res.success) {
+        tagData.value = res
+    }
+}
+// tag data end
+
+
+// watch(
+//   () => {searchBlogPost.value},
+//   async (newValue, oldValue) => {
+//     if (newValue.length >= 3 || oldValue.length >= 3) {
+//         console.log("sdfsdaf");
+//       getProducts();
+//     }
+//   }
+// );
+
 const bannerImage = new URL("@/assets/images/single-banner.jpg", import.meta.url).href;
 
-onMounted(()=> {
-  data?.blogData();
-})
-
-onMounted(()=> {
-  category?.categoryData();
-})
-
+onMounted(() => {
+  getTags();
+  getBlogPost();
+  category.getCategories()
+});
 </script>
 
 <template>
@@ -72,11 +130,11 @@ onMounted(()=> {
                                 </div>
                             </div>
 
-                            <div class="col-lg-12" v-for="(blog, i) in data?.blogs?.data" :key="i">
+                            <div class="col-lg-12" v-for="(blogPost, index) in blogPostData" :key="index">
                                 <div class="blog-card">
                                     <div class="blog-media">
                                         <a class="blog-img" href="#">
-                                            <img :src="blog.image" alt="blog">
+                                            <img :src="blogPost.image" alt="blog">
                                         </a>
                                     </div>
                                     <div class="blog-content">
@@ -136,7 +194,7 @@ onMounted(()=> {
                         <div class="blog-widget">
                             <h3 class="blog-widget-title">Find blogs</h3>
                             <form class="blog-widget-form">
-                                <input type="text" placeholder="Search blogs">
+                                <input type="text"  v-model="searchBlogPost" @input="searchQuery" placeholder="Search blogs">
                                 <button class="icofont-search-1"></button>
                             </form>
                         </div>
@@ -175,7 +233,7 @@ onMounted(()=> {
                         <div class="blog-widget">
                             <h3 class="blog-widget-title">top categories</h3>
 
-                            <ul class="blog-widget-category" v-for="(cate, index) in category?.categoryPageData?.data" :key="index">
+                            <ul class="blog-widget-category" v-for="(cate, i) in category?.categoryPageData?.data" :key="i">
                                 <li><a href="#">{{cate.name}}<span>({{cate.products_count}})</span></a></li>
                             </ul>
 
@@ -183,9 +241,8 @@ onMounted(()=> {
 
                         <div class="blog-widget">
                             <h3 class="blog-widget-title">popular tags</h3>
-                            <ul class="blog-widget-tag" v-for="(tag, T) in category?.categoryPageData?.data " :key="T">
-                                <li><a href="#">{{tag.slug}}</a></li>
-                                
+                            <ul class="blog-widget-tag" >
+                                <li v-for="(tag, tagIndex) in tagData?.result" :key="tagIndex"><a href="#" @click.prevent="getBlogPost(tag.id)" :class="{ 'selectedSizeColor' : tagId === tag.id }" >{{ tag.name }}</a></li> 
                             </ul>
                         </div>
 

@@ -21,7 +21,7 @@ const route = useRoute();
 </script>
 <template>
   <div>
-    <div class="backdrop"></div>
+    
   <a class="backtop fas fa-arrow-up" href="#"></a>
    
 

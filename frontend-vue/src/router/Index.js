@@ -11,6 +11,7 @@ import { MyProfile, MyOrderList, MyWishList, Checkout } from "@/views/user";
 import SingleProduct from "@/components/home/SingleProduct.vue";
 import HomePage from "../views/pages/home/HomePage.vue";
 import Invoice from "../views/user/Invoice.vue";
+import ProductDetails from "@/views/pages/product-detail/ProductDetails.vue";
 
 
 const routes = [
@@ -102,6 +103,12 @@ const routes = [
     meta: { title: "Register", guest: true },
   },
 
+  {
+    path: "/product-details/:slug?",
+    name: "productDetails",
+    component: () => import('@/views/pages/product-detail/ProductDetails.vue'),
+    meta: { title: " Product Details" },
+  },
 
   // {
   //   path: "/shekul",

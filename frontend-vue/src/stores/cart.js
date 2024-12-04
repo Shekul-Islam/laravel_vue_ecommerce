@@ -37,40 +37,40 @@ export const useCart = defineStore("cart", {
   actions: {
     // API Calling Code Is Here.....................................................................................................
 
-    // async addToCart(product) {
-    //   this.campaignId = product.campaign_id;
-    //   this.loading = product.product_id;
-    //   let item = product;
-    //   console.log(item);
+    async addToCart(product) {
+      this.campaignId = product.campaign_id;
+      this.loading = product.product_id;
+      let item = product;
+      console.log(item);
       
-    //   if (this.cartItem.length > 0) {
+      if (this.cartItem.length > 0) {
         
-    //     // if (item.size_id) {
-    //     //   let boolean = this.cartItem.some((i) => i.product_id === item.product_id && i.size_id === item.size_id );
-    //     //   if (boolean) {
-    //     //     let index = this.cartItem.findIndex((i) => i.product_id === item.product_id && i.size_id === item.size_id);
-    //     //     this.cartItem[index]["quantity"] += item.quantity;
-    //     //   } else {
-    //     //     this.cartItem.push(item);
-    //     //   }
-    //     // } else {
-    //     //   let boolean = this.cartItem.some((i) => i.product_id === item.product_id);
-    //     //   if (boolean) {
-    //     //     let index = this.cartItem.findIndex((i) => i.product_id === item.product_id);
-    //     //     this.cartItem[index]["quantity"] += item.quantity;
-    //     //   } else {
-    //     //     this.cartItem.push(item);
-    //     //   }
-    //     // }
-    //   } else {
-    //     this.cartItem.push(item);
-    //   }
+        if (item.size_id) {
+          let boolean = this.cartItem.some((i) => i.product_id === item.product_id && i.size_id === item.size_id );
+          if (boolean) {
+            let index = this.cartItem.findIndex((i) => i.product_id === item.product_id && i.size_id === item.size_id);
+            this.cartItem[index]["quantity"] += item.quantity;
+          } else {
+            this.cartItem.push(item);
+          }
+        } else {
+          let boolean = this.cartItem.some((i) => i.product_id === item.product_id);
+          if (boolean) {
+            let index = this.cartItem.findIndex((i) => i.product_id === item.product_id);
+            this.cartItem[index]["quantity"] += item.quantity;
+          } else {
+            this.cartItem.push(item);
+          }
+        }
+      } else {
+        this.cartItem.push(item);
+      }
 
-    //   setTimeout(() => {
-    //     this.loading = false;
-    //   }, 1000);
+      setTimeout(() => {
+        this.loading = false;
+      }, 1000);
 
-    // },
+    },
 
     async addToCart(product) {
         this.loading = product.product_id;
@@ -104,12 +104,7 @@ export const useCart = defineStore("cart", {
         }, 1000);
 
 
-        // let index = this.cartItem.findIndex((i) => 
-        //   console.log(product.attribute_value_id_1)
-          
-        // );
-
-        // console.log(index);
+        console.log(index);
         
 
 

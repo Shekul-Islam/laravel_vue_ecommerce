@@ -2,15 +2,15 @@ import { defineStore } from "pinia";
 import axiosInstance from "@/services/axiosService";
 
 
-export const categoryStore = defineStore ("category-item", {
+export const useCategory = defineStore ("category-item", {
   state: ()=> ({
     categoryPageData: {},
   }),
 
   persist: true,
-
+  
   actions: {
-    async categoryData (){
+    async getCategories (){
       try {
         const res = await axiosInstance.get('/categories');
         if (res?.data?.success){

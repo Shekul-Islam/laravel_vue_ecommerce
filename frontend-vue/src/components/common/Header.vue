@@ -114,10 +114,9 @@ function cartShow() {
                   >
                     Logout
                   
-                    <span
-                      v-show="loading"
-                      class="spinner-border spinner-border-sm mr-1"
-                      ></span>
+                    <span v-show="loading"
+                      class="spinner-border spinner-border-sm mr-1">
+                    </span>
 
                   </button>
                 </li>
@@ -127,15 +126,16 @@ function cartShow() {
             <router-link
               :to="{ name: 'wishlist' }"
               class="header-widget"
-              title="Wishlist"
-              ><i class="fas fa-heart"></i><sup>0</sup></router-link
-            ><button
+              title="Wishlist">
+              <i class="fas fa-heart"></i><sup>0</sup>
+            </router-link>
+
+            <button
               class="header-widget header-cart"
               @click="cartShow"
-              title="Cartlist"
-            >
-              <i class="fas fa-shopping-basket"></i><sup>9+</sup
-              ><span>total price<small>$345.00</small></span>
+              title="Cartlist">
+              <i class="fas fa-shopping-basket"></i><sup>9+</sup>
+              <span>total price<small>$345.00</small></span>
             </button>
           </div>
         </div>

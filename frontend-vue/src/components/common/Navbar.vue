@@ -2,14 +2,14 @@
 
 
 import { onMounted, watch } from 'vue';
-import { categoryStore } from '@/stores';
+import { useCategory } from '@/stores';
 
-const category = categoryStore();
+const category = useCategory();
 
 
 
 onMounted (() => {
-  category.categoryData ();
+  category.getCategories ();
 })
 
 

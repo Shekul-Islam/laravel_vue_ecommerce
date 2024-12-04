@@ -59,7 +59,7 @@ onMounted(() => {
                 </h6>
                 
                 <button class="product-add" title="Add to Cart">
-                  <i class="fas fa-shopping-basket"></i><span>Add</span>
+                  <router-link :to="{name: ('/product-details/:slug?')}" class="fas fa-shopping-basket"></router-link><span>Add</span>
                 </button>
               </div>
             </div>
