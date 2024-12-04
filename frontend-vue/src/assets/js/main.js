@@ -38,7 +38,7 @@ $(window).on("scroll", function () {
           $(".backdrop").fadeOut();
       });
   }),
-  $(".header-cart, .cart-btn").on("click", function () {
+  $(".megamenue, .cart-btn").on("click", function () {
     $("body").css("overflow", "hidden"),
       $(".cart-sidebar").addClass("active"),
       $(".cart-close").on("click", function () {
@@ -47,7 +47,7 @@ $(window).on("scroll", function () {
           $(".backdrop").fadeOut();
       });
   }),
-  $(".header-user, .header-cart, .header-cate, .cart-btn, .cate-btn").on(
+  $(".header-user, .megamenue, .header-cate, .cart-btn, .cate-btn").on(
     "click",
     function () {
       $(".backdrop").fadeIn(),

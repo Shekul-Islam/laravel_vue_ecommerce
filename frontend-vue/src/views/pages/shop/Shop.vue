@@ -57,14 +57,14 @@ const banners = ref('');
 //   });
 // }
 
-// watch(
-//   () => [...searchQuery.value],
-//   async (newValue, oldValue) => {
-//     if (newValue.length >= 3 || oldValue.length >= 3) {
-//       getProducts();
-//     }
-//   }
-// );
+watch(
+  () => [...searchQuery.value],
+  async (newValue, oldValue) => {
+    if (newValue.length >= 3 || oldValue.length >= 3) {
+      getProducts();
+    }
+  }
+);
 
 // watch(()=> {
 //   console.log(products);
@@ -112,7 +112,7 @@ const banners = ref('');
 // }
 
 const searchCategories = computed(() => {
-  return shop.sideBar.result.categories.filter((category) => {
+  return shop?.sideBar?.result?.categories?.filter((category) => {
     return category.name
       .toLowerCase()
       .match(searchCategoryQuery.value.toLocaleLowerCase());
@@ -120,8 +120,8 @@ const searchCategories = computed(() => {
 });
 
 const searchBrands = computed(() => {
-  return shop.sideBar.result.brands.filter((brand) => {
-    return brand.name.toLowerCase().match(searchBrandQuery.value.toLowerCase());
+  return shop?.sideBar?.result?.brands?.filter((brand) => {
+  return brand.name.toLowerCase().match(searchBrandQuery.value.toLowerCase());
   });
 });
 
@@ -295,7 +295,7 @@ onMounted(() => {
                 <div class="top-filter">
                   <div class="filter-show">
                     <label class="filter-label">Show :</label>
-                    <select class="form-select filter-select">
+                    <select class="form-select filter-select" >
                       <option value="1">12</option>
                       <option value="2">24</option>
                       <option value="3">36</option>
@@ -303,12 +303,12 @@ onMounted(() => {
                   </div>
 
                   <div class="filter-short">
-                    <label class="filter-label">Short by :</label
-                    ><select class="form-select filter-select">
-                      <option selected>default</option>
-                      <option value="3">trending</option>
-                      <option value="1">featured</option>
-                      <option value="2">recommend</option>
+                    <label class="filter-label">Short by :</label>
+                    <select class="form-select filter-select" @change="getProducts" v-model="productType">
+                      <option value="" selected>default</option>
+                      <option value="top-product">Top Product</option>
+                      <option value="feature-product">Feature Product</option>
+                      <option value="recent-product">Recent Product</option>
                     </select>
                   </div>
                 </div>

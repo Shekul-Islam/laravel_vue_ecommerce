@@ -3648,6 +3648,7 @@ tbody tr td:last-child {
   line-height: 20px;
   text-transform: uppercase;
 }
+
 .header-form {
   width: 100%;
   margin: 0px 50px;
@@ -3757,6 +3758,8 @@ tbody tr td:last-child {
   .header-logo {
     display: none;
   }
+
+
   .header-form {
     display: none;
     margin: 10px 0px 0px;
