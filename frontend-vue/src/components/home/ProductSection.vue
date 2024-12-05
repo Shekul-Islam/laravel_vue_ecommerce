@@ -10,7 +10,9 @@ onMounted(() => {
 </script>
 
 <template>
+  
   <div>
+    
     <section class="section recent-sold-items" v-for="(section, index) in soldStore?.soldItemData?.data" :key="index">
       <div class="container">
         <div class="row">

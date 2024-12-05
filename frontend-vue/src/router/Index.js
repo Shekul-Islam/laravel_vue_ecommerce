@@ -8,7 +8,6 @@ import { SellerPage, SellerList, SellerApply } from "@/views/pages/seller";
 import WishList from "@/views/pages/wishlist/WishList.vue";
 import { Login, Register } from "@/views/auth";
 import { MyProfile, MyOrderList, MyWishList, Checkout } from "@/views/user";
-import SingleProduct from "@/components/home/SingleProduct.vue";
 import HomePage from "../views/pages/home/HomePage.vue";
 import Invoice from "../views/user/Invoice.vue";
 import ProductDetails from "@/views/pages/product-detail/ProductDetails.vue";
@@ -21,8 +20,8 @@ const routes = [
     meta: { title: "Home" },
   },
   { path: "/shop",
-    name: "shop", 
-    component: Shop, 
+    name: "shop",
+    component: Shop,
     meta: { title: "Shop" },
   },
   { path: "/blog",
@@ -30,12 +29,12 @@ const routes = [
     component: Blog, 
     meta: { title: "blog" },
   },
-  {
-    path: "/single-product",
-    name: "single-product",
-    component: SingleProduct,
-    meta: { title: "Single Product" },
-  },
+  // {
+  //   path: "/single-product",
+  //   name: "single-product",
+  //   component: SingleProduct,
+  //   meta: { title: "Single Product" },
+  // },
   {
     path: "/user/profile",
     name: "user.profile",

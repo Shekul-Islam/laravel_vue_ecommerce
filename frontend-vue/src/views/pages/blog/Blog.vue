@@ -25,6 +25,7 @@ const getBlogPost = async (tagID = '', BlogPost) => {
         blogPostData.value = res.result.data
         tagId.value = tagID
     }
+    
 }
 
 
@@ -77,6 +78,7 @@ onMounted(() => {
 </script>
 
 <template>
+    
   <div>
         <!--=====================================
                     BANNER PART START
@@ -109,9 +111,9 @@ onMounted(() => {
                                     <div class="filter-show">
                                         <label class="filter-label">Show :</label>
                                         <select class="form-select filter-select">
-                                            <option value="1">12</option>
-                                            <option value="2">24</option>
-                                            <option value="3">36</option>
+                                            <option value="12">12</option>
+                                            <option value="24">24</option>
+                                            <option value="36">36</option>
                                         </select>
                                     </div>
                                     <div class="filter-short">
@@ -131,6 +133,8 @@ onMounted(() => {
                             </div>
 
                             <div class="col-lg-12" v-for="(blogPost, index) in blogPostData" :key="index">
+                                <div>
+                                </div>
                                 <div class="blog-card">
                                     <div class="blog-media">
                                         <a class="blog-img" href="#">
@@ -141,11 +145,11 @@ onMounted(() => {
                                         <ul class="blog-meta">
                                             <li>
                                                 <i class="icofont-ui-calendar"></i>
-                                                <span>february 02, 2021</span>
+                                                <span>{{blogPost?.tags[1]?.pivot?.created_at}}</span>
                                             </li>
                                             <li>
                                                 <i class="icofont-user-alt-3"></i>
-                                                <span>Miron mahmud</span>
+                                                <span>{{ blogPost?.created_by?.username }}</span>
                                             </li>
                                             <li>
                                                 <i class="icofont-speech-comments"></i>
@@ -198,6 +202,7 @@ onMounted(() => {
                                 <button class="icofont-search-1"></button>
                             </form>
                         </div>
+
                         <div class="blog-widget">
                             <h3 class="blog-widget-title">popular feeds</h3>
                             <ul class="blog-widget-feed">
@@ -230,10 +235,11 @@ onMounted(() => {
                                 </li>
                             </ul>
                         </div>
+                        
                         <div class="blog-widget">
                             <h3 class="blog-widget-title">top categories</h3>
 
-                            <ul class="blog-widget-category" v-for="(cate, i) in category?.categoryPageData?.data" :key="i">
+                            <ul class="blog-widget-category" v-for="(cate, cateIndex) in category?.categoryPageData?.data" :key="cateIndex">
                                 <li><a href="#">{{cate.name}}<span>({{cate.products_count}})</span></a></li>
                             </ul>
 
@@ -241,8 +247,10 @@ onMounted(() => {
 
                         <div class="blog-widget">
                             <h3 class="blog-widget-title">popular tags</h3>
-                            <ul class="blog-widget-tag" >
-                                <li v-for="(tag, tagIndex) in tagData?.result" :key="tagIndex"><a href="#" @click.prevent="getBlogPost(tag.id)" :class="{ 'selectedSizeColor' : tagId === tag.id }" >{{ tag.name }}</a></li> 
+                            <ul class="blog-widget-tag" v-for="(tag, tagIndex) in tagData?.result?.data" :key="tagIndex" >
+                                <li ><a href="#" @click.prevent="getBlogPost(tag.id)" :class="{ 'selectedSizeColor' : tagId === tag.id }" >
+                                    {{ tag.name }}</a>
+                                </li> 
                             </ul>
                         </div>
 
@@ -257,7 +265,7 @@ onMounted(() => {
                             </ul>
                         </div>
                         <div class="blog-widget">
-                            <a href="#"><img class="img-fluid" src="" alt="promo"></a>
+                            <a href="#"><img class="img-fluid" :src="tag?.image" alt="tag?.image"></a>
                         </div>
                     </div>
                 </div>

@@ -41,108 +41,141 @@ const cartIncrement = (index) => {
   <div>
     <div class="backdrop" :style="{ display: cartSideBar ? 'block' : 'none' }" @click="commonIsToggleFunctionality.isCartSideBartOpenOrClose"></div>
     
-    <aside :class="['cart-sidebar', { active: cartSideBar }]">
-      <div class="cart-header">
-        <div class="cart-total" v-if="cartItemCount !== 0">
-          <i class="fas fa-shopping-basket"></i>
-          <span>total item ({{ cartItemCount }})</span>
-        </div>
-        <div class="cart-total" v-else>
-          <i class="fas fa-shopping-basket"></i>
-          <span>আপনার কার্টে কিছু নেই</span>
-        </div>
-        <button class="cart-close" @click="commonIsToggleFunctionality.isCartSideBartOpenOrClose"><i class="fas fa-times"></i></button>
-      </div>
-      <Transition name="fade" mode="out-in">
-        <TransitionGroup
-          name="list"
-          tag="ul"
-          class="cart-list"
-          v-if="cartItemCount !== 0"
-        >
-          <li
-            class="cart-item"
-            v-for="(cart, index) in cartItem"
-            :key="cart.product_id"
-          >
-            <div class="cart-media">
-              <a href="#"> <img :src="cart.image" alt="product" /></a>
-              <button class="cart-delete" @click.prevent="deleteCart(index)">
-                <i class="far fa-trash-alt"></i>
-              </button>
-            </div>
-            <div class="cart-info-group">
-              <div class="cart-info">
-                <h6>
-                  <a href="product-single.html">{{ cart.name }}</a>
-                </h6>
-                <p>
-                  Unit Price -
-                  <!-- {{ $filters.currencySymbol(cart.offer_price) }} -->
-                  {{ $filters.currencySymbol(Math.round(cart.sell_price)) }}
-                  <!-- <span v-html="$filters.productPrice(cart)"></span> -->
-                </p>
-              </div>
-              <div class="cart-action-group">
-                <div class="product-action">
-                  <button
-                    class="action-minus"
-                    title="Quantity Minus"
-                    @click.prevent="cartDecrement(index)"
-                  >
-                  <i class="fas fa-minus"></i>
-                  </button>
-                  <input
-                    class="action-input"
-                    title="Quantity Number"
-                    type="text"
-                    name="quantity"
-                    :disabled="cart.quantity === 1 ? true : false"
-                    :value="cart.quantity"
-                  />
-                  <button
-                    class="action-plus"
-                    title="Quantity Plus"
-                    @click.prevent="cartIncrement(index)">
-                    <i class="fas fa-plus"></i>
-                  </button>
+    <!--=====================================
+                  CART SIDEBAR PART START
+        =======================================-->
+        <aside  :class="['cart-sidebar', { active: cartSideBar }]">
+            <div class="cart-header">
+                <div class="cart-total" v-if="cartItemCount !== 0">
+                    <i class="fas fa-shopping-basket"></i>
+                    <span>total item ({{ cartItemCount }}) </span>
                 </div>
-                <h6>
-                  {{ $filters.currencySymbol(Math.round((cart.sell_price) * cart.quantity)) }}
-                </h6>
-              </div>
+
+                <div class="cart-total"  v-else >
+                  <i class="fas fa-shopping-basket"></i>
+                  <span>আপনার কার্টে কিছু নেই</span>
+                </div>
+                <button class="cart-close" @click="commonIsToggleFunctionality.isCartSideBartOpenOrClose"><i class="icofont-close"></i></button>
             </div>
-          </li>
-        </TransitionGroup>
-        <ul class="cart-list" v-else>
-          <li class="cart-item cartItemImage">
-            <img :src="cartSideBar?.image" alt="cartSideBar?.image" />
-          </li>
-          <h3 class="text-danger text-center">আপনার কার্টে কিছু নেই</h3>
-        </ul>
-      </Transition>
-      <!-- <div class="cart-footer" v-if="cartItemCount">
-        <router-link class="cart-checkout-btn" :to="{ name: 'checkoutPage' }">
-          <span class="checkout-label">Proceed to Checkout</span>
-          <span class="checkout-price">{{ $filters.currencySymbol(totalPrice)}}</span>
-        </router-link>
-      </div> -->
 
-      <!-- <div class="coupon-btn text-center">
-          <button class="coupon-btn" @click.prevent="toggleCouponForm()">Do you have a coupon code?</button>
-          <form class="coupon-form" v-if="showCouponForm">
-              <input type="text" placeholder="Enter your coupon code">
-              <button type="submit"><span>apply</span></button> 
-          </form>
-      </div> -->
+            <ul class="cart-list">
+                <li class="cart-item">
+                    <div class="cart-media">
+                        <a href="#"><img src="@/assets/images/product/01.jpg" alt="product"></a>
+                        <button class="cart-delete"><i class="far fa-trash-alt"></i></button>
+                    </div>
+                    <div class="cart-info-group">
+                        <div class="cart-info">
+                            <h6><a href="product-single.html">existing product name</a></h6>
+                            <p>Unit Price - $8.75</p>
+                        </div>
+                        <div class="cart-action-group">
+                            <div class="product-action">
+                                <button class="action-minus" title="Quantity Minus"><i class="icofont-minus"></i></button>
+                                <input class="action-input" title="Quantity Number" type="text" name="quantity" value="1">
+                                <button class="action-plus" title="Quantity Plus"><i class="icofont-plus"></i></button>
+                            </div>
+                            <h6>$56.98</h6>
+                        </div>
+                    </div>
+                </li> 
+                <li class="cart-item">
+                    <div class="cart-media">
+                        <a href="#"><img src="@/assets/images/product/02.jpg" alt="product"></a>
+                        <button class="cart-delete"><i class="far fa-trash-alt"></i></button>
+                    </div>
+                    <div class="cart-info-group">
+                        <div class="cart-info">
+                            <h6><a href="product-single.html">existing product name</a></h6>
+                            <p>Unit Price - $8.75</p>
+                        </div>
+                        <div class="cart-action-group">
+                            <div class="product-action">
+                                <button class="action-minus" title="Quantity Minus"><i class="icofont-minus"></i></button>
+                                <input class="action-input" title="Quantity Number" type="text" name="quantity" value="1">
+                                <button class="action-plus" title="Quantity Plus"><i class="icofont-plus"></i></button>
+                            </div>
+                            <h6>$56.98</h6>
+                        </div>
+                    </div>
+                </li>
+                <li class="cart-item">
+                    <div class="cart-media">
+                        <a href="#"><img src="@/assets/images/product/03.jpg" alt="product"></a>
+                        <button class="cart-delete"><i class="far fa-trash-alt"></i></button>
+                    </div>
+                    <div class="cart-info-group">
+                        <div class="cart-info">
+                            <h6><a href="product-single.html">existing product name</a></h6>
+                            <p>Unit Price - $8.75</p>
+                        </div>
+                        <div class="cart-action-group">
+                            <div class="product-action">
+                                <button class="action-minus" title="Quantity Minus"><i class="icofont-minus"></i></button>
+                                <input class="action-input" title="Quantity Number" type="text" name="quantity" value="1">
+                                <button class="action-plus" title="Quantity Plus"><i class="icofont-plus"></i></button>
+                            </div>
+                            <h6>$56.98</h6>
+                        </div>
+                    </div>
+                </li>
+                <li class="cart-item">
+                    <div class="cart-media">
+                        <a href="#"><img src="@/assets/images/product/04.jpg" alt="product"></a>
+                        <button class="cart-delete"><i class="far fa-trash-alt"></i></button>
+                    </div>
+                    <div class="cart-info-group">
+                        <div class="cart-info">
+                            <h6><a href="product-single.html">existing product name</a></h6>
+                            <p>Unit Price - $8.75</p>
+                        </div>
+                        <div class="cart-action-group">
+                            <div class="product-action">
+                                <button class="action-minus" title="Quantity Minus"><i class="icofont-minus"></i></button>
+                                <input class="action-input" title="Quantity Number" type="text" name="quantity" value="1">
+                                <button class="action-plus" title="Quantity Plus"><i class="icofont-plus"></i></button>
+                            </div>
+                            <h6>$56.98</h6>
+                        </div>
+                    </div>
+                </li>
+                <li class="cart-item">
+                    <div class="cart-media">
+                        <a href="#"><img src="@/assets/images/product/05.jpg" alt="product"></a>
+                        <button class="cart-delete"><i class="far fa-trash-alt"></i></button>
+                    </div>
+                    <div class="cart-info-group">
+                        <div class="cart-info">
+                            <h6><a href="product-single.html">existing product name</a></h6>
+                            <p>Unit Price - $8.75</p>
+                        </div>
+                        <div class="cart-action-group">
+                            <div class="product-action">
+                                <button class="action-minus" title="Quantity Minus"><i class="icofont-minus"></i></button>
+                                <input class="action-input" title="Quantity Number" type="text" name="quantity" value="1">
+                                <button class="action-plus" title="Quantity Plus"><i class="icofont-plus"></i></button>
+                            </div>
+                            <h6>$56.98</h6>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div class="cart-footer">
+                <button class="coupon-btn">Do you have a coupon code?</button>
+                <form class="coupon-form">
+                    <input type="text" placeholder="Enter your coupon code">
+                    <button type="submit"><span>apply</span></button>
+                </form>
+                <router-link :to="{name: 'user.checkout'}" class="cart-checkout-btn" href="checkout.html">
+                    <span class="checkout-label">Proceed to Checkout</span>
+                    <span class="checkout-price">$369.78</span>
+                </router-link>
+            </div>
+        </aside>
+        <!--=====================================
+                    CART SIDEBAR PART END
+        =======================================-->
 
-      <div class="cart-footer" v-if="cartItemCount">
-          <router-link :to="{name: 'checkoutPage'}" class="cart-checkout-btn">
-              <span class="checkout-label" style="width: 60%;">অর্ডার করুন</span>
-              <span class="checkout-price">{{ $filters.currencySymbol(totalPrice)}} tk</span>
-          </router-link>
-      </div>
-    </aside>
   </div>
 </template>
 

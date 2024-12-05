@@ -204,8 +204,8 @@ const getAttributeData = async() => {
 }
 
 onMounted(() => {
-  closeCategorySideBar()
-  getAttributeData()
+  closeCategorySideBar();
+  getAttributeData();
   queryProducts();
   shop.getData();
   shop.sideBarData();
@@ -218,6 +218,7 @@ onMounted(() => {
 </script>
 
 <template>
+  {{ productPazinate }}
   <div>
     <section class="inner-section single-banner" :style="{ background: 'url(' + bannerImage + ') center center no-repeat', }">
       <div class="container">
@@ -292,10 +293,11 @@ onMounted(() => {
                 <div class="top-filter">
                   <div class="filter-show">
                     <label class="filter-label">Show :</label>
-                    <select class="form-select filter-select" >
-                      <option value="1">12</option>
-                      <option value="2">24</option>
-                      <option value="3">36</option>
+                    <select class="form-select filter-select" @change="getProducts" v-model="paginateSize">
+                      <option value="6">6</option>
+                      <option value="12">12</option>
+                      <option value="24">24</option>
+                      <option value="36">36</option>
                     </select>
                   </div>
 
