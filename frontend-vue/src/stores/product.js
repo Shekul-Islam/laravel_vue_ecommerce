@@ -2,15 +2,19 @@ import { defineStore } from "pinia";
 import axiosInstance from "@/services/axiosService"
 import { Pagination } from "swiper/modules";
 
-export const productStore = defineStore ("product-page", {
+export const useProduct = defineStore ("product-page", {
     state: ()=> ({
         products: {},
+        singleProduct: {},
+        productVariationData: {},
+        
+
     }),
 
     persist: true,
 
     actions: {
-        async productsData () {
+        async getProductsData () {
             try {   
             const res = await axiosInstance.get("/products");
             if(res?.data?.success){
@@ -22,6 +26,44 @@ export const productStore = defineStore ("product-page", {
                 console.log(error);
                 
             }
-        }
+        },
+        async getSingleProductData (slug) {
+            try {   
+            const res = await axiosInstance.get(`/products/${slug}`);
+            if(res?.data?.success){
+                this.singleProduct = res?.data?.result 
+                return res?.data?.result;
+            }
+            } catch (error) {
+                console.log(error);
+                
+            }
+        },
+        async getVariationData(productVariationData) {
+      
+            this.loading = true;
+            try {
+              
+              const res = await axiosInstance.get(`/products/variations`, {
+                params: {
+                  "product_id": productVariationData.product_id,
+                  "attribute_id_1": productVariationData.attribute_id_1,
+                  "attribute_id_2": productVariationData.attribute_id_2,
+                  "attribute_id_3": productVariationData.attribute_id_3,
+                  "attribute_value_id_1": productVariationData.attribute_value_id_1,
+                  "attribute_value_id_2": productVariationData.attribute_value_id_2,
+                  "attribute_value_id_3": productVariationData.attribute_value_id_3
+                },
+              });
+      
+              if (res?.status === 200) {
+                return res?.data;
+              }
+              } catch (error) {
+                  console.log(error);
+              } finally {
+                this.loading = false;
+              }
+          },        
     }
 })

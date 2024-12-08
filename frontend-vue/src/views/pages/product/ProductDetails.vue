@@ -1,12 +1,38 @@
 <script setup>
+import { useProduct } from "@/stores";
+import { data } from "jquery";
+import { onMounted, ref } from "vue";
+import { useRoute } from 'vue-router';
+
+const product = useProduct();
+const route = useRoute();
 
 const bannerImage = new URL ("@/assets/images/single-banner.jpg", import.meta.url).href;
 
+const singleProductData = ref("");
+const productVariationPrice = ref("");
+
+const getSingleProduct = async () =>  {
+    const res = await product.getSingleProductData(route.params.slug);
+    singleProductData.value = res;
+    console.log(singleProductData.value);
+
+}
+
+const handleProductVariationPrice = (data) => {
+    emit('productVariationPrice', data);
+    productVariationPrice.value = data[0]
+}
+
+onMounted(() => {
+    getSingleProduct();  
+})
 </script>
 
 
 <template>
   <div>
+        
          <!--=====================================
                     BANNER PART START
         =======================================-->
@@ -32,6 +58,7 @@ const bannerImage = new URL ("@/assets/images/single-banner.jpg", import.meta.ur
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6">
+                       
                         <div class="details-gallery">
                             <div class="details-label-group">
                                 <label class="details-label new">new</label>
@@ -54,6 +81,7 @@ const bannerImage = new URL ("@/assets/images/single-banner.jpg", import.meta.ur
                             </ul>
                         </div>
                     </div>
+
                     <div class="col-lg-6">
                         <ul class="product-navigation">
                             <li class="product-nav-prev">
@@ -77,11 +105,12 @@ const bannerImage = new URL ("@/assets/images/single-banner.jpg", import.meta.ur
                                 </a>
                             </li>
                         </ul>
+                        {{ singleProductData }}
                         <div class="details-content">
-                            <h3 class="details-name"><a href="#">existing product name</a></h3>
+                            <h3 class="details-name"><a href="#">{{ singleProductData.name }}</a></h3>
                             <div class="details-meta">
-                                <p>SKU:<span>1234567</span></p>
-                                <p>BRAND:<a href="#">radhuni</a></p>
+                                <p>SKU: {{ singleProductData.sku }}</p>
+                                <p>BRAND:<a href="#">{{singleProductData?.brand?.name}}</a></p>
                             </div>
                             <div class="details-rating">
                                 <i class="active icofont-star"></i>
@@ -91,10 +120,18 @@ const bannerImage = new URL ("@/assets/images/single-banner.jpg", import.meta.ur
                                 <i class="icofont-star"></i>
                                 <a href="#">(3 reviews)</a>
                             </div>
+                           <span v-if="singleProductData?.variations?.data?.length"> 
+                            <h3 class="details-price" v-if="productVariationPrice == '' || productVariationPrice == undefined">
+                                <span v-if="singleProductData?.variation_price_range?.min_price == singleProductData?.variation_price_range?.max_price ">{{ $filters?.currencySymbol(singleProductData?.variation_price_range?.min_price || singleProductData?.variation_price_range?.max_price) }}</span>
+                                <span>{{singleProductData?.variation_price_range?.min_price}} {{ singleProductData?.variation_price_range?.max_price }}</span>
+                            </h3>
+                           </span>
+                           <span>
                             <h3 class="details-price">
                                 <del>$38.00</del>
                                 <span>$24.00<small>/per kilo</small></span>
                             </h3>
+                           </span>
                             <p class="details-desc">Lorem ipsum dolor sit amet consectetur adipisicing elit facere harum natus amet soluta fuga consectetur alias veritatis quisquam ab eligendi itaque eos maiores quibusdam.</p>
                             <div class="details-list-group">
                                 <label class="details-list-title">tags:</label>

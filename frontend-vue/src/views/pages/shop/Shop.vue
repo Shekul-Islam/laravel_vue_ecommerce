@@ -218,7 +218,6 @@ onMounted(() => {
 </script>
 
 <template>
-  {{ productPazinate }}
   <div>
     <section class="inner-section single-banner" :style="{ background: 'url(' + bannerImage + ') center center no-repeat', }">
       <div class="container">
@@ -344,6 +343,7 @@ onMounted(() => {
                     <h6 class="product-brand">
                       <a href="">{{ product?.brand?.name }}</a>
                     </h6>
+
                     <h6 class="product-price">
 
                       <span v-if="product?.variations?.data?.length>0">
@@ -357,7 +357,7 @@ onMounted(() => {
                       
                     </h6>
                     <button class="product-add" title="View Details">
-                      <i class="fas fa-shopping-basket"></i><span>Product Preview</span>
+                      <span><router-link :to="{name: 'productDetails', params:{slug:product.slug}}" class="fas fa-shopping-basket">Product Preview</router-link></span>
                     </button>
                   </div>
                 </div>

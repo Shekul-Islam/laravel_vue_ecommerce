@@ -10,7 +10,7 @@ import { Login, Register } from "@/views/auth";
 import { MyProfile, MyOrderList, MyWishList, Checkout } from "@/views/user";
 import HomePage from "../views/pages/home/HomePage.vue";
 import Invoice from "../views/user/Invoice.vue";
-import ProductDetails from "@/views/pages/product-detail/ProductDetails.vue";
+import ProductDetails from "@/views/pages/product/ProductDetails.vue";
 
 
 const routes = [
@@ -105,7 +105,7 @@ const routes = [
   {
     path: "/product-details/:slug?",
     name: "productDetails",
-    component: () => import('@/views/pages/product-detail/ProductDetails.vue'),
+    component: () => import('@/views/pages/product/ProductDetails.vue'),
     meta: { title: " Product Details" },
   },
 
