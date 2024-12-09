@@ -10,5 +10,6 @@ export * from "./product"
 export * from "./blog"
 export * from "./cart"
 export * from "./commonIsToggleFunctionality"
+export * from "./notification"
 
 
