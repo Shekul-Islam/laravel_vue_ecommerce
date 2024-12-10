@@ -125,7 +125,6 @@ const searchBrands = computed(() => {
   });
 });
 
-
 const getProducts = () => {
   products.value = [];
   shop.getData(

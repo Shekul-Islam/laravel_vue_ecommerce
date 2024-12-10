@@ -7,7 +7,7 @@ export const useProduct = defineStore ("product-page", {
         products: {},
         singleProduct: {},
         productVariationData: {},
-        
+        relatedProducts: {},
 
     }),
 
@@ -27,18 +27,38 @@ export const useProduct = defineStore ("product-page", {
                 
             }
         },
-        async getSingleProductData (slug) {
+
+        async getCategoryData (categoryId) {
             try {   
-            const res = await axiosInstance.get(`/products/${slug}`);
+            const res = await axiosInstance.get(`/products`, 
+                {params: {
+                    category_ids: [categoryId],
+                }});
             if(res?.data?.success){
-                this.singleProduct = res?.data?.result 
+                this.relatedProducts = res?.data?.result 
                 return res?.data?.result;
+                
+                
             }
             } catch (error) {
                 console.log(error);
                 
             }
         },
+
+        async getSingleProductData (slug) {
+            try {   
+            const res = await axiosInstance.get(`/products/${slug}`);
+            if(res?.data?.success){
+                this.singleProduct = res?.data?.result 
+                return res?.data;
+            }
+            } catch (error) {
+                console.log(error);
+                
+            }
+        },
+        
         async getVariationData(productVariationData) {
       
             this.loading = true;

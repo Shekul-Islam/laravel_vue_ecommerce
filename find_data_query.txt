@@ -1,0 +1,15 @@
+{{ setting?.settings?.data?.find((i)=> i.key=="top_header_text").value }}
+
+v-for="(data, i) in section?.products?.data" :key=i"
+
+{{ blogPost.tags[0].name }} 
+
+{{blogPost?.tags[1]?.pivot?.created_at}}
+
+v-for="(tag, tagIndex) in tagData?.result?.data" :key="tagIndex"
+
+<router-link:to="{name: 'user.checkout'}"/>
+
+const singleProductData = ref({});
+
+<span v-if="singleProduct?.variations?.data.length > 0">

@@ -1,13 +1,15 @@
 <script setup>
-import { useProduct, useShop } from "@/stores";
+import { useProduct } from "@/stores";
+import {useShop} from "@/stores/";
+import { storeToRefs } from "pinia";
 // import { data } from "jquery";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useRoute } from 'vue-router';
 import { mrpOrOfferPrice } from "@/composables";
 
 /*==============
     Swipper
-===============*/
+================*/
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -15,36 +17,103 @@ import "swiper/css/navigation";
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
 
 
-const product = useProduct();
 const route = useRoute();
-const relatedProdcut = useShop();
-
-const bannerImage = new URL ("@/assets/images/single-banner.jpg", import.meta.url).href;
+const singleProduct = useProduct();
+const shopProduct = useShop();
+const related = useProduct();
 
 const singleProductData = ref("");
 const productVariationPrice = ref("");
+const relatedProducts = ref("");
 
 const getSingleProduct = async () =>  {
-    const res = await product.getSingleProductData(route.params.slug);
-    singleProductData.value = res;
-    console.log(singleProductData.value);
-
+    const res = await singleProduct.getSingleProductData(route.params.slug);
+    if(res?.success){
+      singleProductData.value = res?.result;
+      getRelatedProducts(res?.result?.category?.id);
+    }
+    
 }
+
+const getRelatedProducts = async (id) =>  {
+    const res = await related.getCategoryData(id);
+    relatedProducts.value = res;
+    console.log(relatedProducts.value);
+}
+
+
+const productType = ref("");
+const selectedBrandIds = ref([]);
+const selectedCategoryIds = ref([]);
+const selectedAttributeIds = ref([]);
+const selectedSubCategoryIds = ref("");
+const sortingPrice = ref([]);
+const searchQuery = ref("");
+const paginateSize = ref("");
+
+
+const color = "white";
+const size = "8px";
+
+const getProducts = async ()=> {
+  const response = await shopProduct.getData(route.params.category)
+  shopProduct.value = response;
+  console.log(shopProduct.value);
+}
+
+
+// const getProducts = () => {
+//   products.value = [];
+//   shop.getData(
+//     productType.value,
+//     selectedBrandIds.value,
+//     selectedCategoryIds.value,
+//     selectedSubCategoryIds.value,
+//     selectedAttributeIds.value,
+//     sortingPrice.value,
+//     searchQuery.value,
+//     paginateSize.value,
+//   );
+// };
 
 const handleProductVariationPrice = (data) => {
-    emit('productVariationPrice', data);
-    productVariationPrice.value = data[0]
-}
+   if (data?.length){
+    productVariationPrice.value = data[0];
+    console.log("ProductVariationPrice", productVariationPrice.value);
+    
+   }
+    
+};
+
+const bannerImage = new URL ("@/assets/images/single-banner.jpg", import.meta.url).href;
+
+// watch(() => route.params.slug, (newValue, oldValue) => {
+//   getRelatedProducts();
+//   });
+
+//   watch(
+//   () => route.params.slug,
+//   (newSlug, oldSlug) => {
+//     console.log("Slug changed from:", oldSlug, "to:", newSlug);
+//     if (newSlug !== oldSlug) {
+//       getRelatedProducts(newSlug);
+//     }
+//   }
+// );
+
 
 onMounted(() => {
     getSingleProduct();
+    getProducts();
+    handleProductVariationPrice();
+    getRelatedProducts();
 })
 </script>
 
 
 <template>
   <div>
-        
+      
          <!--=====================================
                     BANNER PART START
         =======================================-->
@@ -125,7 +194,7 @@ onMounted(() => {
                                 </a>
                             </li>
                         </ul>
-                        {{ singleProductData}}
+                        
                         <div class="details-content">
                             <h3 class="details-name"><a href="#">{{ singleProductData.name }}</a></h3>
                             <div class="details-meta">
@@ -451,11 +520,12 @@ onMounted(() => {
                         </div>
                     </div>
                 </div>
+
                 <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
-                    <div class="col" v-for="(productData, productIndex)  in product" :key="productIndex">
+                    <div class="col" v-for="(relatedData, index)  in relatedProducts?.data" :key="index">
                        
                         <div class="product-card">
-                            <div class="product-media">
+                            <div class="product-media">   
                                 <div class="product-label">
                                     <label class="label-text sale">sale</label>
                                 </div>
@@ -463,7 +533,7 @@ onMounted(() => {
                                     <i class="fas fa-heart"></i>
                                 </button>
                                 <a class="product-image" href="product-video.html">
-                                    <img :src="productData?.image" alt="productData?.image">
+                                    <img :src="relatedData?.image" alt="relatedData?.image">
                                 </a>
                                 <div class="product-widget">
                                     <a title="Product Compare" href="compare.html" class="fas fa-random"></a>
@@ -481,15 +551,15 @@ onMounted(() => {
                                     <a href="product-video.html">(3)</a>
                                 </div>
                                 <h6 class="product-name">
-                                    <a href="product-video.html">{{productData?.name}}</a>
+                                    <a href="product-video.html">{{relatedProducts?.name}}</a>
                                 </h6>
                                 <h6 class="product-price">
                                     <del>$34</del>
+
                                     <span>$28<small>/piece</small></span>
                                 </h6>
                                 <button class="product-add" title="Add to Cart">
-                                    <i class="fas fa-shopping-basket"></i>
-                                    <span>add</span>
+                                    <span><router-link :to="{name: 'productDetails', params:{slug:relatedProducts.slug}}" class="fas fa-shopping-basket">Product Preview</router-link></span>
                                 </button>
                                 <div class="product-action">
                                     <button class="action-minus" title="Quantity Minus"><i class="icofont-minus"></i></button>
