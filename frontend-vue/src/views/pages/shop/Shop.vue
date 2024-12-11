@@ -330,6 +330,16 @@ onMounted(() => {
                     <a class="product-image" href="product-video.html">
                       <img :src="product.image" alt="products.image"/>
                     </a>
+                    <div class="product-widget">
+                      <a title="Product Compare" href="compare.html" class="fas fa-random"></a>
+                      <a title="Product Video" v-show="product?.video_url" :href="product?.video_url" class="venobox fas fa-play" data-vbtype="video" data-autoplay="true"></a>
+                      <a title="Product View" href="#" class="fas fa-eye" data-bs-toggle="modal" data-bs-target="#product-view" @click.prevent="getProductDetails(product?.id)"></a>
+                    </div>
+
+                    <!-- <div class="product-widget">
+                      <a title="Product View" href="#" class="fas fa-eye" data-bs-toggle="modal" data-bs-target="#product-view" @click.prevent="getProductDetails(product?.id)"></a>
+                      <a title="Product Video" v-show="product?.video_url" :href="product?.video_url" class="venobox fas fa-play" data-vbtype="video" data-autoplay="true"></a>
+                    </div> -->
                   </div>
 
                   <div class="product-content">
@@ -355,6 +365,10 @@ onMounted(() => {
                       </span>
                       
                     </h6>
+
+                    <h5>something</h5>
+                   
+
                     <button class="product-add" title="View Details">
                       <span><router-link :to="{name: 'productDetails', params:{slug:product.slug}}" class="fas fa-shopping-basket">Product Preview</router-link></span>
                     </button>
@@ -402,4 +416,15 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+.product-widget a[title="Product View"], .product-widget a[title="Product Video"] {
+  background-color: var(--primary);
+  color: var(--white);
+}
+.product-widget a[title="Product View"]:hover, .product-widget a[title="Product Video"]:hover {
+  background-color: var(--secondary-color);
+  color: var(--white);
+}
+
+</style>

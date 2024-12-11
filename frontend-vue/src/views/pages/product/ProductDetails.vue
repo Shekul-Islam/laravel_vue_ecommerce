@@ -32,13 +32,11 @@ const getSingleProduct = async () =>  {
       singleProductData.value = res?.result;
       getRelatedProducts(res?.result?.category?.id);
     }
-    
 }
 
 const getRelatedProducts = async (id) =>  {
     const res = await related.getCategoryData(id);
     relatedProducts.value = res;
-    console.log(relatedProducts.value);
 }
 
 
@@ -61,6 +59,22 @@ const getProducts = async ()=> {
   console.log(shopProduct.value);
 }
 
+
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 700,
+    behavior: "smooth", // মসৃণ স্ক্রলিং এর জন্য
+  });
+
+  // নির্বাচিত পণ্য সংরক্ষণ
+const selectedProduct = ref(null);
+
+// পণ্য সিলেক্ট ফাংশন
+const showProductModal = (product) => {
+  selectedProduct.value = product;
+};
+
+};
 
 // const getProducts = () => {
 //   products.value = [];
@@ -91,15 +105,13 @@ const bannerImage = new URL ("@/assets/images/single-banner.jpg", import.meta.ur
 //   getRelatedProducts();
 //   });
 
-//   watch(
-//   () => route.params.slug,
-//   (newSlug, oldSlug) => {
-//     console.log("Slug changed from:", oldSlug, "to:", newSlug);
-//     if (newSlug !== oldSlug) {
-//       getRelatedProducts(newSlug);
-//     }
-//   }
-// );
+  watch(
+  () => route.params.slug,
+  (newSlug, oldSlug) => {
+    
+    getSingleProduct();
+  }
+);
 
 
 onMounted(() => {
@@ -200,6 +212,7 @@ onMounted(() => {
                             <div class="details-meta">
                                 <p>SKU: {{ singleProductData.sku }}</p>
                                 <p>BRAND:<a href="#">{{singleProductData?.brand?.name}}</a></p>
+                                
                                 <div :class="`${type}-meta`">
                                   <p v-if="singleProductData?.category">
                                     Category:<a href="#">{{ singleProductData?.category?.name }}</a>
@@ -419,11 +432,11 @@ onMounted(() => {
                                             <li class="review-reply-item">
                                                 <div class="review-media">
                                                     <a class="review-avatar" href="#">
-                                                        <img src="@/assets/images/avatar/03.jpg" alt="review">
+                                                      <img src="@/assets/images/avatar/03.jpg" alt="review">
                                                     </a>
                                                     <h5 class="review-meta">
-                                                        <a href="#">tahmina bonny</a>
-                                                        <span>June 02, 2020</span>
+                                                      <a href="#">tahmina bonny</a>
+                                                      <span>June 02, 2020</span>
                                                     </h5>
                                                 </div>
                                                 <p class="review-desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus hic amet qui velit, molestiae suscipit perferendis, autem doloremque blanditiis dolores nulla excepturi ea nobis!</p>
@@ -441,16 +454,16 @@ onMounted(() => {
                                                 <img src="@/assets/images/avatar/04.jpg" alt="review">
                                             </a>
                                             <h5 class="review-meta">
-                                                <a href="#">shipu shikdar</a>
-                                                <span>June 02, 2020</span>
+                                              <a href="#">shipu shikdar</a>
+                                              <span>June 02, 2020</span>
                                             </h5>
                                         </div>
                                         <ul class="review-rating">
-                                            <li class="icofont-ui-rating"></li>
-                                            <li class="icofont-ui-rating"></li>
-                                            <li class="icofont-ui-rating"></li>
-                                            <li class="icofont-ui-rating"></li>
-                                            <li class="icofont-ui-rate-blank"></li>
+                                          <li class="icofont-ui-rating"></li>
+                                          <li class="icofont-ui-rating"></li>
+                                          <li class="icofont-ui-rating"></li>
+                                          <li class="icofont-ui-rating"></li>
+                                          <li class="icofont-ui-rate-blank"></li>
                                         </ul>
                                         <p class="review-desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus hic amet qui velit, molestiae suscipit perferendis, autem doloremque blanditiis dolores nulla excepturi ea nobis!</p>
                                         <form class="review-reply">
@@ -467,32 +480,32 @@ onMounted(() => {
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="star-rating">
-                                                <input type="radio" name="rating" id="star-1"><label for="star-1"></label>
-                                                <input type="radio" name="rating" id="star-2"><label for="star-2"></label>
-                                                <input type="radio" name="rating" id="star-3"><label for="star-3"></label>
-                                                <input type="radio" name="rating" id="star-4"><label for="star-4"></label>
-                                                <input type="radio" name="rating" id="star-5"><label for="star-5"></label>
+                                              <input type="radio" name="rating" id="star-1"><label for="star-1"></label>
+                                              <input type="radio" name="rating" id="star-2"><label for="star-2"></label>
+                                              <input type="radio" name="rating" id="star-3"><label for="star-3"></label>
+                                              <input type="radio" name="rating" id="star-4"><label for="star-4"></label>
+                                              <input type="radio" name="rating" id="star-5"><label for="star-5"></label>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="form-group">
-                                                <textarea class="form-control" placeholder="Describe"></textarea>
+                                              <textarea class="form-control" placeholder="Describe"></textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="Name">
-                                            </div>
+                                          <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Name">
+                                          </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <input type="email" class="form-control" placeholder="Email">
+                                              <input type="email" class="form-control" placeholder="Email">
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <button class="btn btn-inline">
-                                                <i class="icofont-water-drop"></i>
-                                                <span>drop your review</span>
+                                              <i class="icofont-water-drop"></i>
+                                              <span>drop your review</span>
                                             </button>
                                         </div>
                                     </div>
@@ -523,22 +536,23 @@ onMounted(() => {
 
                 <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
                     <div class="col" v-for="(relatedData, index)  in relatedProducts?.data" :key="index">
-                       
                         <div class="product-card">
                             <div class="product-media">   
                                 <div class="product-label">
-                                    <label class="label-text sale">sale</label>
+                                  <label class="label-text sale">sale</label>
                                 </div>
                                 <button class="product-wish wish">
-                                    <i class="fas fa-heart"></i>
+                                  <i class="fas fa-heart"></i>
                                 </button>
                                 <a class="product-image" href="product-video.html">
-                                    <img :src="relatedData?.image" alt="relatedData?.image">
+                                  <img :src="relatedData?.image" alt="relatedData?.image">
                                 </a>
                                 <div class="product-widget">
+                                  <div class="product-widget">
                                     <a title="Product Compare" href="compare.html" class="fas fa-random"></a>
-                                    <a title="Product Video" href="https://youtu.be/9xzcVxSBbG8" class="venobox fas fa-play" data-autoplay="true" data-vbtype="video"></a>
-                                    <a title="Product View" href="#" class="fas fa-eye" data-bs-toggle="modal" data-bs-target="#product-view"></a>
+                                    <a title="Product Video" v-show="product?.video_url" :href="product?.video_url" class="venobox fas fa-play" data-vbtype="video" data-autoplay="true"></a>
+                                    <a title="Product View" href="#" class="fas fa-eye" data-bs-toggle="modal" data-bs-target="#product-view" @click.prevent="getProductDetails(product?.id)"></a>
+                                  </div>
                                 </div>
                             </div>
                             <div class="product-content">
@@ -551,15 +565,23 @@ onMounted(() => {
                                     <a href="product-video.html">(3)</a>
                                 </div>
                                 <h6 class="product-name">
-                                    <a href="product-video.html">{{relatedProducts?.name}}</a>
+                                    <a href="product-video.html">{{relatedData?.name}}</a>
                                 </h6>
+                                
                                 <h6 class="product-price">
-                                    <del>$34</del>
+                                
+                                  <span v-if="relatedData?.variations?.data?.length>0">
+                                    <span>{{ relatedData?.variation_price_range?.min_price }} tk <span v-if="relatedData?.variation_price_range?.max_sell_price != relatedData?.variation_price_range?.min_sell_price"> - {{ relatedData?.max_sell_price }} tk</span></span>
+                                  </span>
+                                  
+                                  <span v-else>
+                                    <span v-if="relatedData?.offer_price ==0"><del class="text-danger">{{ relatedData?.mrp }} tk</del></span>
+                                    <span>{{ relatedData?.offer_price != 0 ? relatedData?.offer_price : relatedData?.mrp }} tk</span>
+                                  </span>
 
-                                    <span>$28<small>/piece</small></span>
                                 </h6>
-                                <button class="product-add" title="Add to Cart">
-                                    <span><router-link :to="{name: 'productDetails', params:{slug:relatedProducts.slug}}" class="fas fa-shopping-basket">Product Preview</router-link></span>
+                                <button class="product-add" title="Add to Cart" @click="scrollToTop">
+                                    <span><router-link :to="{name: 'productDetails', params:{slug:relatedData?.slug}}" class="fas fa-shopping-basket">Product Preview</router-link></span>
                                 </button>
                                 <div class="product-action">
                                     <button class="action-minus" title="Quantity Minus"><i class="icofont-minus"></i></button>
