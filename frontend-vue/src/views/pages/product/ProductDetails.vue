@@ -5,9 +5,10 @@ import { storeToRefs } from "pinia";
 // import { data } from "jquery";
 import { onMounted, ref, watch } from "vue";
 import { useRoute } from 'vue-router';
+import ModalFade from '../../../components/modal/ModalFade.vue'
 import { mrpOrOfferPrice } from "@/composables";
 
-/*==============
+/*===============
     Swipper
 ================*/
 import { Swiper, SwiperSlide } from "swiper/vue";
@@ -25,6 +26,7 @@ const related = useProduct();
 const singleProductData = ref("");
 const productVariationPrice = ref("");
 const relatedProducts = ref("");
+const previewData = ref('')
 
 const getSingleProduct = async () =>  {
     const res = await singleProduct.getSingleProductData(route.params.slug);
@@ -49,14 +51,13 @@ const sortingPrice = ref([]);
 const searchQuery = ref("");
 const paginateSize = ref("");
 
-
 const color = "white";
 const size = "8px";
 
 const getProducts = async ()=> {
   const response = await shopProduct.getData(route.params.category)
   shopProduct.value = response;
-  console.log(shopProduct.value);
+  
 }
 
 
@@ -96,8 +97,18 @@ const handleProductVariationPrice = (data) => {
     console.log("ProductVariationPrice", productVariationPrice.value);
     
    }
-    
 };
+
+const previewProductModal = async(productSlug) =>{
+
+  const res = await singleProduct.getSingleProductData(productSlug);
+    if(res?.success){
+      
+      previewData.value = res?.result;
+    }
+
+  $("#product-view").modal("show");
+}
 
 const bannerImage = new URL ("@/assets/images/single-banner.jpg", import.meta.url).href;
 
@@ -213,7 +224,7 @@ onMounted(() => {
                                 <p>SKU: {{ singleProductData.sku }}</p>
                                 <p>BRAND:<a href="#">{{singleProductData?.brand?.name}}</a></p>
                                 
-                                <div :class="`${type}-meta`">
+                                <div :class="`${singleProductData?.type}-meta`">
                                   <p v-if="singleProductData?.category">
                                     Category:<a href="#">{{ singleProductData?.category?.name }}</a>
                                   </p>
@@ -232,6 +243,7 @@ onMounted(() => {
                                 <i class="icofont-star"></i>
                                 <a href="#">(3 reviews)</a>
                             </div>
+                          
                            <span v-if="singleProductData?.variations?.data?.length"> 
                             {{ singleProductData?.variation_price_range?.min_price }}
                             <h3 class="details-price" v-if="productVariationPrice == '' || productVariationPrice == undefined">
@@ -244,14 +256,16 @@ onMounted(() => {
                                 $filters.currencySymbol(productVariationPrice?.sell_price)
                               }}</span>
                             </h3>
+                            
                            </span>
-
+                           
                            <span v-else>
                               <h3 :class="`${type}-price details-price` ">
                                 <del>{{ $filters.currencySymbol(singleProductData.mrp) }}</del>
                                 <span>{{ $filters.currencySymbol( mrpOrOfferPrice( singleProductData.mrp, singleProductData.offer_price ))}}</span>
                                 <a class="discout_amount" v-if="singleProductData.offer_price != 0" >Save {{ Math.round(singleProductData.mrp - singleProductData.offer_price) }}৳</a >
                               </h3>
+                             
                             </span>
 
                             <!-- <ProductVariation :productVariations="productVariations" :allVariations="singleProduct?.variations?.data" @productVariationPrice="handleProductVariationPrice" @productVariationData="handleProductVariationData" @activeBtns="handleActiveBtns"  /> -->
@@ -550,8 +564,8 @@ onMounted(() => {
                                 <div class="product-widget">
                                   <div class="product-widget">
                                     <a title="Product Compare" href="compare.html" class="fas fa-random"></a>
-                                    <a title="Product Video" v-show="product?.video_url" :href="product?.video_url" class="venobox fas fa-play" data-vbtype="video" data-autoplay="true"></a>
-                                    <a title="Product View" href="#" class="fas fa-eye" data-bs-toggle="modal" data-bs-target="#product-view" @click.prevent="getProductDetails(product?.id)"></a>
+                                    <a title="Product Video" v-show="relatedData?.video_url" :href="relatedData?.video_url" class="venobox fas fa-play" data-vbtype="video" data-autoplay="true"></a>
+                                    <a title="Product View" href="#" class="fas fa-eye" @click.prevent="previewProductModal(relatedData?.slug)"></a>
                                   </div>
                                 </div>
                             </div>
@@ -608,6 +622,8 @@ onMounted(() => {
         <!--=====================================
                  PRODUCT RELATED PART END
         =======================================-->
+
+        <ModalFade :preview-data="previewData"/>
   </div>
 </template>
 

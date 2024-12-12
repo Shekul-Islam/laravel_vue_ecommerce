@@ -3,6 +3,7 @@ import { useRoute, useRouter } from "vue-router";
 import { ref, onMounted, computed, watch  } from "vue";
 import { storeToRefs } from "pinia";
 import { useShop, useCart, useAuth, useCommonIsToggleFunctionality } from "@/stores";
+import { mrpOrOfferPrice } from "@/composables";
 
 // All Variable  Code Is Here.....................................................................................................
 const route = useRoute();
@@ -29,6 +30,7 @@ const selectedSubCategoryIds = ref("");
 const sortingPrice = ref([]);
 const searchQuery = ref("");
 const paginateSize = ref("");
+const productVariationPrice = ref("");
 
 const isloading = ref(loading);
 const color = "white";
@@ -196,6 +198,16 @@ function closeCategorySideBar() {
 
 }
 
+const handleProductVariationPrice = (data) => {
+   if (data?.length){
+    productVariationPrice.value = data[0];
+    console.log("ProductVariationPrice", productVariationPrice.value);
+    
+   }
+    
+};
+
+
 // attribute data 
 
 const getAttributeData = async() => {
@@ -208,6 +220,7 @@ onMounted(() => {
   queryProducts();
   shop.getData();
   shop.sideBarData();
+  handleProductVariationPrice();
   getProducts();
   $(document).ready(function () {
     $(".venobox").venobox();
@@ -334,12 +347,8 @@ onMounted(() => {
                       <a title="Product Compare" href="compare.html" class="fas fa-random"></a>
                       <a title="Product Video" v-show="product?.video_url" :href="product?.video_url" class="venobox fas fa-play" data-vbtype="video" data-autoplay="true"></a>
                       <a title="Product View" href="#" class="fas fa-eye" data-bs-toggle="modal" data-bs-target="#product-view" @click.prevent="getProductDetails(product?.id)"></a>
+                      <a title="Product View" href="#" class="fas fa-eye" @click.prevent="previewProductModal(relatedData?.slug)"></a>
                     </div>
-
-                    <!-- <div class="product-widget">
-                      <a title="Product View" href="#" class="fas fa-eye" data-bs-toggle="modal" data-bs-target="#product-view" @click.prevent="getProductDetails(product?.id)"></a>
-                      <a title="Product Video" v-show="product?.video_url" :href="product?.video_url" class="venobox fas fa-play" data-vbtype="video" data-autoplay="true"></a>
-                    </div> -->
                   </div>
 
                   <div class="product-content">
@@ -353,20 +362,31 @@ onMounted(() => {
                       <a href="">{{ product?.brand?.name }}</a>
                     </h6>
 
-                    <h6 class="product-price">
+                        <h6 class="product-price">
+                          <span v-if="product?.variations?.data?.length"> 
+                            {{ product?.variation_price_range?.min_price }}
+                            <span class="details-price" v-if="productVariationPrice == '' || productVariationPrice == undefined">
+                                <span v-if="product?.variation_price_range?.min_price == product?.variation_price_range?.max_price ">{{ $filters?.currencySymbol(product?.variation_price_range?.min_price || product?.variation_price_range?.max_price) }}</span>
+                                <span>{{product?.variation_price_range?.min_price}} {{ product?.variation_price_range?.max_price }}</span>
+                            </span>
 
-                      <span v-if="product?.variations?.data?.length>0">
-                        <span>{{ product?.variation_price_range?.min_price }} tk <span v-if="product?.variation_price_range?.max_sell_price != product?.variation_price_range?.min_sell_price"> - {{ product?.max_sell_price }} tk</span></span>
-                      </span>
-
-                      <span v-else>
-                        <span v-if="product?.offer_price ==0"><del class="text-danger">{{ product?.mrp }} tk</del></span>
-                        <span>{{ product?.offer_price != 0 ? product?.offer_price : product?.mrp }} tk</span>
-                      </span>
-                      
-                    </h6>
-
-                    <h5>something</h5>
+                            <span :class="`${type}-price my-2`" v-else>
+                              <span>{{
+                                $filters.currencySymbol(productVariationPrice?.sell_price)
+                              }}</span>
+                            </span>
+                            
+                          </span>
+                           
+                          <span v-else>
+                              <span :class="`${type}-price details-price` ">
+                                <del>{{ $filters.currencySymbol(product.mrp) }}</del>
+                                <span>{{ $filters.currencySymbol( mrpOrOfferPrice( product.mrp, product.offer_price ))}}</span>
+                              </span>
+                             
+                          </span>
+                        </h6>
+                  
                    
 
                     <button class="product-add" title="View Details">

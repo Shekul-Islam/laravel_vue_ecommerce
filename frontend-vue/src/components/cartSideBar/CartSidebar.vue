@@ -56,6 +56,7 @@ const cartIncrement = (index) => {
                   <span>আপনার কার্টে কিছু নেই</span>
                 </div>
                 <button class="cart-close" @click="commonIsToggleFunctionality.isCartSideBartOpenOrClose"><i class="icofont-close"></i></button>
+                
             </div>
 
             <ul class="cart-list">

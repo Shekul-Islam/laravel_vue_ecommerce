@@ -52,6 +52,7 @@ export const useProduct = defineStore ("product-page", {
             if(res?.data?.success){
                 this.singleProduct = res?.data?.result 
                 return res?.data;
+                
             }
             } catch (error) {
                 console.log(error);

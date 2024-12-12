@@ -44,7 +44,7 @@ const route = useRoute();
     <!-- mobile footer menu  -->
    <div><MobileMenue/></div>
 
-  <div><ModalFade/></div>
+  <!-- <div><ModalFade/></div> -->
 
     <RouterView></RouterView>
 

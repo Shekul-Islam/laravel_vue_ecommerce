@@ -1,44 +1,23 @@
 <script setup>
-import { useProduct } from "@/stores";
 import {useShop} from "@/stores/";
-import { storeToRefs } from "pinia";
 // import { data } from "jquery";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref } from "vue";
 import { useRoute } from 'vue-router';
 import { mrpOrOfferPrice } from "@/composables";
 
-/*==============
-    Swipper
-================*/
-import { Swiper, SwiperSlide } from "swiper/vue";
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
-import { Pagination, Navigation, Autoplay } from "swiper/modules";
+
+const props = defineProps({
+  previewData : {type: Object}
+})
+
 
 
 const route = useRoute();
-const singleProduct = useProduct();
 const shopProduct = useShop();
-const related = useProduct();
 
 const singleProductData = ref("");
 const productVariationPrice = ref("");
 const relatedProducts = ref("");
-
-const getSingleProduct = async () =>  {
-    const res = await singleProduct.getSingleProductData(route.params.slug);
-    if(res?.success){
-      singleProductData.value = res?.result;
-      getRelatedProducts(res?.result?.category?.id);
-    }
-}
-
-const getRelatedProducts = async (id) =>  {
-    const res = await related.getCategoryData(id);
-    relatedProducts.value = res;
-}
-
 
 const productType = ref("");
 const selectedBrandIds = ref([]);
@@ -53,31 +32,10 @@ const paginateSize = ref("");
 const color = "white";
 const size = "8px";
 
-const getProducts = async ()=> {
-  const response = await shopProduct.getData(route.params.category)
-  shopProduct.value = response;
-  console.log(shopProduct.value);
-}
-
-
-// const getProducts = () => {
-//   products.value = [];
-//   shop.getData(
-//     productType.value,
-//     selectedBrandIds.value,
-//     selectedCategoryIds.value,
-//     selectedSubCategoryIds.value,
-//     selectedAttributeIds.value,
-//     sortingPrice.value,
-//     searchQuery.value,
-//     paginateSize.value,
-//   );
-// };
-
 const handleProductVariationPrice = (data) => {
    if (data?.length){
     productVariationPrice.value = data[0];
-    console.log("ProductVariationPrice", productVariationPrice.value);
+    console.log("productVariationPrice", productVariationPrice.value);
     
    }
     
@@ -89,25 +47,16 @@ const bannerImage = new URL ("@/assets/images/single-banner.jpg", import.meta.ur
 //   getRelatedProducts();
 //   });
 
-  watch(
-  () => route.params.slug,
-  (newSlug, oldSlug) => {
-    
-    getSingleProduct();
-  }
-);
 
 
 onMounted(() => {
-    getSingleProduct();
-    getProducts();
     handleProductVariationPrice();
-    getRelatedProducts();
 })
 </script>
 
 <template>
   <div>
+    
     <div class="modal fade" id="product-view">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -125,13 +74,12 @@ onMounted(() => {
                                 <label class="details-label off">-10%</label>
                             </div>
                             <ul class="details-preview" >
-                                <li ><img :src="singleProductData?.image"></li>
+                                <li ><img :src="previewData?.image"></li>
                                
                             </ul>
-
                        
                             <ul class="details-thumb" >
-                              <li><img :src="singleProductData?.image" alt=""></li>
+                              <li><img :src="previewData?.image" alt=""></li>
                             </ul>
                 </div>
               </div>
@@ -139,18 +87,18 @@ onMounted(() => {
               <div class="col-md-6 col-lg-6">
                 <div class="view-details">
                   <h3 class="view-name">
-                    <a href="#">{{ singleProductData.name }}</a>
+                    <a href="#">{{ previewData.name }}</a>
                   </h3>
                   <div class="view-meta">
-                    <p>SKU: {{ singleProductData?.sku }}</p>
-                    <p>BRAND:<a href="#">{{ singleProductData?.brand?.name }}</a></p>
+                    <p>SKU: {{ previewData?.sku }}</p>
+                    <p>BRAND:<a href="#">{{ previewData?.brand?.name }}</a></p>
                     
                     <div :class="`${type}-meta`">
-                      <p v-if="singleProductData?.category">
-                        Category: <a href="">{{ singleProductData?.category?.name }}</a>
+                      <p v-if="previewData?.category">
+                        Category: <a href="">{{ previewData?.category?.name }}</a>
                       </p>
-                      <p v-if="singleProductData?.sub_category">
-                        Sub Category: <a href="">{{ singleProductData?.sub_category?.name}}</a>
+                      <p v-if="previewData?.sub_category">
+                        Sub Category: <a href="">{{ previewData?.sub_category?.name}}</a>
                       </p>
                     </div>
                   </div>
@@ -162,23 +110,23 @@ onMounted(() => {
                     ><i class="icofont-star"></i
                     ><a href="product-video.html">(3 reviews)</a>
                   </div>
-                  
-                  {{ singleProductData }}
-                  <span v-if="singleProductData"> 
-                      {{ singleProductData?.variation_price_range?.min_price }}
-                    <h3 class="details-price" v-if="productVariationPrice == '' || productVariationPrice == undefined">
-                      <span v-if="singleProductData?.variation_price_range?.min_price == singleProductData?.variation_price_range?.max_price ">{{ $filters?.currencySymbol(singleProductData?.variation_price_range?.min_price || singleProductData?.variation_price_range?.max_price) }}</span>
-                      <span>{{singleProductData?.variation_price_range?.min_price}} {{ singleProductData?.variation_price_range?.max_price }}</span>
+                 
+                  <span v-if="previewData?.variations?.data?.length"> 
+                    {{ previewData?.variation_price_range?.min_price }}
+                    <h3 class="details-price" v-if="previewData?.variation_price_range == '' || previewData?.variation_price_range == undefined">
+                      <span v-if="previewData?.variation_price_range?.min_price == previewData?.variation_price_range?.max_price ">{{ $filters?.currencySymbol(previewData?.variation_price_range?.min_price || previewData?.variation_price_range?.max_price) }}</span>
+                      <span>{{previewData?.variation_price_range?.min_price}} {{ previewData?.variation_price_range?.max_price }}</span>
                     </h3>                            
-                    <h3 :class="`${type}-price my-2`" v-else-if="productVariationPrice != 0 ">
-                      <span>
-                        {{$filters.currencySymbol(productVariationPrice?.sell_price)}}
-                      </span>
-                    </h3>
                     <h3 :class="`${type}-price my-2`" v-else>
-                      <span>
-                        {{ singleProductData?.mrp }}
-                      </span>
+                      <span>{{ 
+                        $filters.currencySymbol(previewData?.sell_price)
+                         }}</span>
+                    </h3>
+                  </span>
+                  <span v-else>
+                    <h3 :class="`${type}-price details-price` ">
+                      <del>{{ $filters.currencySymbol(previewData.mrp) }}</del>
+                      <span>{{ $filters.currencySymbol( mrpOrOfferPrice( previewData.mrp, previewData.offer_price ))}}</span>
                     </h3>
                   </span>
                   <p class="view-desc">
