@@ -2,8 +2,10 @@
 import { useRoute, useRouter } from "vue-router";
 import { ref, onMounted, computed, watch  } from "vue";
 import { storeToRefs } from "pinia";
-import { useShop, useCart, useAuth, useCommonIsToggleFunctionality } from "@/stores";
+import { useShop, useProduct, useCart, useAuth, useCommonIsToggleFunctionality } from "@/stores";
 import { mrpOrOfferPrice } from "@/composables";
+import ModalFade from "../../../components/modal/ModalFade.vue";
+
 
 // All Variable  Code Is Here.....................................................................................................
 const route = useRoute();
@@ -17,11 +19,16 @@ const quantityInput = ref(1);
 const getAttributeDatas = ref();
 
 const shop = useShop(); 
+const singleShopProduct = useProduct();
+const relatedShopProducts = useProduct();
 const { products, sideBar, loading } = storeToRefs(shop);
 
+const singleProductData = ref("");
+const relatedShopProductsData = ref("");
 const searchBrandQuery = ref("");
 const searchCategoryQuery = ref("");
 
+const previewData = ref('')
 const productType = ref("");
 const selectedBrandIds = ref([]);
 const selectedCategoryIds = ref([]);
@@ -50,6 +57,35 @@ const banners = ref('');
 
 // API Calling Code Is Here.....................................................................................................
 
+const getSingleProduct = async () =>  {
+    const res = await singleShopProduct.getSingleProductData(route.params.slug);
+    if(res?.success){
+      singleProductData.value = res?.result;
+      getRelatedProducts(res?.result?.category?.id);
+    }
+}
+
+const getRelatedProducts = async (id) =>  {
+    const res = await relatedShopProducts.getCategoryData(id);
+    relatedShopProductsData.value = res;
+    console.log(relatedShopProductsData);
+    
+}
+
+
+const previewModal = async(productSlug) =>{
+
+const res = await singleShopProduct.getSingleProductData(productSlug);
+  if(res?.success){
+    previewData.value = res?.result;
+    
+  }
+
+$("#product-view").modal("show");
+}
+
+
+
 function onEnter(el, done) {
   gsap.to(el, {
     opacity: 1,
@@ -67,51 +103,6 @@ watch(
     }
   }
 );
-
-// watch(()=> {
-//   console.log(products);
-// })
-
-// // All Function  Code Is Here.....................................................................................................
-
-// function addToCart(tProduct) {
-//   if (tProduct.offer_price != 0) {
-//     price.value = tProduct.offer_price;
-//   } else {
-//     price.value = tProduct.mrp;
-//   }
-
-//   if(sizeMrp.value || sizeOfferPrice.value){
-
-//     cart.addToCart({
-//       product_id: tProduct.id,
-//       name: tProduct.name,
-//       mrp: sizeMrp.value,
-//       offer_price: sizeOfferPrice.value,
-//       image: tProduct.image,
-//       size_id: sizeId.value,
-//       quantity: 1,
-//       free_shipping: tProduct.free_shipping,
-//     });
-    
-//   }else{
-    
-//     cart.addToCart({
-//       product_id: tProduct.id,
-//       name: tProduct.name,
-//       mrp: tProduct.mrp,
-//       // offer_price: tProduct.offer_price,
-//       image: tProduct.image,
-//       size_id: '',
-//       quantity: quantityInput.value,
-//       free_shipping: tProduct.free_shipping,
-//     });
-
-//   }
-
-
-//   notify.Success(`${tProduct.name} Successfully Added Your Cart product`);
-// }
 
 const searchCategories = computed(() => {
   return shop?.sideBar?.result?.categories?.filter((category) => {
@@ -215,6 +206,7 @@ const getAttributeData = async() => {
 }
 
 onMounted(() => {
+  getRelatedProducts();
   closeCategorySideBar();
   getAttributeData();
   queryProducts();
@@ -324,9 +316,9 @@ onMounted(() => {
                 </div>
               </div>
             </div>
-
+            <!-- {{ relatedShopProductsData }} -->
             <div class="row row-cols-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4" >
-              <div class="col"  v-for="(product, id) in products.data" :key="id">
+              <div class="col"  v-for="(product, id) in products?.data" :key="id">
                 <div class="product-card">
                   <div class="product-media">
 
@@ -346,11 +338,10 @@ onMounted(() => {
                     <div class="product-widget">
                       <a title="Product Compare" href="compare.html" class="fas fa-random"></a>
                       <a title="Product Video" v-show="product?.video_url" :href="product?.video_url" class="venobox fas fa-play" data-vbtype="video" data-autoplay="true"></a>
-                      <a title="Product View" href="#" class="fas fa-eye" data-bs-toggle="modal" data-bs-target="#product-view" @click.prevent="getProductDetails(product?.id)"></a>
-                      <a title="Product View" href="#" class="fas fa-eye" @click.prevent="previewProductModal(relatedData?.slug)"></a>
+                      <a title="Product View" href="#" class="fas fa-eye" data-bs-target="#product-view"  @click.prevent="previewModal(product?.slug)"></a>
                     </div>
                   </div>
-
+                
                   <div class="product-content">
                     <h6 class="product-name">
                       <a href="product-video.html">{{product?.name}}</a>
@@ -363,29 +354,30 @@ onMounted(() => {
                     </h6>
 
                         <h6 class="product-price">
-                          <span v-if="product?.variations?.data?.length"> 
+                          <span v-if="product?.variations?.data?.length">
                             {{ product?.variation_price_range?.min_price }}
                             <span class="details-price" v-if="productVariationPrice == '' || productVariationPrice == undefined">
-                                <span v-if="product?.variation_price_range?.min_price == product?.variation_price_range?.max_price ">{{ $filters?.currencySymbol(product?.variation_price_range?.min_price || product?.variation_price_range?.max_price) }}</span>
+                                <span v-if="product?.variation_price_range?.min_price == product?.variation_price_range?.max_price">{{ $filters?.currencySymbol(product?.variation_price_range?.min_price || product?.variation_price_range?.max_price) }}</span>
                                 <span>{{product?.variation_price_range?.min_price}} {{ product?.variation_price_range?.max_price }}</span>
                             </span>
 
-                            <span :class="`${type}-price my-2`" v-else>
+                            <span v-else>
                               <span>{{
                                 $filters.currencySymbol(productVariationPrice?.sell_price)
                               }}</span>
                             </span>
-                            
                           </span>
                            
                           <span v-else>
-                              <span :class="`${type}-price details-price` ">
+                              <span>
                                 <del>{{ $filters.currencySymbol(product.mrp) }}</del>
                                 <span>{{ $filters.currencySymbol( mrpOrOfferPrice( product.mrp, product.offer_price ))}}</span>
                               </span>
                              
                           </span>
                         </h6>
+
+                     
                   
                    
 
@@ -433,6 +425,7 @@ onMounted(() => {
         </div>
       </div>
     </section>
+    <ModalFade :preview-data="previewData"/>
   </div>
 </template>
 

@@ -64,32 +64,17 @@ const getProducts = async ()=> {
 const scrollToTop = () => {
   window.scrollTo({
     top: 700,
-    behavior: "smooth", // মসৃণ স্ক্রলিং এর জন্য
+    behavior: "smooth",
   });
 
-  // নির্বাচিত পণ্য সংরক্ষণ
+  
 const selectedProduct = ref(null);
 
-// পণ্য সিলেক্ট ফাংশন
 const showProductModal = (product) => {
   selectedProduct.value = product;
 };
 
 };
-
-// const getProducts = () => {
-//   products.value = [];
-//   shop.getData(
-//     productType.value,
-//     selectedBrandIds.value,
-//     selectedCategoryIds.value,
-//     selectedSubCategoryIds.value,
-//     selectedAttributeIds.value,
-//     sortingPrice.value,
-//     searchQuery.value,
-//     paginateSize.value,
-//   );
-// };
 
 const handleProductVariationPrice = (data) => {
    if (data?.length){
@@ -245,7 +230,6 @@ onMounted(() => {
                             </div>
                           
                            <span v-if="singleProductData?.variations?.data?.length"> 
-                            {{ singleProductData?.variation_price_range?.min_price }}
                             <h3 class="details-price" v-if="productVariationPrice == '' || productVariationPrice == undefined">
                                 <span v-if="singleProductData?.variation_price_range?.min_price == singleProductData?.variation_price_range?.max_price ">{{ $filters?.currencySymbol(singleProductData?.variation_price_range?.min_price || singleProductData?.variation_price_range?.max_price) }}</span>
                                 <span>{{singleProductData?.variation_price_range?.min_price}} {{ singleProductData?.variation_price_range?.max_price }}</span>
@@ -562,12 +546,10 @@ onMounted(() => {
                                   <img :src="relatedData?.image" alt="relatedData?.image">
                                 </a>
                                 <div class="product-widget">
-                                  <div class="product-widget">
                                     <a title="Product Compare" href="compare.html" class="fas fa-random"></a>
                                     <a title="Product Video" v-show="relatedData?.video_url" :href="relatedData?.video_url" class="venobox fas fa-play" data-vbtype="video" data-autoplay="true"></a>
                                     <a title="Product View" href="#" class="fas fa-eye" @click.prevent="previewProductModal(relatedData?.slug)"></a>
                                   </div>
-                                </div>
                             </div>
                             <div class="product-content">
                                 <div class="product-rating">
@@ -584,13 +566,13 @@ onMounted(() => {
                                 
                                 <h6 class="product-price">
                                 
-                                  <span v-if="relatedData?.variations?.data?.length>0">
+                                  <span v-if="relatedData?.variations?.data?.length>0" >
                                     <span>{{ relatedData?.variation_price_range?.min_price }} tk <span v-if="relatedData?.variation_price_range?.max_sell_price != relatedData?.variation_price_range?.min_sell_price"> - {{ relatedData?.max_sell_price }} tk</span></span>
                                   </span>
                                   
                                   <span v-else>
                                     <span v-if="relatedData?.offer_price ==0"><del class="text-danger">{{ relatedData?.mrp }} tk</del></span>
-                                    <span>{{ relatedData?.offer_price != 0 ? relatedData?.offer_price : relatedData?.mrp }} tk</span>
+                                    <span>{{ relatedData?.offer_price != 0 ? relatedData?.offer_price : relatedData?.offer_price }} tk</span>
                                   </span>
 
                                 </h6>

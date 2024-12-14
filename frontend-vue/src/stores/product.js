@@ -51,6 +51,8 @@ export const useProduct = defineStore ("product-page", {
             const res = await axiosInstance.get(`/products/${slug}`);
             if(res?.data?.success){
                 this.singleProduct = res?.data?.result 
+                console.log(this.singleProduct);
+                
                 return res?.data;
                 
             }
