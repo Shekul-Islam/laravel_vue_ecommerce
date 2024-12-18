@@ -216,6 +216,11 @@ const handleActiveBtns = (data) => {
   $('#product-view').modal('hide')
  }
 
+ 
+function cartShow() {
+  $("body").css("overflow", "hidden"), $(".cart-sidebar").addClass("active");
+}
+
 
  watch(
   () => route.params.slug,
@@ -437,6 +442,7 @@ onMounted(() => {
                                     class="product-add"
                                     title="Add to Cart"
                                     @click.prevent="addToCart(singleProductData, quantityInput, null, 0, campaignSlug)"
+                                    @click="cartShow"
                                   >
                                     <i
                                       :class="
