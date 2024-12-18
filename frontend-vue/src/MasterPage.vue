@@ -3,7 +3,7 @@ import Topbar from './components/common/Topbar.vue';
 import Header from './components/common/Header.vue';
 import Navbar from './components/common/Navbar.vue';
 import CategorySidebar from './components/home/CategorySidebar.vue';
-import CartSidebar from './components/cartSideBar/CartSidebar.vue';
+import CartSideBar from './components/cartsidebar/CartSideBar.vue';
 import NavSidebar from './components/home/NavSidebar.vue';
 import MobileMenue from './components/home/MobileMenue.vue';
 import ModalFade from './components/modal/ModalFade.vue';
@@ -37,7 +37,7 @@ const route = useRoute();
 
     <div><CategorySidebar/></div>
 
-   <div><CartSidebar/></div>
+   <div><CartSideBar/></div>
     
     <div><NavSidebar/></div>
 

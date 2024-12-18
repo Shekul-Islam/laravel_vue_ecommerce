@@ -382,7 +382,7 @@ onMounted(() => {
                    
 
                     <button class="product-add" title="View Details">
-                      <span><router-link :to="{name: 'productDetails', params:{slug:product.slug}}" class="fas fa-shopping-basket">Product Preview</router-link></span>
+                      <span><router-link :to="{name: 'productDetailsPage', params:{slug:product.slug}}" class="fas fa-shopping-basket">Product Preview</router-link></span>
                     </button>
                   </div>
                 </div>

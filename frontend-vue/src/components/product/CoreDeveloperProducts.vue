@@ -9,7 +9,7 @@ import ProductCardModal from "./ProductCardModal.vue";
 
 
 // All Variable  Code Is Here.....................................................................................................
-const modal         = useModal()
+const modal         = useModal();
 const auth          = useAuth();
 const cart          = useCart();
 const { loading }   = storeToRefs(cart);

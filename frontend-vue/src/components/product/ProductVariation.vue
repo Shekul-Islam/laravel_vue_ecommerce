@@ -1,7 +1,7 @@
 
 
 <script setup>
-import { ref, nextTick, computed, defineEmits } from "vue";
+import { ref, nextTick, computed, defineEmits, onMounted, watch } from "vue";
 
 const emit = defineEmits(['productVariationPrice', 'productVariationData', 'activeBtns']);
 const selectedAttributes = ref({});
@@ -321,6 +321,13 @@ const getVariations = (attributeKey, attributeValue, allVariations, index) => {
 };
 
 const getIsDefaultAttribute = (allVariations) => {
+  // correcttion
+
+  if (!Array.isArray(allVariations) || allVariations.length === 0) {
+    console.warn("allVariations একটি বৈধ অ্যারে নয় বা খালি।");
+    return;
+  }
+  // correcttion
   const defaultAttributes = allVariations?.filter(e => e.is_default);
   
   if (defaultAttributes.length > 0) {
@@ -393,7 +400,7 @@ const getIsDefaultAttribute = (allVariations) => {
       if (requiredAttrs.length === 0) {
         activeBtns.value = true;
       } else {
-        const hasAllRequired = requiredAttrs.every(attr => 
+        const hasAllRequired = requiredAttrs.every((attr) => 
           Object.keys(selectedAttributes.value).includes(attr)
         );
         activeBtns.value = hasAllRequired;
@@ -413,6 +420,25 @@ const props = defineProps({
 nextTick(() => {
   getIsDefaultAttribute(props.allVariations);
 });
+
+
+
+onMounted(() => {
+  if (!Array.isArray(props.allVariations)) {
+    console.warn("onMounted: allVariations একটি বৈধ অ্যারে নয় বা খালি।");
+  }
+});
+
+watch(
+  () => props.allVariations,
+  (newVal) => {
+    if (!Array.isArray(newVal)) {
+      console.warn("watch: allVariations একটি বৈধ অ্যারে নয় বা খালি।");
+    } else {
+      console.log("watch: allVariations লোড হয়েছে।", newVal);
+    }
+  }
+);
 </script>
 
 <template>

@@ -16,6 +16,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
+import ProductDetails from "../../../components/product/ProductDetails.vue";
 
 
 const route = useRoute();
@@ -26,7 +27,7 @@ const related = useProduct();
 const singleProductData = ref("");
 const productVariationPrice = ref("");
 const relatedProducts = ref("");
-const previewData = ref('')
+const previewData = ref('');
 
 const getSingleProduct = async () =>  {
     const res = await singleProduct.getSingleProductData(route.params.slug);
@@ -143,165 +144,8 @@ onMounted(() => {
         <!--=====================================
                 PRODUCT DETAILS PART START
         =======================================-->
-        <section class="inner-section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6">
-                       
-                        <div class="details-gallery">
-                            <div class="details-label-group">
-                                <label class="details-label new">new</label>
-                                <label class="details-label off">-10%</label>
-                            </div>
-                            <ul class="details-preview" >
-                                <li ><img :src="singleProductData?.image"></li>
-                               
-                            </ul>
-
-                       
-                            <ul class="details-thumb" >
-                                <Swiper
-                            :slidesPerView="5"
-                            :spaceBetween="30"
-                            :autoplay="{ delay: 3000, disableOnInteraction: false }"
-                            :loop="true"
-                            :pagination="{ clickable: true }"
-                            :navigation="true"
-                            :modules="[Pagination, Navigation, Autoplay]"
-                            class="mySwiper"
-                            >
-
-                            <swiper-slide v-for="(imgData, imgIndex) in singleProductData" :key="imgIndex">
-                                <li><img :src="singleProductData?.image" alt="imgData?.image"></li>
-                            </swiper-slide>
-                            </Swiper>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <ul class="product-navigation">
-                            <li class="product-nav-prev">
-                                <a href="#">
-                                    <i class="icofont-arrow-left"></i>
-                                    prev product
-                                    <span class="product-nav-popup">
-                                        <img src="@/assets/images/product/02.jpg" alt="product">
-                                        <small>green chilis</small>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="product-nav-next">
-                                <a href="#">
-                                    next product
-                                    <i class="icofont-arrow-right"></i>
-                                    <span class="product-nav-popup">
-                                        <img src="@/assets/images/product/03.jpg" alt="product">
-                                        <small>green chilis</small>
-                                    </span>
-                                </a>
-                            </li>
-                        </ul>
-                        
-                        <div class="details-content">
-                            <h3 class="details-name"><a href="#">{{ singleProductData.name }}</a></h3>
-                            <div class="details-meta">
-                                <p>SKU: {{ singleProductData.sku }}</p>
-                                <p>BRAND:<a href="#">{{singleProductData?.brand?.name}}</a></p>
-                                
-                                <div :class="`${singleProductData?.type}-meta`">
-                                  <p v-if="singleProductData?.category">
-                                    Category:<a href="#">{{ singleProductData?.category?.name }}</a>
-                                  </p>
-                                  <p v-if="singleProductData?.sub_category">
-                                    Sub Category:<a href="#">{{
-                                        singleProductData?.sub_category?.name
-                                    }}</a>
-                                  </p>
-                                </div>
-                            </div>
-                            <div class="details-rating">
-                                <i class="active icofont-star"></i>
-                                <i class="active icofont-star"></i>
-                                <i class="active icofont-star"></i>
-                                <i class="active icofont-star"></i>
-                                <i class="icofont-star"></i>
-                                <a href="#">(3 reviews)</a>
-                            </div>
-                          
-                           <span v-if="singleProductData?.variations?.data?.length"> 
-                            <h3 class="details-price" v-if="productVariationPrice == '' || productVariationPrice == undefined">
-                                <span v-if="singleProductData?.variation_price_range?.min_price == singleProductData?.variation_price_range?.max_price ">{{ $filters?.currencySymbol(singleProductData?.variation_price_range?.min_price || singleProductData?.variation_price_range?.max_price) }}</span>
-                                <span>{{singleProductData?.variation_price_range?.min_price}} {{ singleProductData?.variation_price_range?.max_price }}</span>
-                            </h3>
-
-                            <h3 :class="`${type}-price my-2`" v-else>
-                              <span>{{
-                                $filters.currencySymbol(productVariationPrice?.sell_price)
-                              }}</span>
-                            </h3>
-                            
-                           </span>
-                           
-                           <span v-else>
-                              <h3 :class="`${type}-price details-price` ">
-                                <del>{{ $filters.currencySymbol(singleProductData.mrp) }}</del>
-                                <span>{{ $filters.currencySymbol( mrpOrOfferPrice( singleProductData.mrp, singleProductData.offer_price ))}}</span>
-                                <a class="discout_amount" v-if="singleProductData.offer_price != 0" >Save {{ Math.round(singleProductData.mrp - singleProductData.offer_price) }}৳</a >
-                              </h3>
-                             
-                            </span>
-
-                            <!-- <ProductVariation :productVariations="productVariations" :allVariations="singleProduct?.variations?.data" @productVariationPrice="handleProductVariationPrice" @productVariationData="handleProductVariationData" @activeBtns="handleActiveBtns"  /> -->
-
-                           
-                            <p class="details-desc">{{singleProductData?.short_description}}</p>
-                            <div class="details-list-group">
-                                <label class="details-list-title">tags:</label>
-                                <ul class="details-tag-list">
-                                    <li><a href="#">organic</a></li>
-                                    <li><a href="#">fruits</a></li>
-                                    <li><a href="#">chilis</a></li>
-                                </ul>
-                            </div>
-
-                            <div class="details-list-group">
-                                <label class="details-list-title">Share:</label>
-                                <ul class="details-share-list">
-                                    <li><a href="#" class="icofont-facebook" title="Facebook"></a></li>
-                                    <li><a href="#" class="icofont-twitter" title="Twitter"></a></li>
-                                    <li><a href="#" class="icofont-linkedin" title="Linkedin"></a></li>
-                                    <li><a href="#" class="icofont-instagram" title="Instagram"></a></li>
-                                </ul>
-                            </div>
-
-                            <div class="details-add-group">
-                                <button class="product-add" title="Add to Cart">
-                                    <i class="fas fa-shopping-basket"></i>
-                                    <span>add to cart</span>
-                                </button>
-                                <div class="product-action">
-                                    <button class="action-minus" title="Quantity Minus"><i class="icofont-minus"></i></button>
-                                    <input class="action-input" title="Quantity Number" type="text" name="quantity" value="1">
-                                    <button class="action-plus" title="Quantity Plus"><i class="icofont-plus"></i></button>
-                                </div>
-                            </div>
-
-                            <div class="details-action-group">
-                                <a class="details-wish wish" href="#" title="Add Your Wishlist">
-                                    <i class="icofont-heart"></i>
-                                    <span>add to wish</span>
-                                </a>
-                                <a class="details-compare" href="compare.html" title="Compare This Item">
-                                    <i class="fas fa-random"></i>
-                                    <span>Compare This</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+       
+        <ProductDetails/>
         <!--=====================================
                 PRODUCT DETAILS PART END
         =======================================-->
@@ -321,6 +165,8 @@ onMounted(() => {
                         </ul>
                     </div>
                 </div>
+
+<!-- DESCRIPTIONS -->
                 <div class="tab-pane fade show active" id="tab-desc">
                     <div class="row">
                         <div class="col-lg-6">
@@ -354,6 +200,7 @@ onMounted(() => {
                     </div>
                 </div>
 
+<!-- SPECIFICATONS -->
                 <div class="tab-pane fade" id="tab-spec">
                     <div class="row">
                         <div class="col-lg-12">
@@ -383,6 +230,7 @@ onMounted(() => {
                     </div>
                 </div>
 
+<!-- REVIEWS -->
                 <div class="tab-pane fade" id="tab-reve">
                     <div class="row">
                         <div class="col-lg-12">
@@ -532,6 +380,7 @@ onMounted(() => {
                     </div>
                 </div>
 
+<!-- RELATED-ITEMS -->
                 <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
                     <div class="col" v-for="(relatedData, index)  in relatedProducts?.data" :key="index">
                         <div class="product-card">
@@ -549,7 +398,7 @@ onMounted(() => {
                                     <a title="Product Compare" href="compare.html" class="fas fa-random"></a>
                                     <a title="Product Video" v-show="relatedData?.video_url" :href="relatedData?.video_url" class="venobox fas fa-play" data-vbtype="video" data-autoplay="true"></a>
                                     <a title="Product View" href="#" class="fas fa-eye" @click.prevent="previewProductModal(relatedData?.slug)"></a>
-                                  </div>
+                                </div>
                             </div>
                             <div class="product-content">
                                 <div class="product-rating">
@@ -577,7 +426,7 @@ onMounted(() => {
 
                                 </h6>
                                 <button class="product-add" title="Add to Cart" @click="scrollToTop">
-                                    <span><router-link :to="{name: 'productDetails', params:{slug:relatedData?.slug}}" class="fas fa-shopping-basket">Product Preview</router-link></span>
+                                    <span><router-link :to="{name: 'productDetailsPage', params:{slug:relatedData?.slug}}" class="fas fa-shopping-basket">Product Preview</router-link></span>
                                 </button>
                                 <div class="product-action">
                                     <button class="action-minus" title="Quantity Minus"><i class="icofont-minus"></i></button>
@@ -587,12 +436,13 @@ onMounted(() => {
                             </div>
                         </div>
                     </div>
-
                 </div>
+
+<!-- VIEW-ALL-PRODUCTS -->
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section-btn-25">
-                            <a href="shop-4column.html" class="btn btn-outline">
+                            <a href="/shop" class="btn btn-outline">
                                 <i class="fas fa-eye"></i>
                                 <span>view all related</span>
                             </a>

@@ -1,49 +1,64 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
-import { useProduct, useCart, useNotification, useShop, useSetting, } from "@/stores";
+import { useProduct, useCart, useNotification, useShop, useSettingStore, } from "@/stores";
 import { storeToRefs } from "pinia";
 import { ProductVariation } from "@/components";
 import { mrpOrOfferPrice, addToCart } from "@/composables";
 import axiosInstance from "@/services/axiosService.js";
+/*===============
+    Swipper
+================*/
+import { Swiper, SwiperSlide } from "swiper/vue";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { Pagination, Navigation, Autoplay } from "swiper/modules";
+
+
+
 const emit = defineEmits(['productVariationPrice', 'productVariationData', 'activeBtns']);
 
-const props = defineProps({
- singleProduct: {
-    type: [Object, String],
-    default: {},
-    
-  },
-  
- productVariations: {
-    type: Object,
-    default: {}, 
-  },
- campaignSlug: {
-    type: String,
-    default: null,
-  },
- type: {
-    type: String,
-    default: null, 
-  },
-});
+// const props = defineProps({
+//  singleProduct: {
+//     type: [Object, String],
+//     default: {},
+//   },
+
+//  productVariations: {
+//     type: Object,
+//     default: {}, 
+//   },
+//  campaignSlug: {
+//     type: String,
+//     default: null,
+//   },
+//  type: {
+//     type: String,
+//     default: null, 
+//   },
+// });
 
 
 const sizeName      = ref("");
 const productPrices = ref("");
 const route         = useRoute();
+const singleProduct = useProduct();
+// const singleData = useProduct();
+const related = useProduct();
 const shop          = useShop();
 const cart          = useCart();
 const { loading }   = storeToRefs(cart);
 const notify        = useNotification();
 const quantityInput = ref(1);
-const setting       = useSetting();
+const setting       = useSettingStore();
 
 // product variations start
 const productVariationData  = ref("");
 const productVariationPrice = ref("");
 const activeBtns            = ref(false);
+const singleProductData = ref("");
+const relatedProducts = ref("");
 
 
 // social Icons start
@@ -66,6 +81,28 @@ const decrementCartItem = () => {
     quantityInput.value = parseInt(quantityInput.value) - 1;
   }
 };
+
+
+
+// correction
+const getSingleProduct = async () =>  {
+    const res = await singleProduct.getSingleProductData(route.params.slug);
+    if(res?.success){
+      singleProductData.value = res?.result;
+      console.log(singleProductData);
+      
+      getRelatedProducts(res?.result?.category?.id);
+    }
+}
+
+const getRelatedProducts = async (id) =>  {
+    const res = await related.getCategoryData(id);
+    relatedProducts.value = res;
+}
+
+// correction
+
+
 
 // setting data start
 const getSettingsData = async () => {
@@ -132,13 +169,13 @@ const backgroundImageUrl = ref("https://wpmet.com/plugin/elementskit/popup-modal
 const handleBeforeUnload = (event) => {
 
   event.preventDefault();
-  event.returnValue = 'fdsfsdf'; 
+  event.returnValue = 'fdsfsdf';
   
 
   setTimeout(() => {
     const modal = new bootstrap.Modal(document.getElementById('product-view'));
     modal.show();
-  }, 10); 
+  }, 10);
 };
 
 
@@ -179,283 +216,271 @@ const handleActiveBtns = (data) => {
   $('#product-view').modal('hide')
  }
 
+
+ watch(
+  () => route.params.slug,
+  (newSlug, oldSlug) => {
+    
+    getSingleProduct();
+  }
+);
+
 onMounted(() => {
   // socialMedia();
+  getSingleProduct();
+  getRelatedProducts();
 });
 
 </script>
 
 <template>
-  <div :class="`${type}-content`">
-    <h3 :class="`${type}-name`">
-      <a href="#">{{ singleProduct?.name }}</a>
-    </h3>
+  <!-- correction -->
+  <section class="inner-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                       
+                      <div class="details-gallery">
+                            <div class="details-label-group">
+                                <label class="details-label new">new</label>
+                                <label class="details-label off">-10%</label>
+                            </div>
+                            <ul class="details-preview" >
+                                <li ><img :src="singleProductData?.image"></li>
+                               
+                            </ul>
 
-        <!-- Price Section start -->
-    <!-- Product Variation Price Section start -->
-    <span v-if="singleProduct?.variations?.data.length > 0">
-      <h3 :class="`${type}-price my-2`" v-if="productVariationPrice == '' || productVariationPrice == undefined">
-        <span v-if="singleProduct.variation_price_range.min_price == singleProduct.variation_price_range.max_price">{{ $filters.currencySymbol( singleProduct.variation_price_range.min_price || singleProduct.variation_price_range.max_price ) }}</span>
-        <span v-else>{{ $filters.currencySymbol( singleProduct.variation_price_range.min_price ) }} - {{ $filters.currencySymbol( singleProduct.variation_price_range.max_price ) }}</span>
-      </h3>
-      <h3 :class="`${type}-price my-2`" v-else>
-        <span>{{
-          $filters.currencySymbol(productVariationPrice?.sell_price)
-        }}</span>
-      </h3>
-    </span>
-    <!-- Product Variation Price Section end -->
-    <span v-else>
-      <h3 :class="`${type}-price`">
-        <del>{{ $filters.currencySymbol(singleProduct.mrp) }}</del>
-        <span>{{ $filters.currencySymbol( mrpOrOfferPrice( singleProduct.mrp, singleProduct.offer_price ))}}</span>
-        <a class="discout_amount" v-if="singleProduct.offer_price != 0" >Save {{ Math.round(singleProduct.mrp - singleProduct.offer_price) }}৳</a >
-      </h3>
-    </span>
-    <!-- Price Section end -->
+                       
+                            <ul class="details-thumb" >
+                                <Swiper
+                            :slidesPerView="5"
+                            :spaceBetween="30"
+                            :autoplay="{ delay: 3000, disableOnInteraction: false }"
+                            :loop="true"
+                            :pagination="{ clickable: true }"
+                            :navigation="true"
+                            :modules="[Pagination, Navigation, Autoplay]"
+                            class="mySwiper"
+                            >
 
-    <div :class="`${type}-meta`">
-      <p v-if="singleProduct?.sku">SKU:<span>{{ singleProduct?.sku }}</span></p>
-      <p v-if="singleProduct?.brand">
-        BRAND:<a href="#">{{ singleProduct?.brand?.name }}</a>
-      </p>
-    </div>
-    <div :class="`${type}-meta`">
-      <p v-if="singleProduct?.category">
-        Category:<a href="#">{{ singleProduct?.category?.name }}</a>
-      </p>
-      <p v-if="singleProduct?.sub_category">
-        Sub Category:<a href="#">{{
-          singleProduct?.sub_category?.name
-        }}</a>
-      </p>
-    </div>
+                            <swiper-slide v-for="(imgData, imgIndex) in singleProductData" :key="imgIndex">
+                                <li><img :src="singleProductData?.image" alt="singleProductData?.image"></li>
+                            </swiper-slide>
+                            </Swiper>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <ul class="product-navigation">
+                            <li class="product-nav-prev">
+                                <a href="#">
+                                    <i class="icofont-arrow-left"></i>
+                                    prev product
+                                    <span class="product-nav-popup">
+                                        <img src="@/assets/images/product/02.jpg" alt="product">
+                                        <small>green chilis</small>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="product-nav-next">
+                                <a href="#">
+                                    next product
+                                    <i class="icofont-arrow-right"></i>
+                                    <span class="product-nav-popup">
+                                        <img src="@/assets/images/product/03.jpg" alt="product">
+                                        <small>green chilis</small>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                        
+                        <div class="details-content">
+                            <h3 class="details-name"><a href="#">{{ singleProductData.name }}</a></h3>
+                            <div class="details-meta">
+                                <p>SKU: {{ singleProductData.sku }}</p>
+                                <p>BRAND:<a href="#">{{singleProductData?.brand?.name}}</a></p>
+                                
+                                <div :class="`${singleProductData?.type}-meta`">
+                                  <p v-if="singleProductData?.category">
+                                    Category:<a href="#">{{ singleProductData?.category?.name }}</a>
+                                  </p>
+                                  <p v-if="singleProductData?.sub_category">
+                                    Sub Category:<a href="#">{{
+                                        singleProductData?.sub_category?.name
+                                    }}</a>
+                                  </p>
+                                </div>
+                            </div>
+                            <div class="details-rating">
+                                <i class="active icofont-star"></i>
+                                <i class="active icofont-star"></i>
+                                <i class="active icofont-star"></i>
+                                <i class="active icofont-star"></i>
+                                <i class="icofont-star"></i>
+                                <a href="#">(3 reviews)</a>
+                            </div>
+                          
+                           <span v-if="singleProductData?.variations?.data?.length"> 
+                            <h3 class="details-price" v-if="productVariationPrice == '' || productVariationPrice == undefined">
+                                <span v-if="singleProductData?.variation_price_range?.min_price == singleProductData?.variation_price_range?.max_price ">{{ $filters?.currencySymbol(singleProductData?.variation_price_range?.min_price || singleProductData?.variation_price_range?.max_price) }}</span>
+                                <span>{{singleProductData?.variation_price_range?.min_price}} {{ singleProductData?.variation_price_range?.max_price }}</span>
+                            </h3>
 
-    <p
-      :class="`${type}-desc mt-2`" 
-      v-if="singleProduct.short_description"
-    >Quick Overview :</p>
-    <p
-      :class="`${type}-desc mt-2`"
-      v-if="singleProduct.short_description"
-      v-html="singleProduct.short_description"
-    ></p>
+                            <h3 :class="`${type}-price my-2`" v-else>
+                              <span>{{
+                                $filters.currencySymbol(productVariationPrice?.sell_price)
+                              }}</span>
+                            </h3>
+                            
+                           </span>
+                           
+                           <span v-else>
+                              <h3 :class="`${type}-price details-price` ">
+                                <del>{{ $filters.currencySymbol(singleProductData.mrp) }}</del>
+                                <span>{{ $filters.currencySymbol( mrpOrOfferPrice( singleProductData.mrp, singleProductData.offer_price ))}}</span>
+                                <a class="discout_amount" v-if="singleProductData.offer_price != 0" >Save {{ Math.round(singleProductData.mrp - singleProductData.offer_price) }}৳</a >
+                              </h3>
+                             
+                            </span>
 
-    <!-- Product Variation Price Section start -->
+                            <!-- <ProductVariation :productVariations="productVariations" :allVariations="singleProduct?.variations?.data" @productVariationPrice="handleProductVariationPrice" @productVariationData="handleProductVariationData" @activeBtns="handleActiveBtns"  /> -->
 
-    <ProductVariation :productVariations="productVariations" :allVariations="singleProduct?.variations?.data" @productVariationPrice="handleProductVariationPrice" @productVariationData="handleProductVariationData" @activeBtns="handleActiveBtns"  />
+                           
+                            <p class="details-desc">{{singleProductData?.short_description}}</p>
+                            <div class="details-list-group">
+                                <label class="details-list-title">tags:</label>
+                                <ul class="details-tag-list">
+                                    <li><a href="#">organic</a></li>
+                                    <li><a href="#">fruits</a></li>
+                                    <li><a href="#">chilis</a></li>
+                                </ul>
+                            </div>
 
-    <!-- Product Variation Price Section end -->
+                            <div class="details-list-group">
+                                <label class="details-list-title">Share:</label>
+                                <ul class="details-share-list">
+                                    <li><a href="#" class="icofont-facebook" title="Facebook"></a></li>
+                                    <li><a href="#" class="icofont-twitter" title="Twitter"></a></li>
+                                    <li><a href="#" class="icofont-linkedin" title="Linkedin"></a></li>
+                                    <li><a href="#" class="icofont-instagram" title="Instagram"></a></li>
+                                </ul>
+                            </div>
 
-    <div :class="`${type}-list-group`" v-if="singleProduct?.video_url">
-      <div class="videoHW">
-        <iframe class="mt-5"  :src="getEmbedUrl(singleProduct?.video_url)" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>              
-      </div>
-    </div>
 
-    <div :class="`${type}-list-group`">
-      <label
-      :class="`${type}-list-title`"
-        v-show="socialShares?.data?.length > 0"
-        >Share:</label
-      >
-      <ul :class="`${type}-share-list`">
-        <li
-          v-for="(socialShare, index) in socialShares?.data"
-          :key="index"
-        >
-          <a
-            :href="socialURL(socialShare.title, socialShare.link)"
-            target="_blank"
-            title=""
-            ><i :class="socialIcons(socialShare.title)"></i
-          ></a>
-        </li>
-      </ul>
-    </div>
 
-    <div :class="`${type}-list-group mt-3`">
-      <div
-        class="quantity"
-        :class="{
-          'quantity-disabled':
-            activeBtns === false &&
-            singleProduct?.variations?.data.length > 0,
-        }"
-      >
-        <button
-          class="minus"
-          :disabled="
-            activeBtns === false &&
-            singleProduct?.variations?.data.length > 0
-          "
-          aria-label="Decrease"
-          @click.prevent="decrementCartItem"
-        >
-          &minus;
-        </button>
-        <input
-          type="number"
-          class="input-box"
-          min="1"
-          max="10"
-          v-model="quantityInput"
-        />
-        <button
-          class="plus"
-          :disabled="
-            activeBtns === false &&
-            singleProduct?.variations?.data.length > 0
-          "
-          aria-label="Increase"
-          @click.prevent="incrementCartItem"
-        >
-          &plus;
-        </button>
-      </div>
-    </div>
+                            <div :class="`${type}-add-group`">
+                              <div class="row" v-if="singleProductData?.variations?.data.length > 0">
+                                <div class="col-md-6 mt-lg-0 mt-3">
+                                  <button class="product-add"
+                                    :disabled="
+                                      activeBtns === false &&
+                                      singleProductData?.variations?.data.length > 0
+                                    "
+                                    :class="{ singleProductBtn: activeBtns === false }"
+                                    title="Add to Cart"
+                                    @click.prevent="
+                                      addToCart(
+                                        singleProductData,
+                                        quantityInput,
+                                        productVariationData,
+                                        productVariationPrice,
+                                        campaignSlug
+                                      )
+                                    ">
 
-    <div :class="`${type}-add-group`">
-      <div
-        class="row"
-        v-if="singleProduct?.variations?.data.length > 0"
-      >
-        <div class="col-md-6 mt-lg-0 mt-3">
-          <button
-            class="product-add"
-            :disabled="
-              activeBtns === false &&
-              singleProduct?.variations?.data.length > 0
-            "
-            :class="{ singleProductBtn: activeBtns === false }"
-            title="Add to Cart"
-            @click.prevent="
-              addToCart(
-                singleProduct,
-                quantityInput,
-                productVariationData,
-                productVariationPrice,
-                campaignSlug
-              )
-            ">
+                                    <i
+                                      :class="
+                                        loading == singleProductData.id
+                                        ? 'fa-solid fa-spinner fa-spin'
+                                        : 'fas fa-shopping-basket'">
+                                    </i>
+                                    <span>add to cart</span>
+                                  </button>
+                                </div>
+                                <div class="col-md-6 mt-lg-0 mt-3" v-if="activeBtns === false">
+                                  <a
+                                    class="product-add main-order-btn"
+                                    :class="{ 'singleProductBtn ': activeBtns === false }"
+                                    title="Add to Cart">
 
-            <i
-              :class="
-                loading == singleProduct.id
-                ? 'fa-solid fa-spinner fa-spin'
-                : 'fas fa-shopping-basket'">
-            </i>
-            <span>add to cart</span>
-          </button>
-        </div>
-        <div class="col-md-6 mt-lg-0 mt-3" v-if="activeBtns === false">
-          <a
-            class="product-add main-order-btn"
-            :class="{ 'singleProductBtn ': activeBtns === false }"
-            title="Add to Cart">
-            
-            <i class="fas fa-cart-plus"></i>
-            <span>Buy Now</span>
-          </a>
-        </div>
-        <div class="col-md-6 mt-lg-0 mt-3" v-else>
-          <router-link
-            :to="{ name: 'checkoutPage' }"
-            class="product-add main-order-btn"
-            :class="{ 'singleProductBtn ': activeBtns === false }"
-            title="Add to Cart"
-            @click.prevent="
-              addToCart(
-                singleProduct,
-                quantityInput,
-                productVariationData,
-                productVariationPrice,
-                campaignSlug
-              );
-              modalClose()
-            "
-          >
-            <i class="fas fa-cart-plus"></i>
-            <span>Buy Now</span>
-          </router-link>
-        </div>
-      </div>
-      <div class="row" v-else>
-        <div class="col-md-6 mt-lg-0 mt-3">
-          <button
-            class="product-add"
-            title="Add to Cart"
-            @click.prevent="addToCart(singleProduct, quantityInput, null, 0, campaignSlug)"
-          >
-            <i
-              :class="
-                loading == singleProduct.id
-                  ? 'fa-solid fa-spinner fa-spin'
-                  : 'fas fa-shopping-basket'
-              "
-            ></i>
-            <span>add to cart</span>
-          </button>
-        </div>
-        <div class="col-md-6 mt-lg-0 mt-3">
-          <router-link
-            :to="{ name: 'checkoutPage' }"
-            class="product-add main-order-btn"
-            title="Add to Cart"
-            @click.prevent="addToCart(singleProduct, quantityInput, null, 0, campaignSlug); modalClose()"
-          >
-            <i class="fas fa-cart-plus"></i>
-            <span>Buy Now</span>
-          </router-link>
-        </div>
-      </div>
-    </div>
-    <div :class="`${type}-action-group`">
-      <a
-        :href="`https://wa.me/+88${whatsapp}?text=Product%20Details%0A%0AWebsite:%20${websiteUrl}/single-product/${
-          singleProduct?.id
-        }%0AProduct%20Name:%20${
-          singleProduct?.name
-        }%0AProduct%20Size:%20${sizeName}%0AOffer%20Price:%20${
-          productPrices
-            ? productPrices?.offer_price
-            : singleProduct?.offer_price
-        }৳%0ARegular%20Price:%20${
-          productPrices ? productPrices?.mrp : singleProduct?.mrp
-        }৳`"
-        class="product-add bg-success text-light"
-        target="_blank"
-      >
-        <i class="fab fa-whatsapp"></i><span>হোয়াটসঅ্যাপ</span>
-      </a>
-      <a
-        :href="`https://m.me/${messengerId}?ref=Product%20Details%0A%0AWebsite:%20${websiteUrl}/single-product/${
-          singleProduct?.id
-        }%0AProduct%20Name:%20${
-          singleProduct?.name
-        }%0AProduct%20Size:%20${sizeName}%0AOffer%20Price:%20${
-          productPrices
-            ? productPrices?.offer_price
-            : singleProduct?.offer_price
-        }৳%0ARegular%20Price:%20${
-          productPrices ? productPrices?.mrp : singleProduct?.mrp
-        }৳`"
-        class="product-add bg-primary text-light"
-        target="_blank"
-      >
-        <i class="fab fa-facebook-messenger"></i
-        ><span>মেসেঞ্জার</span>
-      </a>
-      <a
-        :class="`${type}-wish wish bg-warning text-dark`"
-        :href="`tel:+88${phone}`"
-        title="Add Your Wishlist"
-      >
-        <i class="fas fa-phone-alt"></i>
-        <span>Phone</span>
-      </a>
-    </div>
-  </div>
+                                    <i class="fas fa-cart-plus"></i>
+                                    <span>Buy Now</span>
+                                  </a>
+                                </div>
+                                <div class="col-md-6 mt-lg-0 mt-3" v-else>
+                                  <router-link
+                                    :to="{ name: 'checkoutPage' }"
+                                    class="product-add main-order-btn"
+                                    :class="{ 'singleProductBtn ': activeBtns === false }"
+                                    title="Add to Cart"
+                                    @click.prevent="
+                                      addToCart(
+                                        singleProductData,
+                                        quantityInput,
+                                        productVariationData,
+                                        productVariationPrice,
+                                        campaignSlug
+                                      );
+                                      modalClose()
+                                    "
+                                  >
+                                    <i class="fas fa-cart-plus"></i>
+                                    <span>Buy Now</span>
+                                  </router-link>
+                                </div>
+                              </div>
+                              
+                              <div class="row" v-else>
+                                <div class="col-md-6 mt-lg-0 mt-3">
+                                  <button
+                                    class="product-add"
+                                    title="Add to Cart"
+                                    @click.prevent="addToCart(singleProductData, quantityInput, null, 0, campaignSlug)"
+                                  >
+                                    <i
+                                      :class="
+                                        loading == singleProductData.id
+                                          ? 'fa-solid fa-spinner fa-spin'
+                                          : 'fas fa-shopping-basket'
+                                      "
+                                    ></i>
+                                    <span>add to cart</span>
+                                  </button>
+                                </div>
+                                <div class="col-md-6 mt-lg-0 mt-3">
+                                  <router-link
+                                    :to="{ name: 'checkoutPage' }"
+                                    class="product-add main-order-btn"
+                                    title="Add to Cart"
+                                    @click.prevent="addToCart(singleProductData, quantityInput, null, 0, campaignSlug); modalClose()"
+                                  >
+                                    <i class="fas fa-cart-plus"></i>
+                                    <span>Buy Now</span>
+                                  </router-link>
+                                </div>
+                              </div>
+                            </div>
+
+
+
+                            <div class="details-action-group">
+                                <a class="details-wish wish" href="#" title="Add Your Wishlist">
+                                    <i class="icofont-heart"></i>
+                                    <span>add to wish</span>
+                                </a>
+                                <a class="details-compare" href="compare.html" title="Compare This Item">
+                                    <i class="fas fa-random"></i>
+                                    <span>Compare This</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+  <!-- correction -->
+ 
 </template>
 
 
@@ -510,6 +535,7 @@ onMounted(() => {
 .view-add-group {
   margin: 20px 0px 15px;
 }
+
 
 /* MOdla css */
 

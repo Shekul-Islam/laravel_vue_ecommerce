@@ -55,7 +55,7 @@
                                         <tbody>
                                             <tr>
                                                 <td class="table-serial"><h6>01</h6></td>
-                                                <td class="table-image"><img src="images/product/01.jpg" alt="product"></td>
+                                                <td class="table-image"><img src="@/assets/images/product/01.jpg" alt="product"></td>
                                                 <td class="table-name"><h6>product name</h6></td>
                                                 <td class="table-price"><h6>$19<small>/kilo</small></h6></td>
                                                 <td class="table-brand"><h6>Fresh Company</h6></td>
@@ -67,7 +67,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="table-serial"><h6>02</h6></td>
-                                                <td class="table-image"><img src="images/product/02.jpg" alt="product"></td>
+                                                <td class="table-image"><img src="@/assets/images/product/02.jpg" alt="product"></td>
                                                 <td class="table-name"><h6>product name</h6></td>
                                                 <td class="table-price"><h6>$19<small>/kilo</small></h6></td>
                                                 <td class="table-brand"><h6>Radhuni Masala</h6></td>
@@ -79,7 +79,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="table-serial"><h6>03</h6></td>
-                                                <td class="table-image"><img src="images/product/03.jpg" alt="product"></td>
+                                                <td class="table-image"><img src="@/assets/images/product/03.jpg" alt="product"></td>
                                                 <td class="table-name"><h6>product name</h6></td>
                                                 <td class="table-price"><h6>$19<small>/kilo</small></h6></td>
                                                 <td class="table-brand"><h6>Pran Prio</h6></td>
@@ -91,7 +91,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="table-serial"><h6>04</h6></td>
-                                                <td class="table-image"><img src="images/product/04.jpg" alt="product"></td>
+                                                <td class="table-image"><img src="@/assets/images/product/04.jpg" alt="product"></td>
                                                 <td class="table-name"><h6>product name</h6></td>
                                                 <td class="table-price"><h6>$19<small>/kilo</small></h6></td>
                                                 <td class="table-brand"><h6>Real Food</h6></td>
@@ -103,7 +103,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="table-serial"><h6>05</h6></td>
-                                                <td class="table-image"><img src="images/product/05.jpg" alt="product"></td>
+                                                <td class="table-image"><img src="@/assets/images/product/05.jpg" alt="product"></td>
                                                 <td class="table-name"><h6>product name</h6></td>
                                                 <td class="table-price"><h6>$19<small>/kilo</small></h6></td>
                                                 <td class="table-brand"><h6>Rdhuni Company</h6></td>
@@ -269,7 +269,7 @@
                                 <div class="row">
                                     <div class="col-md-6 col-lg-4 alert fade show">
                                         <div class="payment-card payment active">
-                                            <img src="images/payment/png/01.png" alt="payment">
+                                            <img src="@/assets/images/payment/png/01.png" alt="payment">
                                             <h4>card number</h4>
                                             <p>
                                                 <span>****</span>
@@ -283,7 +283,7 @@
                                     </div>
                                     <div class="col-md-6 col-lg-4 alert fade show">
                                         <div class="payment-card payment">
-                                            <img src="images/payment/png/02.png" alt="payment">
+                                            <img src="@/assets/images/payment/png/02.png" alt="payment">
                                             <h4>card number</h4>
                                             <p>
                                                 <span>****</span>
@@ -297,7 +297,7 @@
                                     </div>
                                     <div class="col-md-6 col-lg-4 alert fade show">
                                         <div class="payment-card payment">
-                                            <img src="images/payment/png/03.png" alt="payment">
+                                            <img src="@/assets/images/payment/png/03.png" alt="payment">
                                             <h4>card number</h4>
                                             <p>
                                                 <span>****</span>

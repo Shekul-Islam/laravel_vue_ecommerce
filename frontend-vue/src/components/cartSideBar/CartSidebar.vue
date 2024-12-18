@@ -59,117 +59,78 @@ const cartIncrement = (index) => {
                 
             </div>
 
-            <ul class="cart-list">
-                <li class="cart-item">
+            <Transition name="fade" mode="out-in" class="cart-list">
+               <TransitionGroup
+                name="list"
+                tag="ul"
+                class="cart-list"
+                v-if="cartItemCount !== 0"
+               >
+               
+                <li 
+                 class="cart-item"
+                 v-for="(cart, index) in cartItem"
+                 :key="cart.product_id"
+                >
                     <div class="cart-media">
-                        <a href="#"><img src="@/assets/images/product/01.jpg" alt="product"></a>
-                        <button class="cart-delete"><i class="far fa-trash-alt"></i></button>
+                        <a href="#"><img :src="cart?.image" alt="product"></a>
+                        <button class="cart-delete" @click.prevent="deleteCart(index)">
+                          <i class="far fa-trash-alt"></i>
+                        </button>
                     </div>
+
                     <div class="cart-info-group">
                         <div class="cart-info">
-                            <h6><a href="product-single.html">existing product name</a></h6>
-                            <p>Unit Price - $8.75</p>
+                            <h6>
+                              <a href="product-single.html">existing product name</a>
+                            </h6>
+                            <p>
+                              Unit Price - $8.75
+                              {{ $filters.currencySymbol(Math.round(cart.sell_price)) }}
+                            </p>
                         </div>
+
                         <div class="cart-action-group">
                             <div class="product-action">
-                                <button class="action-minus" title="Quantity Minus"><i class="icofont-minus"></i></button>
-                                <input class="action-input" title="Quantity Number" type="text" name="quantity" value="1">
-                                <button class="action-plus" title="Quantity Plus"><i class="icofont-plus"></i></button>
+                                <button class="action-minus" title="Quantity Minus" @click.prevent="cartDecrement(index)">
+                                  <i class="fas fa-minus"></i>
+                                </button>
+                                <input 
+                                  class="action-input" 
+                                  title="Quantity Number" 
+                                  type="text" 
+                                  name="quantity" 
+                                  :disabled="cart.quantity === 1 ? true : false"
+                                  :value="cart.quantity"
+                                >
+                                <button class="action-plus" title="Quantity Plus"  @click.prevent="cartIncrement(index)">
+                                  <i class="icofont-plus"></i>
+                                </button>
                             </div>
-                            <h6>$56.98</h6>
+                            {{ $filters.currencySymbol(Math.round((cart.sell_price) * cart.quantity)) }}
                         </div>
                     </div>
                 </li> 
-                <li class="cart-item">
-                    <div class="cart-media">
-                        <a href="#"><img src="@/assets/images/product/02.jpg" alt="product"></a>
-                        <button class="cart-delete"><i class="far fa-trash-alt"></i></button>
-                    </div>
-                    <div class="cart-info-group">
-                        <div class="cart-info">
-                            <h6><a href="product-single.html">existing product name</a></h6>
-                            <p>Unit Price - $8.75</p>
-                        </div>
-                        <div class="cart-action-group">
-                            <div class="product-action">
-                                <button class="action-minus" title="Quantity Minus"><i class="icofont-minus"></i></button>
-                                <input class="action-input" title="Quantity Number" type="text" name="quantity" value="1">
-                                <button class="action-plus" title="Quantity Plus"><i class="icofont-plus"></i></button>
-                            </div>
-                            <h6>$56.98</h6>
-                        </div>
-                    </div>
-                </li>
-                <li class="cart-item">
-                    <div class="cart-media">
-                        <a href="#"><img src="@/assets/images/product/03.jpg" alt="product"></a>
-                        <button class="cart-delete"><i class="far fa-trash-alt"></i></button>
-                    </div>
-                    <div class="cart-info-group">
-                        <div class="cart-info">
-                            <h6><a href="product-single.html">existing product name</a></h6>
-                            <p>Unit Price - $8.75</p>
-                        </div>
-                        <div class="cart-action-group">
-                            <div class="product-action">
-                                <button class="action-minus" title="Quantity Minus"><i class="icofont-minus"></i></button>
-                                <input class="action-input" title="Quantity Number" type="text" name="quantity" value="1">
-                                <button class="action-plus" title="Quantity Plus"><i class="icofont-plus"></i></button>
-                            </div>
-                            <h6>$56.98</h6>
-                        </div>
-                    </div>
-                </li>
-                <li class="cart-item">
-                    <div class="cart-media">
-                        <a href="#"><img src="@/assets/images/product/04.jpg" alt="product"></a>
-                        <button class="cart-delete"><i class="far fa-trash-alt"></i></button>
-                    </div>
-                    <div class="cart-info-group">
-                        <div class="cart-info">
-                            <h6><a href="product-single.html">existing product name</a></h6>
-                            <p>Unit Price - $8.75</p>
-                        </div>
-                        <div class="cart-action-group">
-                            <div class="product-action">
-                                <button class="action-minus" title="Quantity Minus"><i class="icofont-minus"></i></button>
-                                <input class="action-input" title="Quantity Number" type="text" name="quantity" value="1">
-                                <button class="action-plus" title="Quantity Plus"><i class="icofont-plus"></i></button>
-                            </div>
-                            <h6>$56.98</h6>
-                        </div>
-                    </div>
-                </li>
-                <li class="cart-item">
-                    <div class="cart-media">
-                        <a href="#"><img src="@/assets/images/product/05.jpg" alt="product"></a>
-                        <button class="cart-delete"><i class="far fa-trash-alt"></i></button>
-                    </div>
-                    <div class="cart-info-group">
-                        <div class="cart-info">
-                            <h6><a href="product-single.html">existing product name</a></h6>
-                            <p>Unit Price - $8.75</p>
-                        </div>
-                        <div class="cart-action-group">
-                            <div class="product-action">
-                                <button class="action-minus" title="Quantity Minus"><i class="icofont-minus"></i></button>
-                                <input class="action-input" title="Quantity Number" type="text" name="quantity" value="1">
-                                <button class="action-plus" title="Quantity Plus"><i class="icofont-plus"></i></button>
-                            </div>
-                            <h6>$56.98</h6>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-            <div class="cart-footer">
+               </TransitionGroup>
+
+               <ul class="cart-list" v-else>
+                 <li class="cart-item cartItemImage">
+                   <img src="@/assets/images/cart/cart.png" alt="" />
+                 </li>
+                 <h3 class="text-danger text-center">আপনার কার্টে কিছু নেই</h3>
+               </ul>
+              
+            </Transition>
+
+            <div class="cart-footer" >
                 <button class="coupon-btn">Do you have a coupon code?</button>
                 <form class="coupon-form">
                     <input type="text" placeholder="Enter your coupon code">
                     <button type="submit"><span>apply</span></button>
                 </form>
                 <router-link :to="{name: 'user.checkout'}" class="cart-checkout-btn" href="checkout.html">
-                    <span class="checkout-label">Proceed to Checkout</span>
-                    <span class="checkout-price">$369.78</span>
+                    <span class="checkout-label" style="width: 60%;">Proceed to Checkout</span>
+                    <span class="checkout-price">{{ $filters.currencySymbol(totalPrice)}}</span>
                 </router-link>
             </div>
         </aside>

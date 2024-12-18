@@ -10,7 +10,8 @@ import { Login, Register } from "@/views/auth";
 import { MyProfile, MyOrderList, MyWishList, Checkout } from "@/views/user";
 import HomePage from "../views/pages/home/HomePage.vue";
 import Invoice from "../views/user/Invoice.vue";
-import ProductDetails from "@/views/pages/product/ProductDetails.vue";
+import ProductDetailsPage from "@/views/pages/product/ProductDetailsPage.vue";
+import CheckoutPage from '@/views/user/CheckoutPage.vue'
 
 
 const routes = [
@@ -104,9 +105,15 @@ const routes = [
 
   {
     path: "/product-details/:slug?",
-    name: "productDetails",
-    component: () => import('@/views/pages/product/ProductDetails.vue'),
+    name: "productDetailsPage",
+    component: () => import('@/views/pages/product/ProductDetailsPage.vue'),
     meta: { title: " Product Details" },
+  },
+  {
+    path: "/checkout-page",
+    name: "checkoutPage",
+    component: CheckoutPage,
+    meta: { title: " Checkout Page" },
   },
 
   // {
