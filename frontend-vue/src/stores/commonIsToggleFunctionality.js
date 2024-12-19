@@ -25,7 +25,7 @@ export const useCommonIsToggleFunctionality = defineStore('commonIsToggleFunctio
       this.navSideBar = !this.navSideBar;
     }, 
 
-    async isCartSideBartOpenOrClose(){
+    async isCartSideBarOpenOrClose(){
       this.cartSideBar = !this.cartSideBar;
     },
 

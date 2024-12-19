@@ -5,6 +5,7 @@ import { useProduct, useCart, useNotification, useShop, useSettingStore, } from 
 import { storeToRefs } from "pinia";
 import { ProductVariation } from "@/components";
 import { mrpOrOfferPrice, addToCart } from "@/composables";
+import { useCommonIsToggleFunctionality } from "@/stores";
 import axiosInstance from "@/services/axiosService.js";
 /*===============
     Swipper
@@ -16,7 +17,7 @@ import "swiper/css/navigation";
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
 
 
-
+const commonIsToggleFunctionality = useCommonIsToggleFunctionality();
 const emit = defineEmits(['productVariationPrice', 'productVariationData', 'activeBtns']);
 
 // const props = defineProps({
@@ -217,9 +218,13 @@ const handleActiveBtns = (data) => {
  }
 
  
-function cartShow() {
-  $("body").css("overflow", "hidden"), $(".cart-sidebar").addClass("active");
-}
+// function cartShow() {
+//   $("body").css("overflow", "hidden"), $(".cart-sidebar").addClass("active");
+// }
+
+const cartShow = () => {
+  commonIsToggleFunctionality.isCartSideBarOpenOrClose();
+};
 
 
  watch(
@@ -329,7 +334,6 @@ onMounted(() => {
                            <span v-if="singleProductData?.variations?.data?.length"> 
                             <h3 class="details-price" v-if="productVariationPrice == '' || productVariationPrice == undefined">
                                 <span v-if="singleProductData?.variation_price_range?.min_price == singleProductData?.variation_price_range?.max_price ">{{ $filters?.currencySymbol(singleProductData?.variation_price_range?.min_price || singleProductData?.variation_price_range?.max_price) }}</span>
-                                <span>{{singleProductData?.variation_price_range?.min_price}} {{ singleProductData?.variation_price_range?.max_price }}</span>
                             </h3>
 
                             <h3 :class="`${type}-price my-2`" v-else>
@@ -339,7 +343,7 @@ onMounted(() => {
                             </h3>
                             
                            </span>
-                           
+
                            <span v-else>
                               <h3 :class="`${type}-price details-price` ">
                                 <del>{{ $filters.currencySymbol(singleProductData.mrp) }}</del>
@@ -377,13 +381,10 @@ onMounted(() => {
                             <div :class="`${type}-add-group`">
                               <div class="row" v-if="singleProductData?.variations?.data.length > 0">
                                 <div class="col-md-6 mt-lg-0 mt-3">
-                                  <button class="product-add"
-                                    :disabled="
-                                      activeBtns === false &&
-                                      singleProductData?.variations?.data.length > 0
-                                    "
+                                  <button class="product-add" title="Add to Cart" 
+                                    :disabled="activeBtns === false && singleProductData?.variations?.data.length > 0"
                                     :class="{ singleProductBtn: activeBtns === false }"
-                                    title="Add to Cart"
+                                    
                                     @click.prevent="
                                       addToCart(
                                         singleProductData,
@@ -393,16 +394,11 @@ onMounted(() => {
                                         campaignSlug
                                       )
                                     ">
-
-                                    <i
-                                      :class="
-                                        loading == singleProductData.id
-                                        ? 'fa-solid fa-spinner fa-spin'
-                                        : 'fas fa-shopping-basket'">
-                                    </i>
+                                    <i :class=" loading == singleProductData.id? 'fa-solid fa-spinner fa-spin': 'fas fa-shopping-basket'"></i>
                                     <span>add to cart</span>
                                   </button>
                                 </div>
+
                                 <div class="col-md-6 mt-lg-0 mt-3" v-if="activeBtns === false">
                                   <a
                                     class="product-add main-order-btn"
@@ -413,9 +409,10 @@ onMounted(() => {
                                     <span>Buy Now</span>
                                   </a>
                                 </div>
+
                                 <div class="col-md-6 mt-lg-0 mt-3" v-else>
                                   <router-link
-                                    :to="{ name: 'checkoutPage' }"
+                                    :to="{ name: 'user.checkoutPage' }"
                                     class="product-add main-order-btn"
                                     :class="{ 'singleProductBtn ': activeBtns === false }"
                                     title="Add to Cart"
@@ -456,7 +453,7 @@ onMounted(() => {
                                 </div>
                                 <div class="col-md-6 mt-lg-0 mt-3">
                                   <router-link
-                                    :to="{ name: 'checkoutPage' }"
+                                    :to="{ name: 'user.checkoutPage' }"
                                     class="product-add main-order-btn"
                                     title="Add to Cart"
                                     @click.prevent="addToCart(singleProductData, quantityInput, null, 0, campaignSlug); modalClose()"

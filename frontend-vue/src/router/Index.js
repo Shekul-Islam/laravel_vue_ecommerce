@@ -7,11 +7,11 @@ import Blog from "@/views/pages/blog/Blog.vue";
 import { SellerPage, SellerList, SellerApply } from "@/views/pages/seller";
 import WishList from "@/views/pages/wishlist/WishList.vue";
 import { Login, Register } from "@/views/auth";
-import { MyProfile, MyOrderList, MyWishList, Checkout } from "@/views/user";
+import { MyProfile, MyOrderList, MyWishList, CheckoutPage } from "@/views/user";
 import HomePage from "../views/pages/home/HomePage.vue";
 import Invoice from "../views/user/Invoice.vue";
 import ProductDetailsPage from "@/views/pages/product/ProductDetailsPage.vue";
-import CheckoutPage from '@/views/user/CheckoutPage.vue'
+
 
 
 const routes = [
@@ -55,9 +55,9 @@ const routes = [
     meta: { title: "My Wish List", requiresAuth: true },
   },
   {
-    path: "/user/checkout",
-    name: "user.checkout",
-    component: Checkout,
+    path: "/user/checkoutPage",
+    name: "user.checkoutPage",
+    component: CheckoutPage,
     meta: { title: " Checkout" },
   },
   {
@@ -109,12 +109,12 @@ const routes = [
     component: () => import('@/views/pages/product/ProductDetailsPage.vue'),
     meta: { title: " Product Details" },
   },
-  {
-    path: "/checkout-page",
-    name: "checkoutPage",
-    component: CheckoutPage,
-    meta: { title: " Checkout Page" },
-  },
+  // {
+  //   path: "/checkout-page",
+  //   name: "checkoutPage",
+  //   component: CheckoutPage,
+  //   meta: { title: " Checkout Page" },
+  // },
 
   // {
   //   path: "/shekul",

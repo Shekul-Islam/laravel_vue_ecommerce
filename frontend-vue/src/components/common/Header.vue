@@ -7,6 +7,8 @@ import { useRouter } from 'vue-router';
 
 import { onMounted } from 'vue';
 import { useSettingStore } from '@/stores';
+import { useCommonIsToggleFunctionality } from "@/stores";
+
 
 const auth = useAuth();
 const {user, loading} = storeToRefs(auth);
@@ -16,12 +18,11 @@ const res = await auth.logout();
 console.log(res);
 };
 
+const commonIsToggleFunctionality = useCommonIsToggleFunctionality();
 
 const setting = useSettingStore();
 
-onMounted (()=> {
-  setting.getData();
-})
+
 
 
 
@@ -34,9 +35,19 @@ function menu() {
   $("body").css("overflow", "hidden"), $(".nav-sidebar").addClass("active");
 }
 
-function cartShow() {
-  $("body").css("overflow", "hidden"), $(".cart-sidebar").addClass("active");
-}
+// function cartShow() {
+//   $("body").css("overflow", "hidden"), $(".cart-sidebar").addClass("active");
+// }
+
+const cartShow = () => {
+  commonIsToggleFunctionality.isCartSideBarOpenOrClose();
+};
+
+
+onMounted (()=> {
+  setting.getData();
+})
+
 </script>
 
 <template>
@@ -130,10 +141,7 @@ function cartShow() {
               <i class="fas fa-heart"></i><sup>0</sup>
             </router-link>
 
-            <button
-              class="header-widget header-cart"
-              @click="cartShow"
-              title="Cartlist">
+            <button class="header-widget header-cart" @click="cartShow" title="Cartlist">
               <i class="fas fa-shopping-basket"></i><sup>9+</sup>
               <span>total price<small>$345.00</small></span>
             </button>

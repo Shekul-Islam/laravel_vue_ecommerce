@@ -114,7 +114,7 @@ const sizeByPrice = (mrp, offerPrice, sizeID) => {
 const isLogin = (product) => {
   if (Object.keys(auth.user).length > 0) {
     addToCart(product)
-    router.push({ name: "checkoutPage" });
+    router.push({ name: "user.checkoutPage" });
   }else{
     // $("#login-modal").modal("show")
     modal.toggleModal();
@@ -319,7 +319,7 @@ onMounted(() => {
               </button>
             </div>
             <div class="col-xl-6 col-lg-12 col-12 mt-2">
-              <router-link :to="{ name: 'checkoutPage' }"  class="product-add standard-wishs" :class="isButtonDisabled ? 'disabled btn border-danger' : ''" @click.prevent="addToCart(product)">
+              <router-link :to="{ name: 'user.checkoutPage' }"  class="product-add standard-wishs" :class="isButtonDisabled ? 'disabled btn border-danger' : ''" @click.prevent="addToCart(product)">
                 <i class="fas fa-shopping-basket"></i>
                 <span>{{ orderButton }}</span>
               </router-link>
@@ -333,7 +333,7 @@ onMounted(() => {
               </button>
             </div>
             <div class="col-xl-6 col-lg-12 col-12 mt-2">
-              <router-link :to="{ name: 'checkoutPage' }"  class="product-add standard-wishs" @click.prevent="addToCart(product)">
+              <router-link :to="{ name: 'user.checkoutPage' }"  class="product-add standard-wishs" @click.prevent="addToCart(product)">
                 <i class="fas fa-shopping-basket"></i>
                 <span>{{ orderButton }}</span>
               </router-link>

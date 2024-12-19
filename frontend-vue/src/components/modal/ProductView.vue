@@ -35,7 +35,7 @@ const otpSubmit = async (values, { setErrors, resetForm }) => {
         }else if(route.path === "/checkout-page"){
             emit('orderSubmitted');
         }else{
-            router.push({ name: "checkoutPage" });
+            router.push({ name: "user.checkoutPage" });
         }
       notify.Success("Login Successfully Done");
     } else {

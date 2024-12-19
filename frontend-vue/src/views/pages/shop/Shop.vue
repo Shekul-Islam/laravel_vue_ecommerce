@@ -353,29 +353,28 @@ onMounted(() => {
                       <a href="">{{ product?.brand?.name }}</a>
                     </h6>
 
-                        <h6 class="product-price">
-                          <span v-if="product?.variations?.data?.length">
-                            {{ product?.variation_price_range?.min_price }}
-                            <span class="details-price" v-if="productVariationPrice == '' || productVariationPrice == undefined">
-                                <span v-if="product?.variation_price_range?.min_price == product?.variation_price_range?.max_price">{{ $filters?.currencySymbol(product?.variation_price_range?.min_price || product?.variation_price_range?.max_price) }}</span>
-                                <span>{{product?.variation_price_range?.min_price}} {{ product?.variation_price_range?.max_price }}</span>
-                            </span>
+                        <span class="product-price" v-if="product?.variations?.data?.length"> 
+                            <h6 class="details-price" v-if="productVariationPrice == '' || productVariationPrice == undefined">
+                                <span v-if="product?.variation_price_range?.min_price == product?.variation_price_range?.max_price ">{{ $filters?.currencySymbol(product?.variation_price_range?.min_price || product?.variation_price_range?.max_price) }}</span>
+                                <!-- <span>{{singleProductData?.variation_price_range?.min_price}} {{ singleProductData?.variation_price_range?.max_price }}</span> -->
+                            </h6>
 
-                            <span v-else>
+                            <h6 :class="`${type}-price my-2`" v-else>
                               <span>{{
                                 $filters.currencySymbol(productVariationPrice?.sell_price)
                               }}</span>
-                            </span>
-                          </span>
+                            </h6>
+                            
+                           </span>
                            
-                          <span v-else>
-                              <span>
+                           <span v-else>
+                              <h6 :class="`${type}-price details-price` ">
                                 <del>{{ $filters.currencySymbol(product.mrp) }}</del>
                                 <span>{{ $filters.currencySymbol( mrpOrOfferPrice( product.mrp, product.offer_price ))}}</span>
-                              </span>
+                                <!-- <a class="discout_amount" v-if="product.offer_price != 0" >Save {{ Math.round(product.mrp - product.offer_price) }}৳</a > -->
+                              </h6>
                              
-                          </span>
-                        </h6>
+                            </span>
 
                      
                   
