@@ -6,6 +6,7 @@ import { storeToRefs } from "pinia";
 import { onMounted, ref, watch } from "vue";
 import { useRoute } from 'vue-router';
 import ModalFade from '../../../components/modal/ModalFade.vue'
+import ProductDetails from "../../../components/product/ProductDetails.vue";
 import { mrpOrOfferPrice } from "@/composables";
 
 /*===============
@@ -16,7 +17,6 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
-import ProductDetails from "../../../components/product/ProductDetails.vue";
 
 
 const route = useRoute();
@@ -27,7 +27,7 @@ const related = useProduct();
 const singleProductData = ref("");
 const productVariationPrice = ref("");
 const relatedProducts = ref("");
-const previewData = ref('');
+const previewData = ref({});
 
 const getSingleProduct = async () =>  {
     const res = await singleProduct.getSingleProductData(route.params.slug);
@@ -90,7 +90,7 @@ const previewProductModal = async(productSlug) =>{
   const res = await singleProduct.getSingleProductData(productSlug);
     if(res?.success){
       
-      previewData.value = res?.result;
+      previewData.value = res?.result || {};
     }
 
   $("#product-view").modal("show");
@@ -413,18 +413,30 @@ onMounted(() => {
                                     <a href="product-video.html">{{relatedData?.name}}</a>
                                 </h6>
                                 
-                                <h6 class="product-price">
-                                
-                                  <span v-if="relatedData?.variations?.data?.length>0" >
-                                    <span>{{ relatedData?.variation_price_range?.min_price }} tk <span v-if="relatedData?.variation_price_range?.max_sell_price != relatedData?.variation_price_range?.min_sell_price"> - {{ relatedData?.max_sell_price }} tk</span></span>
-                                  </span>
-                                  
-                                  <span v-else>
-                                    <span v-if="relatedData?.offer_price ==0"><del class="text-danger">{{ relatedData?.mrp }} tk</del></span>
-                                    <span>{{ relatedData?.offer_price != 0 ? relatedData?.offer_price : relatedData?.offer_price }} tk</span>
-                                  </span>
+                              
 
-                                </h6>
+                                <span class="product-price" v-if="relatedData?.variations?.data?.length"> 
+                                 <h6 class="details-price" v-if="productVariationPrice == '' || productVariationPrice == undefined">
+                                     <span v-if="relatedData?.variation_price_range?.min_price == relatedData?.variation_price_range?.max_price ">{{ $filters?.currencySymbol(relatedData?.variation_price_range?.min_price || relatedData?.variation_price_range?.max_price) }}</span>
+                                     <!-- <span>{{singleProductData?.variation_price_range?.min_price}} {{ singleProductData?.variation_price_range?.max_price }}</span> -->
+                                 </h6>
+                               
+                                 <h6 :class="`${type}-price my-2`" v-else>
+                                   <span>{{
+                                     $filters.currencySymbol(productVariationPrice?.sell_price)
+                                   }}</span>
+                                 </h6>
+
+                                </span>
+                           
+                           <span v-else>
+                              <h6 :class="`${type}-price details-price` ">
+                                <del>{{ $filters.currencySymbol(relatedData.mrp) }}</del>
+                                <span>{{ $filters.currencySymbol( mrpOrOfferPrice( relatedData.mrp, relatedData.offer_price ))}}</span>
+                                <!-- <a class="discout_amount" v-if="product.offer_price != 0" >Save {{ Math.round(product.mrp - product.offer_price) }}৳</a > -->
+                              </h6>
+                            </span>
+
                                 <button class="product-add" title="Add to Cart" @click="scrollToTop">
                                     <span><router-link :to="{name: 'productDetailsPage', params:{slug:relatedData?.slug}}" class="fas fa-shopping-basket">Product Preview</router-link></span>
                                 </button>

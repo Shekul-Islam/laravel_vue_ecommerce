@@ -20,25 +20,25 @@ import { Pagination, Navigation, Autoplay } from "swiper/modules";
 const commonIsToggleFunctionality = useCommonIsToggleFunctionality();
 const emit = defineEmits(['productVariationPrice', 'productVariationData', 'activeBtns']);
 
-// const props = defineProps({
-//  singleProduct: {
-//     type: [Object, String],
-//     default: {},
-//   },
+const props = defineProps({
+ singleProduct: {
+    type: [Object, String],
+    default: {},
+  },
 
-//  productVariations: {
-//     type: Object,
-//     default: {}, 
-//   },
-//  campaignSlug: {
-//     type: String,
-//     default: null,
-//   },
-//  type: {
-//     type: String,
-//     default: null, 
-//   },
-// });
+ productVariations: {
+    type: Object,
+    default: {}, 
+  },
+ campaignSlug: {
+    type: String,
+    default: null,
+  },
+ type: {
+    type: String,
+    default: null, 
+  },
+});
 
 
 const sizeName      = ref("");
@@ -245,6 +245,8 @@ onMounted(() => {
 
 <template>
   <!-- correction -->
+
+  
   <section class="inner-section">
             <div class="container">
                 <div class="row">
@@ -353,7 +355,7 @@ onMounted(() => {
                              
                             </span>
 
-                            <!-- <ProductVariation :productVariations="productVariations" :allVariations="singleProduct?.variations?.data" @productVariationPrice="handleProductVariationPrice" @productVariationData="handleProductVariationData" @activeBtns="handleActiveBtns"  /> -->
+                            <ProductVariation :productVariations="productVariations" :allVariations="singleProductData?.variations?.data" @productVariationPrice="handleProductVariationPrice" @productVariationData="handleProductVariationData" @activeBtns="handleActiveBtns"  />
 
                            
                             <p class="details-desc">{{singleProductData?.short_description}}</p>
@@ -375,6 +377,48 @@ onMounted(() => {
                                     <li><a href="#" class="icofont-instagram" title="Instagram"></a></li>
                                 </ul>
                             </div>
+
+
+                            <div :class="`${type}-list-group mt-3`">
+                              <div
+                                class="quantity"
+                                :class="{
+                                  'quantity-disabled':
+                                    activeBtns === false &&
+                                    singleProduct?.variations?.data.length > 0,
+                                }"
+                              >
+                                <button
+                                  class="minus"
+                                  :disabled="
+                                    activeBtns === false &&
+                                    singleProduct?.variations?.data.length > 0
+                                  "
+                                  aria-label="Decrease"
+                                  @click.prevent="decrementCartItem"
+                                >
+                                  &minus;
+                                </button>
+                                <input
+                                  type="number"
+                                  class="input-box"
+                                  min="1"
+                                  max="10"
+                                  v-model="quantityInput"
+                                />
+                                <button
+                                  class="plus"
+                                  :disabled="
+                                    activeBtns === false &&
+                                    singleProduct?.variations?.data.length > 0
+                                  "
+                                  aria-label="Increase"
+                                  @click.prevent="incrementCartItem"
+                                >
+                                  &plus;
+                                </button>
+                              </div>
+                          </div>
 
 
 

@@ -36,6 +36,12 @@ const cartDecrement = (index) => {
 const cartIncrement = (index) => {
   cart.increment(index);
 };
+
+const couponBtn = () => {
+        
+        $(".coupon-btn").hide(), $(".coupon-form").css("display", "flex");
+
+        };
 </script>
 
 <template lang="">

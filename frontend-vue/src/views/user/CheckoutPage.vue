@@ -421,6 +421,7 @@ const checkScreenSize = () => {
                                                 <th scope="col">Price</th>
                                                 <th scope="col">brand</th>
                                                 <th scope="col">quantity</th>
+                                                <th scope="col">Total Price</th>
                                                 <th scope="col">action</th>
                                             </tr>
                                         </thead>
@@ -428,10 +429,12 @@ const checkScreenSize = () => {
                                         <tbody>
                                             <tr v-for="(product, index) in cartItem" :key="index" class="checkoutTable">
                                                 <th scope="row">{{ 1 + index }}</th>
-                                                <td class="align-items-center"><a href="" class="img"><img :src="product.image" class="" alt=""></a></td>
+                                                <td class="align-items-center"><a href="" class="img"><img :src="product.image" class="img w-50 h-50" alt="product.image"></a></td>
                                                 <td class="text-wrap align-items-center">{{ product.name }}</td>
                                                 <td>{{ Math.round(product.sell_price) }}</td>
+                                                <td class="align-item-center">{{ product?.campaign_slug }}</td>
                                                 <td class="w-25">
+
                                                   <div class="checkout-page-action">
                                                       <button
                                                         class=""
@@ -456,16 +459,17 @@ const checkScreenSize = () => {
                                                         <i class="fas fa-plus"></i>
                                                       </button>
                                                   </div>
+
                                                 </td>
                                                 <td>{{ (Math.round(product.sell_price)) * product.quantity }}</td>
-                                                <td>
-                                                  <button class="cart-delete" @click.prevent="deleteCart(index)">
-                                                    <i class="far fa-trash-alt text-danger"></i>
-                                                  </button>
-                                                </td>
-                                                <td class="table-action">
-                                                    <a class="view" href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#product-view"><i class="fas fa-eye"></i></a>
-                                                    <a class="trash" href="#" title="Remove Wishlist"><i class="icofont-trash"></i></a>
+                                               
+                                                <td class="table-action d-flex justify-content-between">
+                                                    <button>
+                                                      <a title="Product View" href="#" class="fas fa-eye" @click.prevent="previewProductModal(relatedData?.slug)"></a>
+                                                    </button>
+                                                    <button class="cart-delete" @click.prevent="deleteCart(index)">
+                                                      <i class="far fa-trash-alt text-danger" title="Delete Item"></i>
+                                                    </button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -854,5 +858,12 @@ const checkScreenSize = () => {
 
 
 <style scoped>
+
+.checkout-page-action{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
 
 </style>

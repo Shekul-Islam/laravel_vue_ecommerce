@@ -7,7 +7,10 @@ import { mrpOrOfferPrice } from "@/composables";
 
 
 const props = defineProps({
-  previewData : {type: Object}
+  previewData : {
+    type: Object,
+    required: true,
+  }
 })
 
 
