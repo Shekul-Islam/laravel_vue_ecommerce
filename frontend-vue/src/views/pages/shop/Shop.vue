@@ -356,28 +356,33 @@ onMounted(() => {
                         <span class="product-price" v-if="product?.variations?.data?.length"> 
                             <h6 class="details-price" v-if="productVariationPrice == '' || productVariationPrice == undefined">
                                 <span v-if="product?.variation_price_range?.min_price == product?.variation_price_range?.max_price ">{{ $filters?.currencySymbol(product?.variation_price_range?.min_price || product?.variation_price_range?.max_price) }}</span>
-                                <!-- <span>{{singleProductData?.variation_price_range?.min_price}} {{ singleProductData?.variation_price_range?.max_price }}</span> -->
                             </h6>
-
-                            <h6 :class="`${type}-price my-2`" v-else>
-                              <span>{{
-                                $filters.currencySymbol(productVariationPrice?.sell_price)
-                              }}</span>
-                            </h6>
-                            
                            </span>
                            
-                           <span v-else>
-                              <h6 :class="`${type}-price details-price` ">
+                           <!-- <span v-else>
+                              <h6 :class="`${type}-price details-price`">
                                 <del>{{ $filters.currencySymbol(product.mrp) }}</del>
-                                <span>{{ $filters.currencySymbol( mrpOrOfferPrice( product.mrp, product.offer_price ))}}</span>
-                                <!-- <a class="discout_amount" v-if="product.offer_price != 0" >Save {{ Math.round(product.mrp - product.offer_price) }}৳</a > -->
+                                <span>{{ $filters.currencySymbol( mrpOrOfferPrice( product?.mrp, product?.offer_price ))}}</span>
                               </h6>
-                             
-                            </span>
+                              <h6 :class="`${type}-price details-price` " >
+                                <span v-if="product?.mrp === product?.offer_price">{{ product?.mrp}}</span>
+                              </h6>
+                            </span> -->
 
-                     
-                  
+                            <span v-else>
+                              <h6 :class="`${type}-price details-price`">
+                               
+                                <template v-if="product.mrp == product.offer_price">
+                                  {{ $filters.currencySymbol(mrpOrOfferPrice(product.mrp)) }}
+                                </template>
+                                <template v-else>
+                                  {{ product?.mrp }}
+                                  {{ product?.offer_price }}
+                                  <del>{{ $filters.currencySymbol(product.mrp) }}</del>
+                                  <span>{{ $filters.currencySymbol(mrpOrOfferPrice(product.mrp, product.offer_price)) }}</span>
+                                </template>
+                              </h6>
+                            </span>
                    
 
                     <button class="product-add" title="View Details">

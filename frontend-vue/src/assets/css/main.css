@@ -2969,6 +2969,16 @@ tbody tr td:last-child {
     padding: 0px 15px 15px;
   }
 }
+.contact-option{
+  padding: 0;
+  position: relative;
+  cursor: pointer;
+}
+.address-option{
+  padding: 0;
+  position: relative;
+  cursor: pointer;
+}
 .profile-card {
   padding: 25px;
   border-radius: 8px;

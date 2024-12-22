@@ -343,7 +343,6 @@ onMounted(() => {
                                 $filters.currencySymbol(productVariationPrice?.sell_price)
                               }}</span>
                             </h3>
-                            
                            </span>
 
                            <span v-else>
@@ -377,7 +376,6 @@ onMounted(() => {
                                     <li><a href="#" class="icofont-instagram" title="Instagram"></a></li>
                                 </ul>
                             </div>
-
 
                             <div :class="`${type}-list-group mt-3`">
                               <div
@@ -419,8 +417,6 @@ onMounted(() => {
                                 </button>
                               </div>
                           </div>
-
-
 
                             <div :class="`${type}-add-group`">
                               <div class="row" v-if="singleProductData?.variations?.data.length > 0">
@@ -508,8 +504,6 @@ onMounted(() => {
                                 </div>
                               </div>
                             </div>
-
-
 
                             <div class="details-action-group">
                                 <a class="details-wish wish" href="#" title="Add Your Wishlist">
