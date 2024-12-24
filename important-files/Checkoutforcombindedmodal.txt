@@ -1,0 +1,499 @@
+<script setup>
+import { ref, watch } from 'vue';
+import { defineEmits } from 'vue';
+
+
+// Props ডিফাইন
+const props = defineProps({
+  visible: Boolean,
+  editMode: Boolean,
+  type: { // মডালের টাইপ (কন্টাক্ট, ঠিকানা, পেমেন্ট)
+    type: String,
+    required: true,
+  },
+  initialContact: {
+    type: Object,
+    default: () => ({ name: '', phone: '', location: '' }),
+  },
+  initialAddress: {
+    type: Object,
+    default: () => ({ location: '', address: '' }),
+  },
+  // payments: {
+  //   type: Object,
+  //   default: () => ({ cardNo: '' }),
+  // },
+});
+
+
+
+
+
+
+// ইভেন্ট ইমিট
+const emit = defineEmits(['add-contact', 'update-contact', 'close']);
+
+// লোকাল ডেটা
+const contact = ref({ name: '', phone: '', location: '' });
+const address = ref({ location: '', address: '' });
+// const payment = ref({ cardNo: '' });
+
+// Props থেকে ডেটা লোড
+watch(
+  () => props.initialContact,
+  (newContact) => {
+    contact.value = newContact ? { ...newContact } : { name: '', phone: '', location: '' };
+  },
+  { immediate: true }
+);
+
+watch(
+  () => props.initialAddress,
+  (newAddress) => {
+    address.value = newAddress ? { ...newAddress } : { location: '', address: '' };
+  },
+  { immediate: true }
+);
+
+// watch(
+//   () => props.payments,
+//   (newPayment) => {
+//     payment.value = newPayment ? { ...newPayment } : { cardNo: '' };
+//   },
+//   { immediate: true }
+// );
+
+// ফর্ম সাবমিট হ্যান্ডলার
+function handleSubmitContact() {
+  if (props.editMode) {
+    emit('update-contact', { ...contact.value });
+  } else {
+    emit('add-contact', { ...contact.value });
+  }
+  emit('close');
+}
+
+function handleSubmitAddress() {
+  // ঠিকানা সংক্রান্ত ইভেন্ট
+  emit('update-contact', { ...address.value });
+  emit('close');
+}
+
+// function handleSubmitPayment() {
+//   // পেমেন্ট সংক্রান্ত ইভেন্ট
+//   emit('update-contact', { ...payment.value });
+//   emit('close');
+// }
+
+
+</script>
+
+<template>
+  <div>
+     <!--=====================================
+                    MODAL ADD FORM START
+        =======================================-->
+        <!-- contact add form -->
+        <div class="modal fade"  id="contact-add" tabindex="-1" data-bs-keyboard="false" aria-labelledby="contact-add-label" >
+    <div class="modal-dialog modal-dialog-centered"> 
+
+      <div class="modal-content" >
+        <button class="modal-close"  data-bs-dismiss="modal"><i class="icofont-close"></i></button>
+        <form class="modal-form" @submit.prevent="handleSubmitContact">
+          <div class="form-title">
+            <h3>Add New Contact</h3>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Name</label>
+            <input class="form-control" type="text" v-model="contact.name" placeholder="Enter your Name" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contact Number</label>
+            <input class="form-control" type="text" v-model="contact.phone" placeholder="Enter your number" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Location</label>
+            <select class="form-select" v-model="contact.location">
+              <option value="" disabled>Select Location</option>
+              <option value="Inside Dhaka">Inside Dhaka</option>
+              <option value="Outside Dhaka">Outside Dhaka</option>
+            </select>
+          </div>
+          <button class="form-btn" type="submit">Save Contact Info</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+        <!-- address add form -->
+        <div class="modal fade" id="address-add" >
+            <div class="modal-dialog modal-dialog-centered"> 
+                <div class="modal-content"  >
+                    <button class="modal-close" data-bs-dismiss="modal"><i class="icofont-close"></i></button>
+                    <form class="modal-form" @submit.prevent="handleSubmitAddress">
+                        <div class="form-title">
+                            <h3>add new address</h3>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">location</label>
+                            <select class="form-select" v-model="address.location">
+                                <option selected>choose location</option>
+                                <option value="Inside Dhaka">Inside Dhaka</option>
+                                <option value="Outside Dhaka">Outside Dhaka</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">address</label>
+                            <textarea v-model="address.address" class="form-control" placeholder="Enter your address"></textarea>
+                        </div>
+                        <button class="form-btn" type="submit">save address info</button>
+                    </form>
+                </div> 
+            </div> 
+        </div>
+
+        <!-- payment add form -->
+        <!-- <div class="modal fade" id="payment-add">
+            <div class="modal-dialog modal-dialog-centered"> 
+                <div class="modal-content" v-if="type === 'payment'">
+                    <button class="modal-close"  @click="emit('close')" data-bs-dismiss="modal"><i class="icofont-close"></i></button>
+                    <form class="modal-form" @submit.prevent="handleSubmitPayment">
+                        <div class="form-title">
+                            <h3>{{ editMode ? 'Edit Payment' : 'Add Payment' }}</h3>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">card number</label>
+                            <input class="form-control" v-model="payment.cardNo" type="text" placeholder="Enter your card number">
+                        </div>
+                        <button class="form-btn" type="submit">save card info</button>
+                    </form>
+                </div> 
+            </div> 
+        </div> -->
+        <!--=====================================
+                    MODAL ADD FORM END
+        =======================================-->
+
+        
+        <!--=====================================
+                    MODAL EDIT FORM START
+        =======================================-->
+        <!-- contact edit form -->
+        <div class="modal fade" id="contact-edit" >
+            <div class="modal-dialog modal-dialog-centered"> 
+                <div class="modal-content" v-if="type === 'contact'">
+                    <button class="modal-close" data-bs-dismiss="modal"><i class="icofont-close"></i></button>
+                    <form class="modal-form" @submit.prevent="handleSubmit">
+                        <div class="form-title">
+                            <h3>{{ editMode ? 'Edit Contact' : 'Add Contact' }}</h3>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Name</label>
+                            <input  v-model="contact.name" class="form-control" type="text" placeholder="Enter your Name" value="">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Contact Number</label>
+                            <input v-model="contact.phone" class="form-control" type="text" placeholder="Enter your number" value="">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Location</label>
+                            <select v-model="contact.location" class="form-select" >
+                                <option selected>Select Location</option>
+                                <option value="inside dhaka">Inside Dhaka</option>
+                                <option value="outside dhaka">Outside Dhaka</option>
+                            </select>
+                        </div>
+                        <button class="form-btn" type="submit">{{ editMode ? 'Update' : 'Add' }}</button>
+                    </form>
+                </div> 
+            </div> 
+        </div>
+
+        <!-- address edit form -->
+        <div class="modal fade" id="address-edit">
+            <div class="modal-dialog modal-dialog-centered"> 
+                <div class="modal-content" >
+                    <button class="modal-close" data-bs-dismiss="modal"><i class="icofont-close"></i></button>
+                    <form class="modal-form">
+                        <div class="form-title">
+                            <h3>edit address info</h3>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">title</label>
+                            <select class="form-select">
+                                <option value="home" selected>home</option>
+                                <option value="office">office</option>
+                                <option value="Bussiness">Bussiness</option>
+                                <option value="academy">academy</option>
+                                <option value="others">others</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">address</label>
+                            <textarea class="form-control" placeholder="jalkuri, fatullah, narayanganj-1420. word no-09, road no-17/A"></textarea>
+                        </div>
+                        <button class="form-btn" type="submit">save address info</button>
+                    </form>
+                </div> 
+            </div> 
+        </div>
+        <!--=====================================
+                    MODAL EDIT FORM END
+        =======================================-->
+  </div>
+</template>
+
+
+<style scoped>
+
+</style>
+
+
+
+===============================================================================================================
+checkoutPage.vue
+===============================================================================================================
+<script setup>
+import CheckoutModal from '../../components/modal/CheckoutModal.vue';
+import { ref } from 'vue';
+import { useRouter } from "vue-router";
+// validation error
+import { Form, Field } from "vee-validate";
+
+
+// মডালের ডেটা
+const contacts = ref([]);
+const addresses = ref([]);
+
+// মডাল ভিজিবিলিটি এবং টাইপ
+const modalVisible = ref(false);
+const modalType = ref(''); // 'contact', 'address', 'payment'
+const currentData = ref({}); // যে ডেটা এডিট হবে
+
+// মডাল খোলা
+const openModal = (type, data = {}) => {
+  modalType.value = type;
+  currentData.value = { ...data };
+  modalVisible.value = modalVisible;
+};
+
+// মডাল ক্লোজ
+const closeModal = () => {
+  modalVisible.value = modalVisible;
+};
+
+// ডেটা আপডেট
+const updateData = (updatedData) => {
+  switch (modalType.value) {
+    case 'contact':
+      updateList(contacts, updatedData);
+      break;
+    case 'address':
+      updateList(addresses, updatedData);
+      break;
+    
+  }
+  closeModal();
+};
+
+// লিস্ট আপডেট ফাংশন
+const updateList = (list, item) => {
+  const index = list.value.findIndex(i => i.id === item.id);
+  if (index !== -1) {
+    list.value[index] = item;
+  } else {
+    list.value.push(item);
+  }
+};
+
+// ডেটা ডিলিট
+const deleteData = (type, item) => {
+  switch (type) {
+    case 'contact':
+      removeFromList(contacts, item);
+      break;
+    case 'address':
+      removeFromList(addresses, item);
+      break;
+  }
+};
+
+// লিস্ট থেকে আইটেম রিমুভ
+const removeFromList = (list, item) => {
+  const index = list.value.findIndex(i => i.id === item.id);
+  if (index !== -1) {
+    list.value.splice(index, 1);
+  }
+};
+
+
+</script>
+
+<template>
+  <div class="testing">
+             <!-- pre loader -->
+        <div v-if="isLoading" class="preloader">
+          <div class="loader"></div>
+        </div>
+            <!-- pre loader -->
+      
+            <!--=====================================
+                    BANNER PART START
+        =======================================-->
+        <section class="inner-section single-banner" style="background: url(images/single-banner.jpg) no-repeat center;">
+            <div class="container">
+                <h2>checkout</h2>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="shop-4column.html">shop grid</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">checkout</li>
+                </ol>
+            </div>
+        </section>
+        <!--=====================================
+                    BANNER PART END
+        =======================================-->
+
+
+        <!--=====================================
+                    CHECKOUT PART START
+        =======================================-->
+        <section class="inner-section checkout-part">
+            <div class="container">
+               
+               <!-- checkoutfirstpart  -->
+               
+               <!-- checkoutfirstpart  -->
+
+               
+                  <div class="col-12">
+                   <Form
+                   @submit.prevent="placeOrder"
+                   :validation-schema="schema"
+                   v-slot="{ errors, isSubmitting }"
+                   >
+                    <div class="row">
+                      <div class="col-md-6 col-lg-4">
+                      <div class="account-card">
+                        <div class="account-title">
+                          <h4>Customer Contact</h4>
+                          <button data-bs-target="#contact-add" @click="openModal('contact')">Add Contact</button>
+                          <!-- <button data-bs-toggle="modal" data-bs-target="#contact-add">Add Contact</button> -->
+                        </div>
+                      
+                        <div class="account-content">
+                          <div class="alert fade show">
+                            <div class="profile-card">
+                              <div class="contact-option">
+                                <div v-for="contact in contacts" :key="contact.id">
+                                  <div>
+                                    <h6>Name: <span>{{ contact.name }}</span></h6>
+                                  </div>
+                                  <div>
+                                    <h6>Phone: <span>{{ contact.phone }}</span></h6>
+                                  </div>
+                                  <div>
+                                    <h6>{{ contact.location }}  <span></span></h6>
+                                  </div>
+                                  <ul>
+                                    <li>
+                                      <button @click="openModal('contact', contact)" class="edit icofont-edit" title="Edit This" data-bs-toggle="modal" data-bs-target="#contact-edit"></button>
+                                    </li>
+                                    <li>
+                                      <button
+                                       @click="deleteData('contact', contact)"
+                                        class="trash icofont-ui-delete"
+                                        title="Remove This"
+                                      ></button>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="account-card">
+                            <div class="account-title">
+                                <h4>delivery address</h4>
+                                <button @click="openModal('address')" data-bs-target="#address-add" data-bs-toggle="modal" >Add Address</button>
+                                <!-- <button data-bs-toggle="modal" data-bs-target="#address-add">add address</button> -->
+                            </div>
+                            <div class="account-content">
+                                    <div class=" alert fade show">
+                                        <div class="profile-card address active">
+                                            <div class="address-option" v-for="address in addresses" :key="address.id">
+                                                <div>
+                                                  <h6>Home : </h6>
+                                                  <span>jalkuri, fatullah, narayanganj-1420. word no-09, road no-17/A</span>
+                                                </div>
+                                              <ul class="user-action">
+                                                  <li><button @click="openModal('address', address)" class="edit icofont-edit" title="Edit This" data-bs-toggle="modal" data-bs-target="#address-edit"></button></li>
+                                                  <li><button @click="deleteData('address', address)" class="trash icofont-ui-delete" title="Remove This" data-bs-dismiss="alert"></button></li>
+                                              </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                              </div>
+                          </div>
+                      </div>
+
+                   
+                    </div>
+                    <div v-if="isLoading" class="preloader"></div>
+                    <button type="submit"  class="text-center orderBTN mt-3 w-100" @click="placeOrder()">
+                      <span v-if="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
+                      <span v-else>Place Order</span>
+                    </button>
+                    <!-- <span class="text-danger" v-if="blockSmsErrorMessage">{{ blockSmsErrorMessage }}</span> -->
+                   </Form>
+                  </div>
+                
+                
+                <div>
+                  <div class="checkout-check">
+                                <input type="checkbox" id="checkout-check">
+                                <label for="checkout-check">By making this purchase you agree to our <a href="#">Terms and Conditions</a>.</label>
+                            </div>
+                            <div class="checkout-proced">
+                                <router-link :to="{name: 'user.invoice'}" class="btn btn-inline">proced to checkout</router-link>
+                            </div>
+                </div>
+            </div>
+        </section>
+        <!--=====================================
+                    CHECKOUT PART END
+        =======================================-->
+
+
+        <!--=====================================
+                    MODAL ADD FORM START
+        =======================================-->
+                    <CheckoutModal  
+                    :visible="modalVisible" 
+                    :editMode="modalType === 'contact'" 
+                    :initialContact="contacts.length > 0 ? contacts[0] : {}" 
+                    @update-contact="updateData"
+                    @close="closeModal" 
+                    />
+        <!--=====================================
+                    MODAL EDIT FORM END
+        =======================================-->
+  </div>
+</template>
+
+
+<style scoped>
+
+.checkout-page-action{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+
+</style>
+

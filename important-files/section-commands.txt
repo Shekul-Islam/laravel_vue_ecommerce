@@ -1,0 +1,38 @@
+
+
+
+  
+  
+
+  
+  
+
+/* top section start  */
+/* top section end  */
+
+/* discount section start  */
+/* discount section end  */
+
+/* speciality section start  */
+/* speciality section end  */
+
+/* product description start  */
+/* product description end*/
+
+/* checkmark start  */
+/* primary  */
+/* secondary  */
+/* tertiary  */
+/* checkmark end */
+
+/* offer section start  */
+/* offer section end  */
+
+/* alert section start  */
+/* alert section end*/
+
+/* order section start  */
+/* order section end  */
+
+/* footer section start */
+/* footer section end  */
