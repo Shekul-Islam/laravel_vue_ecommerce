@@ -560,35 +560,118 @@ const checkScreenSize = () => {
                         </div>
                     </div>
 
-                    <div class="col-lg-12">
-                        <div class="account-card">
-                            <div class="account-title">
-                                <h4>Delivery Schedule</h4>
-                            </div>
-                            <div class="account-content">
-                                <div class="row">
-                                    <div class="col-md-6 col-lg-4 alert fade show">
-                                        <div class="profile-card schedule active">
-                                            <h6>express</h6>
-                                            <p>90 min express delivery</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-4 alert fade show">
-                                        <div class="profile-card schedule">
-                                            <h6>8am-10pm</h6> 
-                                            <p>8.00 AM - 10.00 PM</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-4 alert fade show">
-                                        <div class="profile-card schedule">
-                                            <h6>Next day</h6>
-                                            <p>Next day or Tomorrow</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+                    /*=====================
+                          checkout-second
+                    ====================== */
+                    
+                    
+                    <div class="container mt-5 checkout-page">
+    <div class="row">
+      <!-- Left Section -->
+      <div class="col-md-9 left-section border-black">
+        <table class="table table-bordered">
+          <thead>
+            <tr class="checkout-heading">
+              <th>Sl</th>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Variations</th>
+              <th>Unit Price</th>
+              <th>Quantity</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="checkout-data">
+              <td>1</td>
+              <td><img src="https://via.placeholder.com/50" alt="Product" class="img-fluid"></td>
+              <td>Product 4</td>
+              <td></td>
+              <td>550.02 Tk</td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <button class="btn btn-outline-secondary btn-sm">-</button>
+                  <input type="text" class="form-control form-control-sm mx-2 text-center" value="1" style="width: 50px;">
+                  <button class="btn btn-outline-secondary btn-sm">+</button>
+                </div>
+              </td>
+              <td><button class="btn btn-danger btn-sm">Delete</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <a href="#" class="btn btn-link">← Continue Shopping</a>
+        <div class="mt-3 coupon-section">
+          <input type="text" class="form-control d-inline-block w-75" placeholder="Apply Coupon . . .">
+          <button class="btn btn-primary">Apply</button>
+          <p class="text-danger mt-2">The coupon code field is required.</p>
+        </div>
+        <div class="mt-4 notes-section">
+          <h6>প্রয়োজনীয় কোনো তথ্য দিতে এখানে লিখুন:</h6>
+          <textarea class="form-control" rows="3" placeholder="দয়া করে আপনার অর্ডারের জন্য ..."></textarea>
+        </div>
+      </div>
+      <!-- Right Section -->
+      <div class="col-md-3 right-section border-black">
+        <form>
+          <h5 class="border-bottom pb-2">অর্ডার কনফর্ম করতে...</h5>
+          <div class="mb-3">
+            <label for="name" class="form-label">নাম:</label>
+            <input type="text" id="name" class="form-control" placeholder="এখানে নাম লিখুন...">
+          </div>
+          <div class="mb-3">
+            <label for="phone" class="form-label">মোবাইল নাম্বার:</label>
+            <input type="text" id="phone" class="form-control" placeholder="এখানে মোবাইল নাম্বার লিখুন...">
+          </div>
+          <div class="mb-3">
+            <label for="address" class="form-label">ঠিকানা:</label>
+            <input type="text" id="address" class="form-control" placeholder="বাড়ি নং, রোড নং ...">
+          </div>
+          <h5 class="border-bottom pb-2">ডেলিভারি চার্জ</h5>
+          <div class="form-check">
+            <input type="radio" id="dhaka" name="delivery" class="form-check-input" checked>
+            <label for="dhaka" class="form-check-label">Dhaka - 60.00 Tk</label>
+          </div>
+          <div class="form-check">
+            <input type="radio" id="others" name="delivery" class="form-check-input">
+            <label for="others" class="form-check-label">Others - 120.00 Tk</label>
+          </div>
+          <h5 class="border-bottom pb-2 mt-3">নিরাপদ পেমেন্ট অপশন</h5>
+          <div class="form-check">
+            <input type="radio" id="cod" name="payment" class="form-check-input" checked>
+            <label for="cod" class="form-check-label">Cash on delivery</label>
+          </div>
+          <div class="form-check">
+            <input type="radio" id="bkash" name="payment" class="form-check-input">
+            <label for="bkash" class="form-check-label">bKash</label>
+          </div>
+          <div class="form-check">
+            <input type="radio" id="nagad" name="payment" class="form-check-input">
+            <label for="nagad" class="form-check-label">Nagad</label>
+          </div>
+          <div class="form-check">
+            <input type="radio" id="card" name="payment" class="form-check-input">
+            <label for="card" class="form-check-label">Card Payment</label>
+          </div>
+          <p class="text-danger mt-2">→ Pay with upon delivery</p>
+          <button type="submit" class="btn btn-success w-100">Place Order</button>
+        </form>
+      </div>
+    </div>
+  </div>
+ 
+
+
+
+
+
+
+
+
+
+
+
+
                 </div>
                <!-- checkoutfirstpart  -->
 
@@ -648,6 +731,46 @@ const checkScreenSize = () => {
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
+}
+
+/* ===================
+  checkout-second
+=====================*/
+
+.checkout-heading th{
+  font-size: 16px;
+  text-align: center;
+  padding: 8px;
+}
+.checkout-data{
+  font-size: 16px;
+}
+.border-black {
+  border: 1px solid black;
+  padding: 15px;
+  background-color: #fff;
+}
+
+.checkout-page {
+  background-color: #f9f9f9;
+  padding: 20px;
+}
+
+textarea::placeholder {
+  font-size: 14px;
+  color: #888;
+}
+
+form label {
+  font-weight: bold;
+}
+
+form .form-check-label {
+  font-size: 14px;
+}
+
+form button {
+  margin-top: 10px;
 }
 
 </style>
