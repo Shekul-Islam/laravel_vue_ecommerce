@@ -174,25 +174,142 @@ onMounted(() => {
                       </li>
                     </ul>
                   </div>
+
+
+                  
+                 <div :class="`${type}-list-group mt-3`">
+                   <div
+                     class="quantity"
+                     :class="{
+                       'quantity-disabled':
+                         activeBtns === false &&
+                         singleProduct?.variations?.data.length > 0,
+                     }"
+                   >
+                     <button
+                       class="minus"
+                       :disabled="
+                         activeBtns === false &&
+                         singleProduct?.variations?.data.length > 0
+                       "
+                       aria-label="Decrease"
+                       @click.prevent="decrementCartItem"
+                     >
+                       &minus;
+                     </button>
+                     <input
+                       type="number"
+                       class="input-box"
+                       min="1"
+                       max="10"
+                       v-model="quantityInput"
+                     />
+                     <button
+                       class="plus"
+                       :disabled="
+                         activeBtns === false &&
+                         singleProduct?.variations?.data.length > 0
+                       "
+                       aria-label="Increase"
+                       @click.prevent="incrementCartItem"
+                     >
+                       &plus;
+                     </button>
+                   </div>
+                </div>
+
+
                   <div class="view-add-group">
-                    <button class="product-add" title="Add to Cart">
-                      <i class="fas fa-shopping-basket"></i
-                      ><span>add to cart</span>
-                    </button>
-                    <div class="product-action">
-                      <button class="action-minus" title="Quantity Minus">
-                        <i class="icofont-minus"></i></button
-                      ><input
-                        class="action-input"
-                        title="Quantity Number"
-                        type="text"
-                        name="quantity"
-                        value="1"
-                      /><button class="action-plus" title="Quantity Plus">
-                        <i class="icofont-plus"></i>
-                      </button>
-                    </div>
+                    <div :class="`${type}-add-group`">
+                              <div class="row" v-if="singleProductData?.variations?.data.length > 0">
+                                <div class="col-md-6 mt-lg-0 mt-3">
+                                  <button class="product-add" title="Add to Cart" 
+                                    :disabled="activeBtns === false && singleProductData?.variations?.data.length > 0"
+                                    :class="{ singleProductBtn: activeBtns === false }"
+                                    
+                                    @click.prevent="
+                                      addToCart(
+                                        singleProductData,
+                                        quantityInput,
+                                        productVariationData,
+                                        productVariationPrice,
+                                        campaignSlug
+                                      )
+                                    ">
+                                    <i :class=" loading == singleProductData.id? 'fa-solid fa-spinner fa-spin': 'fas fa-shopping-basket'"></i>
+                                    <span>add to cart</span>
+                                  </button>
+                                </div>
+
+                                <div class="col-md-6 mt-lg-0 mt-3" v-if="activeBtns === false">
+                                  <a
+                                    class="product-add main-order-btn"
+                                    :class="{ 'singleProductBtn ': activeBtns === false }"
+                                    title="Add to Cart">
+
+                                    <i class="fas fa-cart-plus"></i>
+                                    <span>Buy Now</span>
+                                  </a>
+                                </div>
+
+                                <div class="col-md-6 mt-lg-0 mt-3" v-else>
+                                  <router-link
+                                    :to="{ name: 'user.checkoutPage' }"
+                                    class="product-add main-order-btn"
+                                    :class="{ 'singleProductBtn ': activeBtns === false }"
+                                    title="Add to Cart"
+                                    @click.prevent="
+                                      addToCart(
+                                        singleProductData,
+                                        quantityInput,
+                                        productVariationData,
+                                        productVariationPrice,
+                                        campaignSlug
+                                      );
+                                      modalClose()
+                                    "
+                                  >
+                                    <i class="fas fa-cart-plus"></i>
+                                    <span>Buy Now</span>
+                                  </router-link>
+                                </div>
+                              </div>
+                              
+                              <div class="row" v-else>
+                                <div class="col-md-6 mt-lg-0 mt-3">
+                                  <button
+                                    class="product-add"
+                                    title="Add to Cart"
+                                    @click.prevent="addToCart(singleProductData, quantityInput, null, 0, campaignSlug)"
+                                    @click="cartShow"
+                                  >
+                                    <i
+                                      :class="
+                                        loading == singleProductData.id
+                                          ? 'fa-solid fa-spinner fa-spin'
+                                          : 'fas fa-shopping-basket'
+                                      "
+                                    ></i>
+                                    <span>add to cart</span>
+                                  </button>
+                                </div>
+                                <div class="col-md-6 mt-lg-0 mt-3">
+                                  <router-link
+                                    :to="{ name: 'user.checkoutPage' }"
+                                    class="product-add main-order-btn"
+                                    title="Add to Cart"
+                                    @click.prevent="addToCart(singleProductData, quantityInput, null, 0, campaignSlug); modalClose()"
+                                  >
+                                    <i class="fas fa-cart-plus"></i>
+                                    <span>Buy Now</span>
+                                  </router-link>
+                                </div>
+                              </div>
+                            </div>
+                   
                   </div>
+
+                  
                   <div class="view-action-group">
                     <a class="view-wish wish" href="#" title="Add Your Wishlist"
                       ><i class="icofont-heart"></i><span>add to wish</span></a

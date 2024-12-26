@@ -137,12 +137,12 @@ const paymentGatewayRef   = ref(null);
       if (payment_gateway.name === 'Bkash') {
         paymentGetwayName.value = payment_gateway.name;
       }
-      if (payment_gateway.name === 'Cash On Delivery') {
-        paymentGetwayName.value = payment_gateway.name;
-      }
       if (payment_gateway.name === 'Nagad') {
         paymentGetwayName.value = payment_gateway.name;
-      }  
+      } 
+      if (payment_gateway.name === 'Cash On Delivery') {
+        paymentGetwayName.value = payment_gateway.name;
+      } 
     }
 
 // order work start here 
@@ -336,6 +336,7 @@ const checkScreenSize = () => {
 
 // get Selected Delivery Id start
     const getSelectedDeliveryId = (deliveryId) => {
+      delivery_gateway_id.value =deliveryId
       // delivery_gateway_id.value = deliveryId;
       // getDeliveryAmount();
       // if (deliveryId != 3) {
@@ -435,277 +436,225 @@ const checkScreenSize = () => {
                             <p>Returning customer? <a href="login.html">Click here to login</a></p>
                         </div>
                     </div>
-
-                    <div class="col-lg-12">
-                        <div class="account-card">
-                            <div class="account-title">
-                                <h4>Your order</h4>
-                            </div>
-                            <div class="account-content">
-                                <div class="table-scroll">
-                                    <table class="table-list">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Serial</th>
-                                                <th scope="col">Product</th>
-                                                <th scope="col">Name</th>
-                                                <th scope="col">Price</th>
-                                                <th scope="col">brand</th>
-                                                <th scope="col">quantity</th>
-                                                <th scope="col">Total Price</th>
-                                                <th scope="col">action</th>
-                                            </tr>
-                                        </thead>
-                                        
-                                        <tbody>
-                                            <tr v-for="(product, index) in cartItem" :key="index" class="checkoutTable">
-                                                <th scope="row">{{ 1 + index }}</th>
-                                                <td class="align-items-center"><a href="" class="img"><img :src="product.image" class="img w-50 h-50" alt="product.image"></a></td>
-                                                <td class="text-wrap align-items-center">{{ product.name }}</td>
-                                                <td>{{ Math.round(product.sell_price) }}</td>
-                                                <td class="align-item-center">{{ product?.campaign_slug }}</td>
-                                                <td class="w-25">
-
-                                                  <div class="checkout-page-action">
-                                                      <button
-                                                        class=""
-                                                        title="Quantity Minus"
-                                                        @click.prevent="cartDecrement(index)"
-                                                      >
-                                                        <i class="fas fa-minus"></i>
-                                                      </button>
-                                                      <input
-                                                        class=""
-                                                        title="Quantity Number"
-                                                        type="text"
-                                                        name="quantity"
-                                                        :disabled="product.quantity === 1 ? true : false"
-                                                        :value="product.quantity"
-                                                      />
-                                                      <button
-                                                        class=""
-                                                        title="Quantity Plus"
-                                                        @click.prevent="cartIncrement(index)"
-                                                      >
-                                                        <i class="fas fa-plus"></i>
-                                                      </button>
-                                                  </div>
-
-                                                </td>
-                                                <td>{{ (Math.round(product.sell_price)) * product.quantity }}</td>
-                                               
-                                                <td class="table-action d-flex justify-content-between">
-                                                    <button>
-                                                      <a title="Product View" href="#" class="fas fa-eye" @click.prevent="previewProductModal(relatedData?.slug)"></a>
-                                                    </button>
-                                                    <button class="cart-delete" @click.prevent="deleteCart(index)">
-                                                      <i class="far fa-trash-alt text-danger" title="Delete Item"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div class="continue-shopping">
-                                  <router-link :to="{ name: 'shop'}"> <i class="fas fa-arrow-left"></i> Continue Shopping</router-link>
-                                </div>
-                                <div class="is-free-shipping-active" v-if="(isFreeShippingChecking?.type == 'quantity' && cartItemCount >= isFreeShippingChecking?.quantity) || (isFreeShippingChecking?.type == 'price' && totalPrice >= isFreeShippingChecking?.price)">
-                                  <p>You are Enjoying Free Shipping!</p>
-                                </div>
-                                <div :class="{ 'is-free-shipping': isFreeShippingChecking }" v-else>
-                                  <span v-if="isFreeShippingChecking?.type == 'price'">
-                                    <p>Add {{ isFreeShippingChecking?.price -  totalPrice}} more Price to get free shipping!</p>
-                                  </span>
-                                  <span v-if="isFreeShippingChecking?.type == 'quantity'">
-                                    <p>Add {{ isFreeShippingChecking?.quantity -  cartItemCount}} more product to get free shipping!</p>
-                                  </span>
-                                </div>
-
-                                <div class="left my-3 p-0">
-                                    <div class="d-flex justify-content-between is-coupon" @click="isOpenCoupon">
-                                      <h6>Do you have any coupon ?</h6>
-                                      <button class="btn-danger btn-sm" ><i class="fas fa-chevron-down " :class="{'isRoted' : isOpen}"></i></button>
-                                    </div>
-                                    <div class="input-group p-3" :class="{'d-none' : !isOpen}">
-                                      <input type="text" class="form-control" placeholder="Apply Your Coupon Here" aria-label="Input group example" aria-describedby="btnGroupAddon" v-model="coupon">
-                                      <div class="input-group-text btn-danger" id="btnGroupAddon" @click.prevent="couponCalculate">Apply</div>
-                                    </div>
-                                    <span v-if="couponErrorMessage" class="text-danger ps-3">{{ couponErrorMessage }}</span>
-                                </div>
-
-                               
-                                <div class="checkout-charge">
-                                    <h5 class="text-wrap d-flex justify-content-center">Order Summery</h5>
-                                    <ul>
-                                        <li>
-                                            <span>Sub total</span>
-                                            <span class="text-dark">{{ cart.totalPrice }} <span class="font-weight-bold">TK</span></span>
-                                        </li>
-                                        <li>
-                                            <span class="">Delivary Charge</span>
-                                            <span class="text-dark">{{ deliverCharge }}<span class="font-weight-bold">TK</span></span>
-                                        </li>
-                                        <li v-if="couponDiscountAmount">
-                                            <span class="text-danger">Coupon Discount</span>
-                                            <span class="text-danger"> -({{ couponDiscountAmount ?  cart.totalPrice - couponDiscountAmount : 0 }})<span class="font-weight-bold">TK</span></span>
-                                        </li>
-                                        <li>
-                                            <span>Total<small>(Incl. VAT)</small></span>
-                                            <span class="text-dark"><span class="flag-discount me-4">Amount</span> {{ couponDiscountAmount ?  Number(deliverCharge) + couponDiscountAmount : cart.totalPrice + Number(deliverCharge) }}  <span class="font-weight-bold">TK</span></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    /*=====================
-                          checkout-second
-                    ====================== */
-                    
-                    
                     <div class="container mt-5 checkout-page">
-    <div class="row">
-      <!-- Left Section -->
-      <div class="col-md-9 left-section border-black">
-        <table class="table table-bordered">
-          <thead>
-            <tr class="checkout-heading">
-              <th>Sl</th>
-              <th>Image</th>
-              <th>Name</th>
-              <th>Variations</th>
-              <th>Unit Price</th>
-              <th>Quantity</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="checkout-data">
-              <td>1</td>
-              <td><img src="https://via.placeholder.com/50" alt="Product" class="img-fluid"></td>
-              <td>Product 4</td>
-              <td></td>
-              <td>550.02 Tk</td>
-              <td>
-                <div class="d-flex align-items-center">
-                  <button class="btn btn-outline-secondary btn-sm">-</button>
-                  <input type="text" class="form-control form-control-sm mx-2 text-center" value="1" style="width: 50px;">
-                  <button class="btn btn-outline-secondary btn-sm">+</button>
-                </div>
-              </td>
-              <td><button class="btn btn-danger btn-sm">Delete</button></td>
-            </tr>
-          </tbody>
-        </table>
-        <a href="#" class="btn btn-link">← Continue Shopping</a>
-        <div class="mt-3 coupon-section">
-          <input type="text" class="form-control d-inline-block w-75" placeholder="Apply Coupon . . .">
-          <button class="btn btn-primary">Apply</button>
-          <p class="text-danger mt-2">The coupon code field is required.</p>
-        </div>
-        <div class="mt-4 notes-section">
-          <h6>প্রয়োজনীয় কোনো তথ্য দিতে এখানে লিখুন:</h6>
-          <textarea class="form-control" rows="3" placeholder="দয়া করে আপনার অর্ডারের জন্য ..."></textarea>
-        </div>
-      </div>
-      <!-- Right Section -->
-      <div class="col-md-3 right-section border-black">
-        <form>
-          <h5 class="border-bottom pb-2">অর্ডার কনফর্ম করতে...</h5>
-          <div class="mb-3">
-            <label for="name" class="form-label">নাম:</label>
-            <input type="text" id="name" class="form-control" placeholder="এখানে নাম লিখুন...">
-          </div>
-          <div class="mb-3">
-            <label for="phone" class="form-label">মোবাইল নাম্বার:</label>
-            <input type="text" id="phone" class="form-control" placeholder="এখানে মোবাইল নাম্বার লিখুন...">
-          </div>
-          <div class="mb-3">
-            <label for="address" class="form-label">ঠিকানা:</label>
-            <input type="text" id="address" class="form-control" placeholder="বাড়ি নং, রোড নং ...">
-          </div>
-          <h5 class="border-bottom pb-2">ডেলিভারি চার্জ</h5>
-          <div class="form-check">
-            <input type="radio" id="dhaka" name="delivery" class="form-check-input" checked>
-            <label for="dhaka" class="form-check-label">Dhaka - 60.00 Tk</label>
-          </div>
-          <div class="form-check">
-            <input type="radio" id="others" name="delivery" class="form-check-input">
-            <label for="others" class="form-check-label">Others - 120.00 Tk</label>
-          </div>
-          <h5 class="border-bottom pb-2 mt-3">নিরাপদ পেমেন্ট অপশন</h5>
-          <div class="form-check">
-            <input type="radio" id="cod" name="payment" class="form-check-input" checked>
-            <label for="cod" class="form-check-label">Cash on delivery</label>
-          </div>
-          <div class="form-check">
-            <input type="radio" id="bkash" name="payment" class="form-check-input">
-            <label for="bkash" class="form-check-label">bKash</label>
-          </div>
-          <div class="form-check">
-            <input type="radio" id="nagad" name="payment" class="form-check-input">
-            <label for="nagad" class="form-check-label">Nagad</label>
-          </div>
-          <div class="form-check">
-            <input type="radio" id="card" name="payment" class="form-check-input">
-            <label for="card" class="form-check-label">Card Payment</label>
-          </div>
-          <p class="text-danger mt-2">→ Pay with upon delivery</p>
-          <button type="submit" class="btn btn-success w-100">Place Order</button>
-        </form>
-      </div>
-    </div>
-  </div>
- 
+                      <div class="row">
+                        <!-- Left Section -->
+                        <div class="col-md-9 left-section border-black">
+                          <table class="table table-bordered">
+                            <thead>
+                              <tr class="checkout-heading">
+                                <th>Sl</th>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Unit Price</th>
+                                <th>Quantity</th>
+                                <th scope="col">Total Price</th>
+                                <th>Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr v-for="(product, index) in cartItem" :key="index" class="checkout-data">
+                                <td>{{ 1 + index }}</td>
+                                <td><img :src="product.image" alt="product.image" class="img w-100 h-100"></td>
+                                <td>{{ product.name }}</td>
+                                <td>{{ Math.round(product.sell_price) }}</td>
+                                <td>
+                                 <div class="d-flex align-items-center">
+                                    <button class="btn btn-outline-secondary btn-sm"
+                                       title="Quantity Minus"
+                                       @click.prevent="cartDecrement(index)">
+                                       <i class="fas fa-minus"></i>
+                                    </button>
+                                    <input
+                                      title="Quantity Number"
+                                       type="text"
+                                       name="quantity"
+                                       :disabled="product.quantity === 1 ? true : false"
+                                       :value="product.quantity"
+                                      class="form-control form-control-sm mx-2 text-center" style="width: 50px;">
+                                    <button class="btn btn-outline-secondary btn-sm"
+                                     title="Quantity Plus"
+                                       @click.prevent="cartIncrement(index)">
+                                    <i class="fas fa-plus"></i>
+                                    </button>
+                                  </div>
+                                </td>
+                                <td>{{ (Math.round(product.sell_price)) * product.quantity }}</td>
+                                <td><button @click.prevent="deleteCart(index)" class="btn btn-danger btn-sm">Delete</button></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div class="row">
+                            <div class="col-md-6">
+                                  <router-link :to="{name: 'shop'}" class="btn btn-link">← Continue Shopping</router-link>
+                              <div class="mt-3 coupon-section">
+                                <input type="text" class="form-control d-inline-block w-75" placeholder="Apply Coupon . . .">
+                                <button class="btn btn-primary small-btn">Apply</button>
+                                <p class="text-danger mt-2">The coupon code field is required.</p>
+                              </div>
+                              
+                            </div>
+                            <div class="col-md-6">
+                              <div class="left mt-5 my-3 hide_and_show_bottam_section ">
+                                <h5 class="text-wrap text-center">Order Summery</h5>
+                                <div class="line"></div>
+                                <div class="d-flex justify-content-between my-2">
+                                  <p class="text-danger">Sub Total </p>
+                                  <p class="text-danger">{{ cart.totalPrice }} <span class="font-weight-bold">TK</span></p>
+                                </div>
+                                <div class="d-flex justify-content-between my-2">
+                                  <p class="text-danger">Delivary Charge</p>
+                                  <p class="text-danger">{{ deliverCharge }}<span class="font-weight-bold">TK</span></p>
+                                </div>
+                                <div class="d-flex justify-content-between my-2" v-if="couponDiscountAmount">
+                                  <p class="text-danger">Coupon Discount</p>
+                                  <p class="text-danger"> -({{ couponDiscountAmount ?  cart.totalPrice - couponDiscountAmount : 0 }})<span class="font-weight-bold">TK</span></p>
+                                </div>
+                                <div class="line"></div>
+                                <div class="d-flex justify-content-between my-2">
+                                  <p class="text-danger">Total </p>
+                                  <p class="text-danger"><span class="flag-discount me-4">Amount = </span> {{ couponDiscountAmount ?  Number(deliverCharge) + couponDiscountAmount : cart.totalPrice + Number(deliverCharge) }}  <span class="font-weight-bold">TK</span></p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mt-4 notes-section">
+                                <h6>প্রয়োজনীয় কোনো তথ্য দিতে এখানে লিখুন:</h6>
+                                <textarea class="form-control" rows="3" placeholder="দয়া করে আপনার অর্ডারের জন্য ..."></textarea>
+                              </div>
+                        </div>
+                        <!-- Right Section -->
+                        <div class="col-md-3 right-section border-black">
+                          <Form
+                            @submit.prevent="placeOrder"
+                            :validation-schema="schema"
+                            v-slot="{ errors, isSubmitting }"
+                          >
+                            <h5 class="border-bottom pb-2">অর্ডার কনফার্ম করতে...</h5>
+                            <div class="mb-3">
+                              <label for="name" class="form-label">নাম:</label>
+                              <Field 
+                              name="name" type="text" 
+                              id="name" class="form-control" 
+                              placeholder="এখানে নাম লিখুন..."
+                              :class="{ 'is-invalid': errors.name }"
+                              />
+                            <span class="text-danger" v-if="errors.name">{{ errors.name }}</span>
+                            </div>
 
+                            <div class="mb-3">
+                              <label for="phone" class="form-label">মোবাইল নাম্বার:</label>
+                              <Field 
+                              name="phone" type="text" 
+                              id="phone" class="form-control" 
+                              placeholder="এখানে মোবাইল নাম্বার লিখুন..."
+                              :class="{ 'is-invalid': errors.phone }"
+                              />
+                              <span class="text-danger" v-if="errors.phone">{{ errors.phone }}</span>
+                              <span class="text-danger" v-if="backendErrors?.phone_number">{{ backendErrors.phone_number[0] }}</span>
+                            </div>
 
+                            <div class="mb-3">
+                              <label for="address" class="form-label">ঠিকানা:</label>
+                              <Field 
+                              name="address" type="text" 
+                              id="address" class="form-control" 
+                              placeholder="বাড়ি নং, রোড নং, থানা/উপজেলা..."
+                              :class="{ 'is-invalid': errors.address }"
+                              />
+                              <span class="text-danger" v-if="errors.address">{{ errors.address }}</span>
+                            </div>
 
+                            <h5 class="border-bottom pb-2">ডেলিভারি চার্জ</h5>
+                            <div v-for="(delivery, index) in deliveryInfo.data" :key="index"  @click="getSelectedDeliveryId(delivery.id)">
+                              <div class="form-check" v-if="!(delivery.id === 3 && !isFreeShippingEligible)">
+                              <input 
+                                class="form-check-input me-2"
+                                type="radio"  
+                                :id="'deliveryGateway_' + delivery.id"
+                                name="delivery_gateway_id"  
+                                :value="delivery.id"
+                                v-model="delivery_gateway_id"
+                              >
+                              <label  class="form-check-label" :for="'deliveryGateway_' + delivery.id" >{{ delivery.name + ' - ' + Number(delivery.delivery_fee) }} টাকা </label>
+                            </div>
+                            </div>
+                            
+                            <div class="secend-box p-2 bg-light mt-3">
+                              <div class="">
+                                <div class=" fw-bolder text-dark">সম্পূর্ণ নিরাপদ পেমেন্ট</div>
+                              </div>
+                              <div v-for="(payment_gateway, index) in payment_gateways.data" :key="index">
+                                <div class="formRadioControl d-flex align-items-center"  @click="selectedGetway(payment_gateway)">
+                                  <input
+                                    class="form-check-input payment-getway-input me-2 mt-0"
+                                    type="radio"
+                                    :id="'paymentGateway_' + index"
+                                    name="payment_gateway_id"
+                                    :value="payment_gateway.id"
+                                    v-model="payment_gateway_id"
+                                  >
+                                  
+                                  <div class="d-flex justify-content-between w-100 align-items-center">
+                                    <label class="form-check-label payment-getway-lebal" :for="'paymentGateway_' + index">{{ payment_gateway.name }}</label>
+                                    <img :src="payment_gateway.image" alt="" style="width: 40px;">
+                                  </div>
+                                </div>
+                               
+                                <div class="form-check" v-if="paymentGetwayName === 'Bkash' && payment_gateway.name === paymentGetwayName">
+                                  <span>
+                                    <span class="text-danger font-weight-bold">"Upto 300 Taka Discount"</span><br>
+                                    <span class="text-danger">➞</span> BKash Agent Number : 01873 046 404 <br>
+                                    <div class="paymentgetway-customize-input-feilds">
+                                      <span>bKash Send Number</span>
+                                      <input type="email" class="form-control form-control-sm" placeholder="017XXXXXXXX" v-model="paymentSendNumber">
+                                    </div>
+                                    <div class="paymentgetway-customize-input-feilds">
+                                      <span>bKash Received Number</span>
+                                      <input type="email" class="form-control form-control-sm" placeholder="017XXXXXXXX" v-model="paymentReceivedNumber">
+                                    </div>
+                                  </span>
+                                </div>
+                                
+                                <div class="form-check" v-else-if="paymentGetwayName === 'Nagad'  && payment_gateway.name === paymentGetwayName">
+                                  <span>
+                                    <span class="text-danger font-weight-bold">"Upto 300 Taka Discount"</span><br>
+                                      <span class="text-danger">➞</span> Nagad Agent Number : 01894 689 206 <br>
+                                      <div class="paymentgetway-customize-input-feilds">
+                                        <span>Nagad Send Number</span>
+                                        <input type="email" class="form-control form-control-sm" placeholder="017XXXXXXXX" v-model="paymentSendNumber">
+                                      </div>
+                                      <div class="paymentgetway-customize-input-feilds">
+                                        <span>Nagad Received Number</span>
+                                        <input type="email" class="form-control form-control-sm" placeholder="017XXXXXXXX" v-model="paymentReceivedNumber">
+                                      </div>
+                                  </span>
+                                </div>
 
+                                <!-- <div class="form-check"  v-else-if="paymentGetwayName == 'Cash On Delivery'  &&  payment_gateway.name == paymentGetwayName">
+                                  <input type="radio" id="card" name="payment" class="form-check-input">
+                                  <label for="card" class="form-check-label">Card Payment</label>
+                                </div> -->
+                                <div class="form-check box box--top" v-else-if="paymentGetwayName == 'Cash On Delivery'  &&  payment_gateway.name == paymentGetwayName">
+                                  <span class="text-danger">➞</span> Pay with cash upon delivery. 
+                                </div>
+                              </div>
+                            </div>
 
-
-
-
-
-
-
+                            <button type="button" class="btn btn-success txt-white w-100">
+                              <router-link :to="{ name: 'user.invoice' }" class="text-white text-decoration-none">
+                                Place Order
+                              </router-link>
+                            </button>
+                          </Form>
+                        </div>
+                      </div>
+                    </div>
 
                 </div>
                <!-- checkoutfirstpart  -->
-
-               
-                  <div class="col-12">
-                   <Form
-                   @submit.prevent="placeOrder"
-                   :validation-schema="schema"
-                   v-slot="{ errors, isSubmitting }"
-                   >
-                   
-
-
-
-
-                    <div v-if="isLoading" class="preloader"></div>
-                    <button type="submit"  class="text-center orderBTN mt-3 w-100" @click="placeOrder()">
-                      <span v-if="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
-                      <span v-else>Place Order</span>
-                    </button>
-                    <!-- <span class="text-danger" v-if="blockSmsErrorMessage">{{ blockSmsErrorMessage }}</span> -->
-                   </Form>
-                  </div>
                 
-                
-                <div>
-                  <div class="checkout-check">
-                                <input type="checkbox" id="checkout-check">
-                                <label for="checkout-check">By making this purchase you agree to our <a href="#">Terms and Conditions</a>.</label>
-                            </div>
-                            <div class="checkout-proced">
-                                <router-link :to="{name: 'user.invoice'}" class="btn btn-inline">proced to checkout</router-link>
-                            </div>
-                </div>
+              
             </div>
         </section>
         <!--=====================================
@@ -761,6 +710,16 @@ textarea::placeholder {
   color: #888;
 }
 
+.small-btn {
+  padding: 12px 17px; /* Adjust padding */
+  font-size: 14px;   /* Adjust font size */
+  height: auto;      /* Ensure height adjusts dynamically */
+}
+.btn-outline-secondary{
+  padding: 11px 17px; /* Adjust padding */
+  font-size: 14px;   /* Adjust font size */
+  height: auto;      /* Ensure height adjusts dynamically */
+}
 form label {
   font-weight: bold;
 }
@@ -771,6 +730,38 @@ form .form-check-label {
 
 form button {
   margin-top: 10px;
+}
+button .router-link {
+  color: white; 
+  text-decoration: none;
+}
+
+
+
+.secend-box{
+  box-shadow: 3px 5px 9px -3px rgba(0,0,0,0.7);
+-webkit-box-shadow: 3px 5px 9px -3px rgba(0,0,0,0.7);
+-moz-box-shadow: 3px 5px 9px -3px rgba(0,0,0,0.7);
+padding: 15px;
+border-top: 4px solid var(--primary) !important;
+border-left: 4px solid var(--primary) !important;
+border-bottom: 1px solid var(--primary) !important;
+border-right: 2px solid var(--primary) !important;
+border-top-left-radius: 20px !important;
+border-bottom-right-radius: 20px !important;
+border: 1px solid var(--primary) !important;
+}
+
+.fw-bolder i {
+  margin: 0px 5px;
+  border: 1px solid var(--primary);
+  padding: 5px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: white;
+}
+.line{
+  border-bottom: 2px solid var(--primary);
 }
 
 </style>

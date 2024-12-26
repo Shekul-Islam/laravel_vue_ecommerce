@@ -369,7 +369,7 @@ onMounted(() => {
                               </h6>
                             </span> -->
 
-                            <span v-else>
+                            <!-- <span v-else>
                               <h6 :class="`${type}-price details-price`">
                                
                                 <template v-if="product.mrp == product.offer_price">
@@ -378,6 +378,18 @@ onMounted(() => {
                                 <template v-else>
                                   {{ product?.mrp }}
                                   {{ product?.offer_price }}
+                                  <del>{{ $filters.currencySymbol(product.mrp) }}</del>
+                                  <span>{{ $filters.currencySymbol(mrpOrOfferPrice(product.mrp, product.offer_price)) }}</span>
+                                </template>
+                              </h6>
+                            </span> -->
+                            <span v-else>
+                              <h6 :class="`${type}-price details-price`">
+                               
+                                <template v-if="product.mrp == product.offer_price">
+                                  {{ $filters.currencySymbol(mrpOrOfferPrice(product.mrp)) }}
+                                </template>
+                                <template v-else>
                                   <del>{{ $filters.currencySymbol(product.mrp) }}</del>
                                   <span>{{ $filters.currencySymbol(mrpOrOfferPrice(product.mrp, product.offer_price)) }}</span>
                                 </template>
