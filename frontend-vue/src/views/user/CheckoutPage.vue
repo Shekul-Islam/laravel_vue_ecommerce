@@ -5,7 +5,6 @@ import { storeToRefs } from "pinia";
 import { onMounted, onUpdated, onBeforeUpdate, onUnmounted, computed, watch  } from "vue";
 // validation error
 import * as yup from "yup";
-// import CheckoutModal from '../../components/modal/CheckoutContact.vue';
 import { ref } from 'vue';
 import { useRouter } from "vue-router";
 // validation error
@@ -57,6 +56,7 @@ const isFreeShippingChecking                  = ref();
 const blockSmsErrorMessage                    = ref();
 const notify                                  = useNotification();
 
+
 const userToken           = ref(localStorage.getItem('user_token'));
 const name                = ref(auth?.user?.user?.name);
 const phoneNumber         = ref(auth?.user?.user?.phone_number);
@@ -93,10 +93,15 @@ const paymentGatewayRef   = ref(null);
   const paymentGetwayName     = ref('');
   const paymentSendNumber     = ref();
   const paymentReceivedNumber = ref();
+  let orderInfo = {}; // অবজেক্ট ডিফাইন করা
 
-    const isOpenCoupon = () =>{
-      isOpen.value = !isOpen.value;
-    }
+const isOpenCoupon = () =>{
+  isOpen.value = !isOpen.value;
+}
+// if destop version is available then show this order note start
+const checkScreenSize = () => {
+  isDesktop.value = window.innerWidth > 768;
+};
 
     const getDeliveryGateway = async () => {
       try {
@@ -139,22 +144,24 @@ const paymentGatewayRef   = ref(null);
       }
       if (payment_gateway.name === 'Nagad') {
         paymentGetwayName.value = payment_gateway.name;
-      } 
+      }
       if (payment_gateway.name === 'Cash On Delivery') {
         paymentGetwayName.value = payment_gateway.name;
-      } 
+      }
     }
 
 // order work start here 
 
+
+
     const orderSubmited = async () => {
      const res =   await order.storeOrder({
           userToken              : userToken.value,
-          name                   : name.value,
-          phoneNumber            : phoneNumber.value,
+          customer_name          : name.value,
+          phone_number           : phoneNumber.value,
           district               : district.value,
-          address                : address.value,
-          orderNote              : orderNote.value,
+          address_details        : address.value,
+          note                   : orderNote.value,
           items                  : cartItem.value,
           coupon_id              : couponId.value,
           totalPrice             : totalPrice.value,
@@ -163,9 +170,11 @@ const paymentGatewayRef   = ref(null);
           deliverCharge          : deliverCharge.value ? deliverCharge.value: null,
           payment_send_number    : paymentSendNumber.value,
           payment_received_number: paymentReceivedNumber.value,
-          // campaign_id: campaignId.value,
+          // campaign_id: campaignId.value
         });
        if (res.status == 200) {
+        console.log(res);
+        
           clickIsOrder.value = false;
        }else{
         blockSmsErrorMessage.value = res
@@ -187,12 +196,11 @@ const paymentGatewayRef   = ref(null);
         isLoading.value = false; // Hide the preloader
       }
 
-
       // if (Object.keys(auth.user).length > 0) {
       // }else{
       //   const res = await auth.login({phone_number: phoneNumber.value, name: name.value});
       //   if (res?.status == 200) {
-      //     modal.toggleModal() 
+      //     modal.toggleModal()
       //   }
       // }
 
@@ -206,10 +214,6 @@ const paymentGatewayRef   = ref(null);
 
 // order work end here 
 
-// if destop version is available then show this order note start
-const checkScreenSize = () => {
-  isDesktop.value = window.innerWidth > 768;
-};
 // if destop version is available then show this order note end
 
 // Scroll to the first error field
@@ -356,18 +360,34 @@ const checkScreenSize = () => {
     });
     
     // Automatically select free shipping when eligible
+
     watch(isFreeShippingEligible, (newVal) => {
-      if (newVal) {        
-        const freeShippingOption = deliveryInfo.value.data.find((delivery) => delivery.id === 3);
-        if (freeShippingOption) {
-          delivery_gateway_id.value = freeShippingOption.id;
-          getDeliveryAmount();
-        }
-      } else if (delivery_gateway_id.value === 3) {
-        delivery_gateway_id.value = 1; 
-        getDeliveryAmount();
-      }
-    });
+  if (newVal) {        
+    const freeShippingOption = (deliveryInfo.value?.data || []).find((delivery) => delivery.id === 3);
+    if (freeShippingOption) {
+      delivery_gateway_id.value = freeShippingOption.id;
+      getDeliveryAmount();
+    }
+  } else if (delivery_gateway_id.value === 3) {
+    delivery_gateway_id.value = 1; 
+    getDeliveryAmount();
+  }
+});
+
+
+
+    // watch(isFreeShippingEligible, (newVal) => {
+    //   if (newVal) {        
+    //     const freeShippingOption = deliveryInfo.value.data.find((delivery) => delivery.id === 3);
+    //     if (freeShippingOption) {
+    //       delivery_gateway_id.value = freeShippingOption.id;
+    //       getDeliveryAmount();
+    //     }
+    //   } else if (delivery_gateway_id.value === 3) {
+    //     delivery_gateway_id.value = 1; 
+    //     getDeliveryAmount();
+    //   }
+    // });
     
 // get Selected Delivery Id end
 
@@ -488,9 +508,9 @@ const checkScreenSize = () => {
                             <div class="col-md-6">
                                   <router-link :to="{name: 'shop'}" class="btn btn-link">← Continue Shopping</router-link>
                               <div class="mt-3 coupon-section">
-                                <input type="text" class="form-control d-inline-block w-75" placeholder="Apply Coupon . . .">
-                                <button class="btn btn-primary small-btn">Apply</button>
-                                <p class="text-danger mt-2">The coupon code field is required.</p>
+                                <input type="text" class="form-control d-inline-block w-75" placeholder="Apply Coupon . . ." v-model="coupon">
+                                <button class="btn btn-primary small-btn" @click.prevent="couponCalculate">Apply</button>
+                                <span v-if="couponErrorMessage" class="text-danger ps-3">{{ couponErrorMessage }}</span>
                               </div>
                               
                             </div>
@@ -518,9 +538,9 @@ const checkScreenSize = () => {
                               </div>
                             </div>
                           </div>
-                          <div class="mt-4 notes-section">
+                          <div class="mt-4 notes-section" v-if="isDesktop">
                                 <h6>প্রয়োজনীয় কোনো তথ্য দিতে এখানে লিখুন:</h6>
-                                <textarea class="form-control" rows="3" placeholder="দয়া করে আপনার অর্ডারের জন্য ..."></textarea>
+                                <textarea class="form-control" rows="3" placeholder="দয়া করে আপনার অর্ডারের জন্য ..." v-model="orderNote"></textarea>
                               </div>
                         </div>
                         <!-- Right Section -->
@@ -641,11 +661,13 @@ const checkScreenSize = () => {
                               </div>
                             </div>
 
-                            <button type="button" class="btn btn-success txt-white w-100">
+                            <button type="submit" class="btn btn-success txt-white w-100" @click="placeOrder()">
                               <router-link :to="{ name: 'user.invoice' }" class="text-white text-decoration-none">
-                                Place Order
+                                <span v-if="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                <span v-else>Place Order</span>
                               </router-link>
                             </button>
+                            <span class="text-danger" v-if="blockSmsErrorMessage">{{ blockSmsErrorMessage }}</span>
                           </Form>
                         </div>
                       </div>

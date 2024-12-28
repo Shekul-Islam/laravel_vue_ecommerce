@@ -1,26 +1,31 @@
 <script setup>
-import {useShop} from "@/stores/";
 // import { data } from "jquery";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useRoute } from 'vue-router';
 import { mrpOrOfferPrice } from "@/composables";
+import { ProductVariation } from "@/components";
+import { useProduct, useCart, useNotification, useShop, useSettingStore, } from "@/stores";
+import { addToCart } from "@/composables";
 
 
-const props = defineProps({
-  previewData : {
-    type: Object,
-    required: true,
-  }
-})
 
+const singleProduct = useProduct();
+const related = useProduct();
+const quantityInput = ref(1);
+const emit = defineEmits(['productVariationPrice', 'productVariationData', 'activeBtns']);
+
+
+
+// product variations start
+const productVariationData  = ref("");
+const productVariationPrice = ref("");
+const activeBtns            = ref(false);
+const singleProductData = ref("");
+const relatedProducts = ref("");
 
 
 const route = useRoute();
 const shopProduct = useShop();
-
-const singleProductData = ref("");
-const productVariationPrice = ref("");
-const relatedProducts = ref("");
 
 const productType = ref("");
 const selectedBrandIds = ref([]);
@@ -32,28 +37,125 @@ const searchQuery = ref("");
 const paginateSize = ref("");
 
 
+const props = defineProps({
+ singleProduct: {
+    type: [Object, String],
+    default: {},
+  },
+ productVariations: {
+    type: Object,
+    default: {}, 
+  },
+ campaignSlug: {
+    type: String,
+    default: null,
+  },
+ type: {
+    type: String,
+    default: null, 
+  },
+  previewData : {
+    type: Object,
+    required: true,
+  }
+});
+
+const handleActiveBtns = (data) => {
+  activeBtns.value = data
+  emit('activeBtns', data);
+}
+function modalClose(){
+  $('#product-view').modal('hide')
+ }
+
+const incrementCartItem = () => {
+  quantityInput.value = parseInt(quantityInput.value) + 1;
+};
+const decrementCartItem = () => {
+  if (quantityInput.value != 1) {
+    quantityInput.value = parseInt(quantityInput.value) - 1;
+  }
+};
+
+// product prices start
+// const handleProductVariationPrice = (data) => {
+//   emit('productVariationPrice', data);
+//   productVariationPrice.value = data[0] 
+// }
+
+const handleProductVariationPrice = (data) => {
+  if (data && data.length > 0) {
+    productVariationPrice.value = data[0];
+    emit('productVariationPrice', data);
+  } else {
+    console.error("Invalid data for product variation price:", data);
+  }
+};
+
+const handleProductVariationData = (data) => {
+  productVariationData.value = data  
+  emit('productVariationData', data);
+}
+// product prices end
+
+// addtoCart
+const getSingleProduct = async () =>  {
+    const res = await singleProduct.getSingleProductData(route.params.slug);
+    if(res?.success){
+      singleProductData.value = res?.result;
+      console.log(singleProductData);
+      
+      getRelatedProducts(res?.result?.category?.id);
+    }
+}
+
+const getRelatedProducts = async (id) =>  {
+    const res = await related.getCategoryData(id);
+    relatedProducts.value = res;
+}
+
+// addtoCart
+
+
+// const props = defineProps({
+//   previewData : {
+//     type: Object,
+//     required: true,
+//   }
+// })
+
+
+
+
+
 const color = "white";
 const size = "8px";
 
-const handleProductVariationPrice = (data) => {
-   if (data?.length){
-    productVariationPrice.value = data[0];
-    console.log("productVariationPrice", productVariationPrice.value);
+// const handleProductVariationPrice = (data) => {
+//    if (data?.length){
+//     productVariationPrice.value = data[0];
+//     console.log("productVariationPrice", productVariationPrice.value);
     
-   }
+//    }
     
-};
+// };
 
 const bannerImage = new URL ("@/assets/images/single-banner.jpg", import.meta.url).href;
 
-// watch(() => route.params.slug, (newValue, oldValue) => {
-//   getRelatedProducts();
-//   });
 
+watch(
+  () => route.params.slug,
+  (newSlug, oldSlug) => {
+    
+    getSingleProduct();
+  }
+);
 
 
 onMounted(() => {
     handleProductVariationPrice();
+    getSingleProduct();
+    getRelatedProducts();
 })
 </script>
 
@@ -96,7 +198,7 @@ onMounted(() => {
                     <p>SKU: {{ previewData?.sku }}</p>
                     <p>BRAND:<a href="#">{{ previewData?.brand?.name }}</a></p>
                     
-                    <div :class="`${type}-meta`">
+                    <div :class="`${previewData.type}-meta`">
                       <p v-if="previewData?.category">
                         Category: <a href="">{{ previewData?.category?.name }}</a>
                       </p>
@@ -130,12 +232,15 @@ onMounted(() => {
                     <h3 :class="`${type}-price details-price` ">
                       <del>{{ $filters.currencySymbol(previewData.mrp) }}</del>
                       <span>{{ $filters.currencySymbol( mrpOrOfferPrice( previewData.mrp, previewData.offer_price ))}}</span>
+                      <a class="discout_amount" v-if="previewData.offer_price != 0" >Save {{ Math.round(previewData.mrp - previewData.offer_price) }}৳</a >
                     </h3>
                   </span>
+
+                  <ProductVariation :productVariations="productVariations" :allVariations="previewData?.variations?.data" @productVariationPrice="handleProductVariationPrice" @productVariationData="handleProductVariationData" @activeBtns="handleActiveBtns"  />
+
+
                   <p class="view-desc">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit non
-                    tempora magni repudiandae sint suscipit tempore quis maxime
-                    explicabo veniam eos reprehenderit fuga
+                    {{previewData?.short_description}}
                   </p>
                   <div class="view-list-group">
                     <label class="view-list-title">tags:</label>
@@ -145,6 +250,7 @@ onMounted(() => {
                       <li><a href="#">chilis</a></li>
                     </ul>
                   </div>
+
                   <div class="view-list-group">
                     <label class="view-list-title">Share:</label>
                     <ul class="view-share-list">
@@ -174,69 +280,70 @@ onMounted(() => {
                       </li>
                     </ul>
                   </div>
-
-
                   
-                 <div :class="`${type}-list-group mt-3`">
-                   <div
-                     class="quantity"
-                     :class="{
-                       'quantity-disabled':
-                         activeBtns === false &&
-                         singleProduct?.variations?.data.length > 0,
-                     }"
-                   >
-                     <button
-                       class="minus"
-                       :disabled="
-                         activeBtns === false &&
-                         singleProduct?.variations?.data.length > 0
-                       "
-                       aria-label="Decrease"
-                       @click.prevent="decrementCartItem"
-                     >
-                       &minus;
-                     </button>
-                     <input
-                       type="number"
-                       class="input-box"
-                       min="1"
-                       max="10"
-                       v-model="quantityInput"
-                     />
-                     <button
-                       class="plus"
-                       :disabled="
-                         activeBtns === false &&
-                         singleProduct?.variations?.data.length > 0
-                       "
-                       aria-label="Increase"
-                       @click.prevent="incrementCartItem"
-                     >
-                       &plus;
-                     </button>
-                   </div>
-                </div>
+                  <div :class="`${type}-list-group mt-3`">
+
+                      <div
+                        class="quantity d-flex align-items-center "
+                        :class="{
+                          'quantity-disabled':
+                            activeBtns === false &&
+                            singleProduct?.variations?.data.length > 0,
+                        }"
+                      >
+                        <button
+                          class="btn btn-outline-secondary btn-sm"
+                          :disabled="
+                            activeBtns === false &&
+                            singleProduct?.variations?.data.length > 0
+                          "
+                          aria-label="Decrease"
+                          @click.prevent="decrementCartItem"
+                        >
+                        <i class="fas fa-minus"></i>
+                        </button>
+
+                        <input type="text" 
+                          class="input-box form-control form-control-sm mx-2 text-center"
+                          min="1"
+                          max="10"
+                          v-model="quantityInput"
+                          style="width: 50px;"
+                        />
+
+                        <button
+                          class="plus btn btn-outline-secondary btn-sm"
+                          :disabled="
+                            activeBtns === false &&
+                            singleProduct?.variations?.data.length > 0
+                          "
+                          aria-label="Increase"
+                          @click.prevent="incrementCartItem"
+                        >
+                        <i class="fas fa-plus"></i>
+                        </button>
+                      </div>
+                  </div>
 
 
                   <div class="view-add-group">
                     <div :class="`${type}-add-group`">
-                              <div class="row" v-if="singleProductData?.variations?.data.length > 0">
+                              <div class="row" v-if="previewData?.variations?.data.length > 0">
                                 <div class="col-md-6 mt-lg-0 mt-3">
                                   <button class="product-add" title="Add to Cart" 
-                                    :disabled="activeBtns === false && singleProductData?.variations?.data.length > 0"
+                                    :disabled="activeBtns === false && previewData?.variations?.data.length > 0"
                                     :class="{ singleProductBtn: activeBtns === false }"
                                     
                                     @click.prevent="
                                       addToCart(
-                                        singleProductData,
+                                        previewData,
                                         quantityInput,
                                         productVariationData,
                                         productVariationPrice,
                                         campaignSlug
                                       )
                                     ">
-                                    <i :class=" loading == singleProductData.id? 'fa-solid fa-spinner fa-spin': 'fas fa-shopping-basket'"></i>
+                                    <i :class=" loading == previewData.id? 'fa-solid fa-spinner fa-spin': 'fas fa-shopping-basket'"></i>
                                     <span>add to cart</span>
                                   </button>
                                 </div>
@@ -260,7 +367,7 @@ onMounted(() => {
                                     title="Add to Cart"
                                     @click.prevent="
                                       addToCart(
-                                        singleProductData,
+                                        previewData,
                                         quantityInput,
                                         productVariationData,
                                         productVariationPrice,
@@ -280,12 +387,12 @@ onMounted(() => {
                                   <button
                                     class="product-add"
                                     title="Add to Cart"
-                                    @click.prevent="addToCart(singleProductData, quantityInput, null, 0, campaignSlug)"
+                                    @click.prevent="addToCart(previewData, quantityInput, null, 0, campaignSlug)"
                                     @click="cartShow"
                                   >
                                     <i
                                       :class="
-                                        loading == singleProductData.id
+                                        loading == previewData.id
                                           ? 'fa-solid fa-spinner fa-spin'
                                           : 'fas fa-shopping-basket'
                                       "
@@ -298,7 +405,7 @@ onMounted(() => {
                                     :to="{ name: 'user.checkoutPage' }"
                                     class="product-add main-order-btn"
                                     title="Add to Cart"
-                                    @click.prevent="addToCart(singleProductData, quantityInput, null, 0, campaignSlug); modalClose()"
+                                    @click.prevent="addToCart(previewData, quantityInput, null, 0, campaignSlug); modalClose()"
                                   >
                                     <i class="fas fa-cart-plus"></i>
                                     <span>Buy Now</span>
@@ -337,5 +444,11 @@ onMounted(() => {
 .details-thumb li img{
   width: 100px;
   height: 100px;
+}
+
+.btn-outline-secondary{
+  padding: 11px 17px; /* Adjust padding */
+  font-size: 14px;   /* Adjust font size */
+  height: auto;      /* Ensure height adjusts dynamically */
 }
 </style>

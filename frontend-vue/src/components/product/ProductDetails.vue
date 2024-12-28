@@ -45,7 +45,6 @@ const sizeName      = ref("");
 const productPrices = ref("");
 const route         = useRoute();
 const singleProduct = useProduct();
-// const singleData = useProduct();
 const related = useProduct();
 const shop          = useShop();
 const cart          = useCart();
@@ -333,7 +332,8 @@ onMounted(() => {
                                 <a href="#">(3 reviews)</a>
                             </div>
                           
-                           <span v-if="singleProductData?.variations?.data?.length"> 
+                           <span v-if="singleProductData?.variations?.data?.length">
+                              {{ singleProductData?.variation_price_range?.min_price }}
                             <h3 class="details-price" v-if="productVariationPrice == '' || productVariationPrice == undefined">
                                 <span v-if="singleProductData?.variation_price_range?.min_price == singleProductData?.variation_price_range?.max_price ">{{ $filters?.currencySymbol(singleProductData?.variation_price_range?.min_price || singleProductData?.variation_price_range?.max_price) }}</span>
                             </h3>
