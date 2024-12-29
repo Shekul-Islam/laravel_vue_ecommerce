@@ -12,31 +12,7 @@ import { Form, Field } from "vee-validate";
 
 
 
-/*=======================
-        isLoading
-=======================*/
-// const isLoading = ref(false);
-// const placeOrder = async() => {
-//       isLoading.value = true;
-//       try {
-//         await orderSubmited();
-//         // Handle successful order submission
-//       } catch (error) {
-//         // Handle error
-//         console.error("Order submission failed:", error);
-//       } finally {
-//         isLoading.value = false; // Hide the preloader
-//       }
 
-//     }; 
-    
-    
-    // const handleOrderSubmitted = () => {
-    //   orderSubmited(); 
-    // }
-/*=======================
-        isLoading
-=======================*/
  
 
 const commonIsToggleFunctionality             = useCommonIsToggleFunctionality();
@@ -69,6 +45,8 @@ const deliveryInfo        = ref([]);
 const payment_gateways    = ref([]);
 const orderNote           = ref("");
 
+
+
 // coupon 
 const showCouponForm       = ref(false);
 const couponDiscountAmount = ref();
@@ -93,7 +71,6 @@ const paymentGatewayRef   = ref(null);
   const paymentGetwayName     = ref('');
   const paymentSendNumber     = ref();
   const paymentReceivedNumber = ref();
-  let orderInfo = {}; // অবজেক্ট ডিফাইন করা
 
 const isOpenCoupon = () =>{
   isOpen.value = !isOpen.value;
@@ -152,38 +129,45 @@ const checkScreenSize = () => {
 
 // order work start here 
 
-
-
     const orderSubmited = async () => {
-     const res =   await order.storeOrder({
-          userToken              : userToken.value,
-          customer_name          : name.value,
-          phone_number           : phoneNumber.value,
-          district               : district.value,
-          address_details        : address.value,
-          note                   : orderNote.value,
-          items                  : cartItem.value,
-          coupon_id              : couponId.value,
-          totalPrice             : totalPrice.value,
-          payment_gateway_id     : payment_gateway_id.value,
-          delivery_gateway_id    : delivery_gateway_id.value == 0 ? null    : delivery_gateway_id.value,
-          deliverCharge          : deliverCharge.value ? deliverCharge.value: null,
-          payment_send_number    : paymentSendNumber.value,
-          payment_received_number: paymentReceivedNumber.value,
-          // campaign_id: campaignId.value
-        });
-       if (res.status == 200) {
-        console.log(res);
-        
-          clickIsOrder.value = false;
-       }else{
-        blockSmsErrorMessage.value = res
-        notify.Error(`${res}`);   
-       }
-      
-    }
+  // ভ্যারিয়েবল তৈরি করে ডেটা সংরক্ষণ
+  console.log(name.value);
+  
+  const orderData = {
+    userToken           : userToken.value,
+    customer_name       : name.value,
+    phone_number        : phoneNumber.value,
+    district            : district.value,
+    address_details     : address.value,
+    note                : orderNote.value,
+    items               : cartItem.value,
+    coupon_id           : couponId.value,
+    totalPrice          : totalPrice.value,
+    payment_gateway_id  : payment_gateway_id.value,
+    delivery_gateway_id : delivery_gateway_id.value == 0 ? null : delivery_gateway_id.value,
+    deliverCharge       : deliverCharge.value ? deliverCharge.value : null,
+    payment_send_number : paymentSendNumber.value,
+    payment_received_number: paymentReceivedNumber.value,
+  };
 
-    const placeOrder = async() => {
+  // ডেটা `storeOrder`-এ প্রেরণ
+  const res = await order.storeOrder(orderData);
+  console.log(orderData);
+  
+
+  if (res.status == 200) {
+    clickIsOrder.value = false;
+  } else {
+    blockSmsErrorMessage.value = res;
+    notify.Error(`${res}`);
+  }
+};
+
+/*=======================
+        isLoading
+=======================*/
+
+const placeOrder = async() => {
       isLoading.value = true;
       try {
         await orderSubmited();
@@ -211,6 +195,10 @@ const checkScreenSize = () => {
     const handleOrderSubmitted = () => {
       orderSubmited(); 
     }
+/*=======================
+        isLoading
+=======================*/
+
 
 // order work end here 
 
@@ -448,7 +436,6 @@ const checkScreenSize = () => {
         =======================================-->
         <section class="inner-section checkout-part">
             <div class="container">
-               
                <!-- checkoutfirstpart  -->
                <div class="row">
                     <div class="col-lg-12">
@@ -504,6 +491,7 @@ const checkScreenSize = () => {
                               </tr>
                             </tbody>
                           </table>
+                          
                           <div class="row">
                             <div class="col-md-6">
                                   <router-link :to="{name: 'shop'}" class="btn btn-link">← Continue Shopping</router-link>
@@ -558,6 +546,7 @@ const checkScreenSize = () => {
                               id="name" class="form-control" 
                               placeholder="এখানে নাম লিখুন..."
                               :class="{ 'is-invalid': errors.name }"
+                              v-model="name"
                               />
                             <span class="text-danger" v-if="errors.name">{{ errors.name }}</span>
                             </div>
@@ -569,6 +558,7 @@ const checkScreenSize = () => {
                               id="phone" class="form-control" 
                               placeholder="এখানে মোবাইল নাম্বার লিখুন..."
                               :class="{ 'is-invalid': errors.phone }"
+                              v-model="phoneNumber"
                               />
                               <span class="text-danger" v-if="errors.phone">{{ errors.phone }}</span>
                               <span class="text-danger" v-if="backendErrors?.phone_number">{{ backendErrors.phone_number[0] }}</span>
@@ -581,6 +571,7 @@ const checkScreenSize = () => {
                               id="address" class="form-control" 
                               placeholder="বাড়ি নং, রোড নং, থানা/উপজেলা..."
                               :class="{ 'is-invalid': errors.address }"
+                              v-model="address"
                               />
                               <span class="text-danger" v-if="errors.address">{{ errors.address }}</span>
                             </div>
@@ -662,10 +653,10 @@ const checkScreenSize = () => {
                             </div>
 
                             <button type="submit" class="btn btn-success txt-white w-100" @click="placeOrder()">
-                              <router-link :to="{ name: 'user.invoice' }" class="text-white text-decoration-none">
-                                <span v-if="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                              <a  class="text-white text-decoration-none">
+                                <span v-if="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
                                 <span v-else>Place Order</span>
-                              </router-link>
+                              </a>
                             </button>
                             <span class="text-danger" v-if="blockSmsErrorMessage">{{ blockSmsErrorMessage }}</span>
                           </Form>

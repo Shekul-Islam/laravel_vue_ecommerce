@@ -11,6 +11,8 @@ import { MyProfile, MyOrderList, MyWishList, CheckoutPage } from "@/views/user";
 import HomePage from "../views/pages/home/HomePage.vue";
 import Invoice from "../views/user/Invoice.vue";
 import ProductDetailsPage from "@/views/pages/product/ProductDetailsPage.vue";
+import ThankYou from "../views/user/ThankYou.vue";
+
 
 
 
@@ -59,6 +61,12 @@ const routes = [
     name: "user.checkoutPage",
     component: CheckoutPage,
     meta: { title: " Checkout" },
+  },
+  {
+    path: '/user/thankYou',  // সঠিক পাথ
+    name: 'user.thankYou',    // রুটের নাম
+    component: ThankYou,  // কম্পোনেন্ট
+    meta: { title: 'Thank You' },
   },
   {
     path: "/user/invoice",
@@ -122,6 +130,10 @@ const routes = [
   //   component: HomeLanding,
   //   meta: { title: "Global Bazar | Landing Page" },
   // },
+
+
+
+
 ];
 
 const router = createRouter({

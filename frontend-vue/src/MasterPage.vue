@@ -14,6 +14,7 @@ import { useRoute } from 'vue-router';
 import Register from './views/auth/Register.vue';
 import HomePage from './views/pages/home/HomePage.vue';
 
+
 const route = useRoute();
 
 
@@ -47,8 +48,6 @@ const route = useRoute();
   <!-- <div><ModalFade/></div> -->
 
     <RouterView></RouterView>
-
-    
 
    <div><NewsPart/></div>
 

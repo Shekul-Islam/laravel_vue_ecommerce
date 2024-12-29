@@ -19,44 +19,33 @@ export const useOrder = defineStore('order', {
   actions: {
     // API Calling Code Is Here.....................................................................................................
     
-      async storeOrder(orderInfo) {
-        console.log(orderInfo);
-        try {
-          this.loading = true;
-          const response = await axiosInstance.post('/orders',{
-            user_token             : orderInfo.userToken,
-            customer_name          : orderInfo.name,
-            phone_number           : orderInfo.phoneNumber,
-            address_details        : orderInfo.address,
-            order_note             : orderInfo.orderNote,
-            items                  : orderInfo.items,
-            delivery_gateway_id    : orderInfo.delivery_gateway_id,
-            payment_gateway_id     : orderInfo.payment_gateway_id,
-            district               : orderInfo.district,
-            coupon_id              : orderInfo.coupon_id,
-            payment_send_number    : orderInfo.payment_send_number,
-            payment_received_number: orderInfo.payment_received_number,
-          });
-
-          if (response.status === 200) {
-              if (response.data.result) {
-                  let url = response.data.result;
-                  window.location.href = url;
-              } else {
-                  router.push({ name: 'thankYou.page', query: {orderInfo: JSON.stringify(orderInfo)} });
-                  const cart = useCart();
-                  cart.removeAllItems();
-              }
-            return response
-          }else{
-            this.backendErrors = response.data.message
+    async storeOrder(orderInfo) {
+      console.log(orderInfo);
+      try {
+        this.loading = true;
+        const response = await axiosInstance.post('/orders', orderInfo);
+    
+        if (response.status === 200) {
+          if (response.data.result) {
+            let url = response.data.result;
+            window.location.href = url; // যদি URL থাকে, সরাসরি সেখানে রিডাইরেক্ট হবে
+          } else {
+            console.log('Redirecting to:', JSON.stringify({ name: 'user.thankYou' }));
+            router.push({ name: 'user.thankYou' }).catch(err => console.log('Router error:', err));
+            const cart = useCart();
+            cart.removeAllItems();
           }
+          return response;
+        } else {
+          this.backendErrors = response.data.message;
+        }
       } catch (error) {
-          return error.response.data.message;
+        console.error('Error during order submission:', error);
+        return error.response?.data?.message || "Unknown error occurred";
       } finally {
-          this.loading = false
-      }                 
-       }, 
+        this.loading = false;
+      }
+    }, 
 
 
        async getOrderList(){
