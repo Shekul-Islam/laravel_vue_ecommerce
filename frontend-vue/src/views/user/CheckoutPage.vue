@@ -134,21 +134,21 @@ const checkScreenSize = () => {
   console.log(name.value);
   
   const orderData = {
-    userToken           : userToken.value,
-    customer_name       : name.value,
-    phone_number        : phoneNumber.value,
-    district            : district.value,
-    address_details     : address.value,
-    note                : orderNote.value,
-    items               : cartItem.value,
-    coupon_id           : couponId.value,
-    totalPrice          : totalPrice.value,
-    payment_gateway_id  : payment_gateway_id.value,
-    delivery_gateway_id : delivery_gateway_id.value == 0 ? null : delivery_gateway_id.value,
-    deliverCharge       : deliverCharge.value ? deliverCharge.value : null,
-    payment_send_number : paymentSendNumber.value,
-    payment_received_number: paymentReceivedNumber.value,
-  };
+  userToken           : userToken.value,
+  customer_name       : name.value,
+  phone_number        : phoneNumber.value,
+  // district            : district.value || 'Unknown', // যদি ফাঁকা থাকে, ডিফল্ট মান দিন
+  address_details     : address.value || 'N/A', // ডিফল্ট মান
+  note                : orderNote.value || '', // ফাঁকা থাকলে স্ট্রিং দিন
+  items               : Array.isArray(cartItem.value) ? cartItem.value : [], // ফাঁকা থাকলে অ্যারে দিন
+  coupon_id           : couponId.value || null, // undefined হলে null দিন
+  totalPrice          : totalPrice.value || 0, // ডিফল্ট মান 0
+  payment_gateway_id  : payment_gateway_id.value || null, // null দিন
+  delivery_gateway_id : delivery_gateway_id.value == 0 ? null : delivery_gateway_id.value,
+  deliverCharge       : deliverCharge.value ? deliverCharge.value : null, // null দিন
+  // payment_send_number : paymentSendNumber.value || '', // ফাঁকা থাকলে স্ট্রিং দিন
+  // payment_received_number: paymentReceivedNumber.value || '', // ফাঁকা থাকলে স্ট্রিং দিন
+};
 
   // ডেটা `storeOrder`-এ প্রেরণ
   const res = await order.storeOrder(orderData);

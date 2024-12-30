@@ -10,8 +10,9 @@ import { Login, Register } from "@/views/auth";
 import { MyProfile, MyOrderList, MyWishList, CheckoutPage } from "@/views/user";
 import HomePage from "../views/pages/home/HomePage.vue";
 import Invoice from "../views/user/Invoice.vue";
+import ThankYou from "@/views/user/ThankYou.vue";
 import ProductDetailsPage from "@/views/pages/product/ProductDetailsPage.vue";
-import ThankYou from "../views/user/ThankYou.vue";
+
 
 
 
@@ -63,10 +64,9 @@ const routes = [
     meta: { title: " Checkout" },
   },
   {
-    path: '/user/thankYou',  // সঠিক পাথ
-    name: 'user.thankYou',    // রুটের নাম
-    component: ThankYou,  // কম্পোনেন্ট
-    meta: { title: 'Thank You' },
+    path: '/user/thankYou',
+    name: 'user.thankYou',
+    component: () => import('@/views/user/ThankYou.vue'), // সঠিক ভিউ ফাইল নিশ্চিত করুন
   },
   {
     path: "/user/invoice",

@@ -9,8 +9,8 @@
           <p class="mb-5">We hope to see you soon here :)</p>
           
           <div class="button-group">
-            <button class="btn btn-secondary">MY ORDERS</button>
-            <button class="btn btn-primary">HOME</button>
+            <router-link :to="{name: 'user.wishlist'}" class="btn btn-secondary">MY WishList</router-link>
+            <router-link :to="{name: 'index'}" class="btn btn-primary">HOME</router-link>
           </div>
         </div>
       </div>
@@ -58,6 +58,7 @@ button {
 .btn-secondary {
   background-color: #6c757d; /* Secondary color */
   border: none;
+  margin-right: 10px;
 }
 
 .btn-primary {
