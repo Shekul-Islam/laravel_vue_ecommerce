@@ -13,6 +13,7 @@ export const useCart = defineStore("cart", {
     paths: ["cartItem"],
   },
 
+
   getters: {
     totalPrice: (state) => {
       let price = 0;

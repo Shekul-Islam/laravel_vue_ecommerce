@@ -35,9 +35,14 @@ onMounted(() => {
                   <i class="fas fa-heart"></i>
                 </button>
 
-                <router-link :to="{ name: 'single-product' }" class="product-image">
+                <a  class="product-image">
                   <img :src="data?.image" alt="Dr. Comfort Belt Sandal BS101"/>
-                </router-link>
+                </a>
+                <div class="product-widget">
+                      <a title="Product Compare" href="compare.html" class="fas fa-random"></a>
+                      <a title="Product Video" v-show="product?.video_url" :href="product?.video_url" class="venobox fas fa-play" data-vbtype="video" data-autoplay="true"></a>
+                      <a title="Product View" href="#" class="fas fa-eye" data-bs-target="#product-view"  @click.prevent="previewModal(product?.slug)"></a>
+                </div>
               </div>
 
               <div class="product-content">
@@ -61,7 +66,11 @@ onMounted(() => {
                 </h6>
                 
                 <button class="product-add" title="Add to Cart">
-                  <router-link :to="{name: ('/product-details/:slug?')}" class="fas fa-shopping-basket"></router-link><span>Add</span>
+                  <router-link 
+                    :to="{ name: 'productDetailsPage', params: { slug: productSlug } }" 
+                    class="fas fa-shopping-basket">
+                  </router-link>
+                  <span>Add</span>
                 </button>
               </div>
             </div>

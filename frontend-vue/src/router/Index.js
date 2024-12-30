@@ -67,6 +67,7 @@ const routes = [
     path: '/user/thankYou',
     name: 'user.thankYou',
     component: () => import('@/views/user/ThankYou.vue'), // সঠিক ভিউ ফাইল নিশ্চিত করুন
+    meta: { title: " Thank You " },
   },
   {
     path: "/user/invoice",

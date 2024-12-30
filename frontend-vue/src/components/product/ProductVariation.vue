@@ -322,10 +322,13 @@ const getVariations = (attributeKey, attributeValue, allVariations, index) => {
 
 const getIsDefaultAttribute = (allVariations) => {
 
-  if (!Array.isArray(allVariations) || allVariations.length === 0) {
-    console.error("Variations data is invalid or empty");
-    return;
-  }
+  // if (!Array.isArray(allVariations) || allVariations.length === 0) {
+  //   console.error("Variations data is invalid or empty");
+  //   return;
+  // }
+
+
+
 
   const defaultAttributes = allVariations?.filter(e => e.is_default) || [];
   

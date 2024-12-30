@@ -83,14 +83,14 @@ const decrementCartItem = () => {
 //   productVariationPrice.value = data[0] 
 // }
 
-const handleProductVariationPrice = (data) => {
-  if (data && data.length > 0) {
-    productVariationPrice.value = data[0];
-    emit('productVariationPrice', data);
-  } else {
-    console.error("Invalid data for product variation price:", data);
-  }
-};
+// const handleProductVariationPrice = (data) => {
+//   if (data && data.length > 0) {
+//     productVariationPrice.value = data[0];
+//     emit('productVariationPrice', data);
+//   } else {
+//     console.error("Invalid data for product variation price:", data);
+//   }
+// };
 
 const handleProductVariationData = (data) => {
   productVariationData.value = data  
@@ -153,7 +153,7 @@ watch(
 
 
 onMounted(() => {
-    handleProductVariationPrice();
+    // handleProductVariationPrice();
     getSingleProduct();
     getRelatedProducts();
 })

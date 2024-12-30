@@ -1,3 +1,7 @@
+<script setup>
+  
+</script>
+
 <template>
   <div class="thank-you-page">
     <div class="container-fluid p-0">
@@ -18,9 +22,6 @@
   </div>
 </template>
 
-<script setup>
-// Any additional logic goes here
-</script>
 
 <style scoped>
 .thank-you-page {

@@ -153,7 +153,6 @@ const checkScreenSize = () => {
   // ডেটা `storeOrder`-এ প্রেরণ
   const res = await order.storeOrder(orderData);
   console.log(orderData);
-  
 
   if (res.status == 200) {
     clickIsOrder.value = false;
@@ -493,6 +492,17 @@ const placeOrder = async() => {
                           </table>
                           
                           <div class="row">
+                            <div class="is-free-shipping-active" v-if="(isFreeShippingChecking?.type == 'quantity' && cartItemCount >= isFreeShippingChecking?.quantity) || (isFreeShippingChecking?.type == 'price' && totalPrice >= isFreeShippingChecking?.price)">
+                              <p>You are Enjoying Free Shipping!</p>
+                            </div>
+                            <div :class="{ 'is-free-shipping': isFreeShippingChecking }" v-else>
+                              <span v-if="isFreeShippingChecking?.type == 'price'">
+                                <p>Add {{ isFreeShippingChecking?.price -  totalPrice}} more Price to get free shipping!</p>
+                              </span>
+                              <span v-if="isFreeShippingChecking?.type == 'quantity'">
+                                <p>Add {{ isFreeShippingChecking?.quantity -  cartItemCount}} more product to get free shipping!</p>
+                              </span>
+                            </div>
                             <div class="col-md-6">
                                   <router-link :to="{name: 'shop'}" class="btn btn-link">← Continue Shopping</router-link>
                               <div class="mt-3 coupon-section">

@@ -46,19 +46,20 @@ export const useProduct = defineStore ("product-page", {
             }
         },
 
-        async getSingleProductData (slug) {
-            try {   
-            const res = await axiosInstance.get(`/products/${slug}`);
-            if(res?.data?.success){
-                this.singleProduct = res?.data?.result 
-                console.log(this.singleProduct);
-                
-                return res?.data;
-                
+        async getSingleProductData(slug) {
+            if (!slug) {
+                console.error("Slug is missing or undefined.");
+                return;
             }
+            try {   
+                const res = await axiosInstance.get(`/products/${slug}`);
+                if (res?.data?.success) {
+                    this.singleProduct = res?.data?.result;
+                    console.log(this.singleProduct);
+                    return res?.data;
+                }
             } catch (error) {
-                console.log(error);
-                
+                console.error("Error fetching single product data:", error);
             }
         },
         

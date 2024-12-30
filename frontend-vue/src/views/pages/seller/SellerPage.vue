@@ -46,7 +46,7 @@ const bannerImage = new URL('@/assets/images/single-banner.jpg', import.meta.url
                 <li>
                   <router-link :to="{name: 'seller-list'}" class="suggest-card"
                     ><img
-                      src="http://127.0.0.1:8000/uploads/seller/shop/06302022121319pBkM9ZNbR53vC4RO_250_250.png"
+                      src="#"
                       alt="seller lists"
                   /></router-link>
                   <div class="brand-meta">
@@ -72,7 +72,7 @@ const bannerImage = new URL('@/assets/images/single-banner.jpg', import.meta.url
                 <li>
                   <router-link :to="{name: 'seller-list'}" class="suggest-card"
                     ><img
-                      src="http://127.0.0.1:8000/uploads/seller/shop/06302022121319pBkM9ZNbR53vC4RO_250_250.png"
+                      src="#"
                       alt="seller lists"
                   /></router-link>
                   <div class="brand-meta">
@@ -98,7 +98,7 @@ const bannerImage = new URL('@/assets/images/single-banner.jpg', import.meta.url
                 <li>
                   <router-link :to="{name: 'seller-list'}" class="suggest-card"
                     ><img
-                      src="http://127.0.0.1:8000/uploads/seller/shop/06302022121319pBkM9ZNbR53vC4RO_250_250.png"
+                      src="#"
                       alt="seller lists"
                   /></router-link>
                   <div class="brand-meta">
@@ -124,7 +124,7 @@ const bannerImage = new URL('@/assets/images/single-banner.jpg', import.meta.url
                 <li>
                   <router-link :to="{name: 'seller-list'}" class="suggest-card"
                     ><img
-                      src="http://127.0.0.1:8000/uploads/seller/shop/06302022121319pBkM9ZNbR53vC4RO_250_250.png"
+                      src="#"
                       alt="seller lists"
                   /></router-link>
                   <div class="brand-meta">
@@ -150,7 +150,7 @@ const bannerImage = new URL('@/assets/images/single-banner.jpg', import.meta.url
                 <li>
                   <router-link :to="{name: 'seller-list'}" class="suggest-card"
                     ><img
-                      src="http://127.0.0.1:8000/uploads/seller/shop/06302022121319pBkM9ZNbR53vC4RO_250_250.png"
+                      src="#"
                       alt="seller lists"
                   /></router-link>
                   <div class="brand-meta">
@@ -176,7 +176,7 @@ const bannerImage = new URL('@/assets/images/single-banner.jpg', import.meta.url
                 <li>
                   <router-link :to="{name: 'seller-list'}" class="suggest-card"
                     ><img
-                      src="http://127.0.0.1:8000/uploads/seller/shop/06302022121319pBkM9ZNbR53vC4RO_250_250.png"
+                      src="#"
                       alt="seller lists"
                   /></router-link>
                   <div class="brand-meta">
@@ -202,7 +202,7 @@ const bannerImage = new URL('@/assets/images/single-banner.jpg', import.meta.url
                 <li>
                   <router-link :to="{name: 'seller-list'}" class="suggest-card"
                     ><img
-                      src="http://127.0.0.1:8000/uploads/seller/shop/06302022121319pBkM9ZNbR53vC4RO_250_250.png"
+                      src="#"
                       alt="seller lists"
                   /></router-link>
                   <div class="brand-meta">
@@ -228,7 +228,7 @@ const bannerImage = new URL('@/assets/images/single-banner.jpg', import.meta.url
                 <li>
                   <router-link :to="{name: 'seller-list'}" class="suggest-card"
                     ><img
-                      src="http://127.0.0.1:8000/uploads/seller/shop/06302022121319pBkM9ZNbR53vC4RO_250_250.png"
+                      src="#"
                       alt="seller lists"
                   /></router-link>
                   <div class="brand-meta">

@@ -12,6 +12,7 @@ export const useOrder = defineStore('order', {
     orderLists: {},
     backendErrors: {},
     loading: false,
+    notification: { message: '', type: '' },
     }),
 
  

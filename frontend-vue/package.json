@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
+    "pinia-plugin-persistedstate": "^3.2.0",
     "axios": "^1.7.7",
     "element-plus": "^2.8.6",
     "jquery": "^3.7.1",
