@@ -34,7 +34,7 @@ const routes = [
     meta: { title: "blog" },
   },
   // {
-  //   path: "/single-product",
+  //   path: "/single-product/:slug?",
   //   name: "single-product",
   //   component: SingleProduct,
   //   meta: { title: "Single Product" },
@@ -118,12 +118,7 @@ const routes = [
     component: () => import('@/views/pages/product/ProductDetailsPage.vue'),
     meta: { title: " Product Details" },
   },
-  // {
-  //   path: "/checkout-page",
-  //   name: "checkoutPage",
-  //   component: CheckoutPage,
-  //   meta: { title: " Checkout Page" },
-  // },
+ 
 
   // {
   //   path: "/shekul",

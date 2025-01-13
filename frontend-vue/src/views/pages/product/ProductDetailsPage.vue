@@ -5,8 +5,8 @@ import { storeToRefs } from "pinia";
 // import { data } from "jquery";
 import { onMounted, ref, watch } from "vue";
 import { useRoute } from 'vue-router';
-import ModalFade from '../../../components/modal/ModalFade.vue'
-import ProductDetails from "../../../components/product/ProductDetails.vue";
+import ModalFade from '@/components/modal/ModalFade.vue'
+import ProductDetails from "@/components/product/ProductDetails.vue";
 import { mrpOrOfferPrice } from "@/composables";
 
 /*===============
@@ -98,9 +98,9 @@ const previewProductModal = async(productSlug) =>{
 
 const bannerImage = new URL ("@/assets/images/single-banner.jpg", import.meta.url).href;
 
-// watch(() => route.params.slug, (newValue, oldValue) => {
-//   getRelatedProducts();
-//   });
+watch(() => route.params.slug, (newValue, oldValue) => {
+  getRelatedProducts();
+  });
 
   watch(
   () => route.params.slug,
@@ -391,9 +391,11 @@ onMounted(() => {
                                 <button class="product-wish wish">
                                   <i class="fas fa-heart"></i>
                                 </button>
-                                <a class="product-image" href="product-video.html">
-                                  <img :src="relatedData?.image" alt="relatedData?.image">
-                                </a>
+                                <router-link class="product-image" :to="{ name: 'productDetailsPage', params: { slug:product.slug } }">
+                                  <a class="product-image">
+                                    <img :src="relatedData?.image" alt="relatedData?.image">
+                                  </a>
+                                </router-link>
                                 <div class="product-widget">
                                     <a title="Product Compare" href="compare.html" class="fas fa-random"></a>
                                     <a title="Product Video" v-show="relatedData?.video_url" :href="relatedData?.video_url" class="venobox fas fa-play" data-vbtype="video" data-autoplay="true"></a>

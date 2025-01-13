@@ -58,7 +58,10 @@ const props = defineProps({
     type: Object,
     required: true,
   }
+  
 });
+
+
 
 const handleActiveBtns = (data) => {
   activeBtns.value = data
@@ -77,20 +80,6 @@ const decrementCartItem = () => {
   }
 };
 
-// product prices start
-// const handleProductVariationPrice = (data) => {
-//   emit('productVariationPrice', data);
-//   productVariationPrice.value = data[0] 
-// }
-
-// const handleProductVariationPrice = (data) => {
-//   if (data && data.length > 0) {
-//     productVariationPrice.value = data[0];
-//     emit('productVariationPrice', data);
-//   } else {
-//     console.error("Invalid data for product variation price:", data);
-//   }
-// };
 
 const handleProductVariationData = (data) => {
   productVariationData.value = data  
@@ -117,28 +106,9 @@ const getRelatedProducts = async (id) =>  {
 // addtoCart
 
 
-// const props = defineProps({
-//   previewData : {
-//     type: Object,
-//     required: true,
-//   }
-// })
-
-
-
-
-
 const color = "white";
 const size = "8px";
 
-// const handleProductVariationPrice = (data) => {
-//    if (data?.length){
-//     productVariationPrice.value = data[0];
-//     console.log("productVariationPrice", productVariationPrice.value);
-    
-//    }
-    
-// };
 
 const bannerImage = new URL ("@/assets/images/single-banner.jpg", import.meta.url).href;
 
@@ -161,7 +131,6 @@ onMounted(() => {
 
 <template>
   <div>
-    
     <div class="modal fade" id="product-view">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -229,10 +198,10 @@ onMounted(() => {
                     </h3>
                   </span>
                   <span v-else>
-                    <h3 :class="`${type}-price details-price` ">
+                    <h3 :class="`${type}-price details-price`">
                       <del>{{ $filters.currencySymbol(previewData.mrp) }}</del>
                       <span>{{ $filters.currencySymbol( mrpOrOfferPrice( previewData.mrp, previewData.offer_price ))}}</span>
-                      <a class="discout_amount" v-if="previewData.offer_price != 0" >Save {{ Math.round(previewData.mrp - previewData.offer_price) }}৳</a >
+                      <span class="discout_amount" v-if="previewData.offer_price != 0" > [ Save {{ Math.round(previewData.mrp - previewData.offer_price) }} ৳ ]</span>
                     </h3>
                   </span>
 

@@ -53,6 +53,7 @@ const notify        = useNotification();
 const quantityInput = ref(1);
 const setting       = useSettingStore();
 
+
 // product variations start
 const productVariationData  = ref("");
 const productVariationPrice = ref("");
@@ -84,7 +85,7 @@ const decrementCartItem = () => {
 
 
 
-// correction
+// single product
 const getSingleProduct = async () =>  {
     const res = await singleProduct.getSingleProductData(route.params.slug);
     if(res?.success){
@@ -100,7 +101,7 @@ const getRelatedProducts = async (id) =>  {
     relatedProducts.value = res;
 }
 
-// correction
+// single product
 
 
 

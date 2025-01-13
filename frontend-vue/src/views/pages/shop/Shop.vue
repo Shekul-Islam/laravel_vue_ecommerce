@@ -60,6 +60,8 @@ const banners = ref('');
 const getSingleProduct = async () =>  {
     const res = await singleShopProduct.getSingleProductData(route.params.slug);
     if(res?.success){
+      console.log(res);
+      
       singleProductData.value = res?.result;
       getRelatedProducts(res?.result?.category?.id);
     }
@@ -74,17 +76,13 @@ const getRelatedProducts = async (id) =>  {
 
 
 const previewModal = async(productSlug) =>{
-
 const res = await singleShopProduct.getSingleProductData(productSlug);
   if(res?.success){
     previewData.value = res?.result;
     
   }
-
 $("#product-view").modal("show");
 }
-
-
 
 function onEnter(el, done) {
   gsap.to(el, {
@@ -332,9 +330,12 @@ onMounted(() => {
                       <i class="fas fa-heart"></i>
                     </button>
 
-                    <a class="product-image" href="product-video.html">
-                      <img :src="product.image" alt="products.image"/>
-                    </a>
+                    
+                    <router-link :to="{ name: 'productDetailsPage', params: { slug:product.slug } }">
+                      <a  class="product-image">
+                        <img :src="product?.image" alt="products.image"/>
+                      </a>
+                    </router-link>
                     <div class="product-widget">
                       <a title="Product Compare" href="compare.html" class="fas fa-random"></a>
                       <a title="Product Video" v-show="product?.video_url" :href="product?.video_url" class="venobox fas fa-play" data-vbtype="video" data-autoplay="true"></a>
@@ -398,7 +399,7 @@ onMounted(() => {
                    
 
                     <button class="product-add" title="View Details">
-                      <span><router-link :to="{name: 'productDetailsPage', params:{slug:product.slug}}" class="fas fa-shopping-basket">Product Preview</router-link></span>
+                      <span><router-link :to="{name: 'productDetailsPage', params:{ slug:product.slug } }" class="fas fa-shopping-basket">Product Preview</router-link></span>
                     </button>
                   </div>
                 </div>
