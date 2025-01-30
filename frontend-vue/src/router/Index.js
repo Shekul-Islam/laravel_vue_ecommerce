@@ -18,117 +18,23 @@ import ProductDetailsPage from "@/views/pages/product/ProductDetailsPage.vue";
 
 
 const routes = [
-  { path: "/", 
-    name: "index",
-    component: HomePage,
-    meta: { title: "Home" },
-  },
-  { path: "/shop",
-    name: "shop",
-    component: Shop,
-    meta: { title: "Shop" },
-  },
-  { path: "/blog",
-    name: "blog", 
-    component: Blog, 
-    meta: { title: "blog" },
-  },
-  // {
-  //   path: "/single-product/:slug?",
-  //   name: "single-product",
-  //   component: SingleProduct,
-  //   meta: { title: "Single Product" },
-  // },
-  {
-    path: "/user/profile",
-    name: "user.profile",
-    component: MyProfile,
-    meta: { title: "My Profile", requiresAuth: true },
-  },
-  {
-    path: "/user/orderlist",
-    name: "user.orderlist",
-    component: MyOrderList,
-    meta: { title: "My Order List", requiresAuth: true },
-  },
-  {
-    path: "/user/wishlist",
-    name: "user.wishlist",
-    component: MyWishList,
-    meta: { title: "My Wish List", requiresAuth: true },
-  },
-  {
-    path: "/user/checkoutPage",
-    name: "user.checkoutPage",
-    component: CheckoutPage,
-    meta: { title: " Checkout" },
-  },
-  {
-    path: '/user/thankYou',
-    name: 'user.thankYou',
-    component: () => import('@/views/user/ThankYou.vue'), // সঠিক ভিউ ফাইল নিশ্চিত করুন
-    meta: { title: " Thank You " },
-  },
-  {
-    path: "/user/invoice",
-    name: "user.invoice",
-    component: Invoice,
-    meta: { title: " Checkout" },
-  },
-  {
-    path: "/seller-page",
-    name: "seller-page",
-    component: SellerPage,
-    meta: { title: "Seller-Page" },
-  },
-  {
-    path: "/seller-list",
-    name: "seller-list",
-    component: SellerList,
-    meta: { title: "Seller-List" },
-  },
-  {
-    path: "/seller/apply",
-    name: "seller.apply",
-    component: SellerApply,
-    meta: { title: "Seller Apply" },
-  },
-  {
-    path: "/wishlist",
-    name: "wishlist",
-    component: WishList,
-    meta: { title: "Wish-List" },
-  },
-  { path: "/login", 
-    name: "login", 
-    component: Login,
-    meta: { title: "Login", guest: true },
-  },
-
-  {
-    path: "/register",
-    name: "register",
-    component: Register,
-    meta: { title: "Register", guest: true },
-  },
-
-  {
-    path: "/product-details/:slug?",
-    name: "productDetailsPage",
-    component: () => import('@/views/pages/product/ProductDetailsPage.vue'),
-    meta: { title: " Product Details" },
-  },
- 
-
-  // {
-  //   path: "/shekul",
-  //   name: "homeLandingPage",
-  //   component: HomeLanding,
-  //   meta: { title: "Global Bazar | Landing Page" },
-  // },
-
-
-
+  { path: "/",                        name: "index",               component: HomePage,              meta: { title: "Home" },},
+  { path: "/shop",                    name: "shop",                component: Shop,                  meta: { title: "Shop" },},
+  { path: "/blog",                    name: "blog",                component: Blog,                  meta: { title: "blog" },},
+  // { path: "/single-product/:slug?", name: "single-product",     component: SingleProduct,         meta: { title: "Single Product" },},
+  { path: "/user/profile",            name: "user.profile",        component: MyProfile,             meta: { title: "My Profile", requiresAuth: true },},
+  { path: "/user/orderlist",          name: "user.orderlist",      component: MyOrderList,           meta: { title: "My Order List", requiresAuth: true },},
+  { path: "/user/wishlist",           name: "user.wishlist",       component: MyWishList,            meta: { title: "My Wish List", requiresAuth: true },},
+  { path: "/user/checkoutPage",       name: "user.checkoutPage",   component: CheckoutPage,          meta: { title: " Checkout" },},
+  { path: '/user/thankYou',           name: 'user.thankYou',       component: () => import('@/views/user/ThankYou.vue'), meta: { title: " Thank You " },},
+  { path: "/user/invoice",            name: "user.invoice",        component: Invoice,               meta: { title: " Checkout" },},
+  { path: "/seller-page",             name: "seller-page",         component: SellerPage,            meta: { title: "Seller-Page" },},
+  { path: "/seller-list",             name: "seller-list",         component: SellerList,            meta: { title: "Seller-List" },},
+  { path: "/seller/apply",            name: "seller.apply",        component: SellerApply,           meta: { title: "Seller Apply" },},
+  { path: "/wishlist",                name: "wishlist",            component: WishList,              meta: { title: "Wish-List" },},
+  { path: "/login",                   name: "login",               component: Login,                 meta: { title: "Login", guest: true },},
+  { path: "/register",                name: "register",            component: Register,              meta: { title: "Register", guest: true },},
+  { path: "/product-details/:slug?",  name: "productDetailsPage",  component: () => import('@/views/pages/product/ProductDetailsPage.vue'), meta: { title: " Product Details" },},
 
 ];
 

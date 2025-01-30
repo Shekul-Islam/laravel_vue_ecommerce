@@ -44,8 +44,7 @@ const props = defineProps({
 const sizeName      = ref("");
 const productPrices = ref("");
 const route         = useRoute();
-const singleProduct = useProduct();
-const related = useProduct();
+const singleData    = useProduct();
 const shop          = useShop();
 const cart          = useCart();
 const { loading }   = storeToRefs(cart);
@@ -87,17 +86,18 @@ const decrementCartItem = () => {
 
 // single product
 const getSingleProduct = async () =>  {
-    const res = await singleProduct.getSingleProductData(route.params.slug);
+  console.log("Fetching product for slug:", route.params.slug);
+    const res = await singleData.getSingleProductData(route.params.slug);
     if(res?.success){
       singleProductData.value = res?.result;
       console.log(singleProductData);
       
-      getRelatedProducts(res?.result?.category?.id);
+      console.log("Single Product Data:", singleProductData.value);
     }
 }
 
 const getRelatedProducts = async (id) =>  {
-    const res = await related.getCategoryData(id);
+    const res = await singleData.getCategoryData(id);
     relatedProducts.value = res;
 }
 
@@ -227,18 +227,24 @@ const cartShow = () => {
 };
 
 
- watch(
+watch(
   () => route.params.slug,
   (newSlug, oldSlug) => {
-    
-    getSingleProduct();
-  }
+    console.log("Slug changed from:", oldSlug, "to:", newSlug);
+    if (newSlug) {
+      getSingleProduct();
+    }
+  },
+  { immediate: true } // Component লোড হওয়ার সাথেই watch কাজ করবে
 );
 
+
 onMounted(() => {
-  // socialMedia();
-  getSingleProduct();
-  getRelatedProducts();
+  console.log("Route params on mount:", route.params);
+  console.log("Fetching product for slug:", route.params.slug);
+  if (route.params.slug) {
+    getSingleProduct();
+  }
 });
 
 </script>
@@ -384,14 +390,14 @@ onMounted(() => {
                                 :class="{
                                   'quantity-disabled':
                                     activeBtns === false &&
-                                    singleProduct?.variations?.data.length > 0,
+                                    singleData?.variations?.data.length > 0,
                                 }"
                               >
                                 <button
                                   class="minus"
                                   :disabled="
                                     activeBtns === false &&
-                                    singleProduct?.variations?.data.length > 0
+                                    singleData?.variations?.data.length > 0
                                   "
                                   aria-label="Decrease"
                                   @click.prevent="decrementCartItem"
@@ -409,7 +415,7 @@ onMounted(() => {
                                   class="plus"
                                   :disabled="
                                     activeBtns === false &&
-                                    singleProduct?.variations?.data.length > 0
+                                    singleData?.variations?.data.length > 0
                                   "
                                   aria-label="Increase"
                                   @click.prevent="incrementCartItem"

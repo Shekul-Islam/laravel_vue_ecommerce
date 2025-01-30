@@ -3,7 +3,7 @@ import { useProduct } from "@/stores";
 import {useShop} from "@/stores/";
 import { storeToRefs } from "pinia";
 // import { data } from "jquery";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch,watchEffect  } from "vue";
 import { useRoute } from 'vue-router';
 import ModalFade from '@/components/modal/ModalFade.vue'
 import ProductDetails from "@/components/product/ProductDetails.vue";
@@ -22,23 +22,29 @@ import { Pagination, Navigation, Autoplay } from "swiper/modules";
 const route = useRoute();
 const singleProduct = useProduct();
 const shopProduct = useShop();
-const related = useProduct();
+
 
 const singleProductData = ref("");
 const productVariationPrice = ref("");
 const relatedProducts = ref("");
 const previewData = ref({});
 
-const getSingleProduct = async () =>  {
-    const res = await singleProduct.getSingleProductData(route.params.slug);
-    if(res?.success){
-      singleProductData.value = res?.result;
-      getRelatedProducts(res?.result?.category?.id);
+// ✅ Get Single Product
+const getSingleProduct = async () => {
+  console.log("Fetching product for slug:", route.params.slug);
+  const res = await singleProduct.getSingleProductData(route.params.slug);
+  if (res?.success) {
+    singleProductData.value = res?.result;
+    console.log("Single Product Data:", singleProductData.value);
+
+    if (res?.result?.category?.id) {
+      getRelatedProducts(res.result.category.id);
     }
-}
+  }
+};
 
 const getRelatedProducts = async (id) =>  {
-    const res = await related.getCategoryData(id);
+    const res = await singleProduct.getCategoryData(id);
     relatedProducts.value = res;
 }
 
@@ -98,24 +104,23 @@ const previewProductModal = async(productSlug) =>{
 
 const bannerImage = new URL ("@/assets/images/single-banner.jpg", import.meta.url).href;
 
-watch(() => route.params.slug, (newValue, oldValue) => {
-  getRelatedProducts();
-  });
+// ✅ Slug পাওয়ার জন্য watchEffect ব্যবহার করুন
+watchEffect(() => {
+  console.log("ProductDetails.vue Route Slug:", route.params.slug);
 
-  watch(
-  () => route.params.slug,
-  (newSlug, oldSlug) => {
-    
+  if (route.params.slug) {
     getSingleProduct();
+  } else {
+    console.error("Slug is missing or undefined in ProductDetails.vue!");
   }
-);
-
+});
 
 onMounted(() => {
     getSingleProduct();
     getProducts();
     handleProductVariationPrice();
     getRelatedProducts();
+    getSingleProduct();
 })
 </script>
 
@@ -440,7 +445,7 @@ onMounted(() => {
                             </span>
 
                                 <button class="product-add" title="Add to Cart" @click="scrollToTop">
-                                    <span><router-link :to="{name: 'productDetailsPage', params:{slug:relatedData?.slug}}" class="fas fa-shopping-basket">Product Preview</router-link></span>
+                                    <span><router-link :to="{ name: 'productDetailsPage', params:{ slug:relatedData?.slug } }" class="fas fa-shopping-basket">Product Preview</router-link></span>
                                 </button>
                                 <div class="product-action">
                                     <button class="action-minus" title="Quantity Minus"><i class="icofont-minus"></i></button>
