@@ -21,7 +21,7 @@ export const useSettingStore = defineStore('setting', {
     },
 //global_function
     findSetting(settingKey){
-      return this.settings?.data?.find((i)=> i.key == settingKey).value
+      return this.settings?.data?.find((i)=> i.key == settingKey)?.value
     }
   },
   

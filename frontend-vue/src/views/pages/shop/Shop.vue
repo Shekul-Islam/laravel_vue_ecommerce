@@ -68,9 +68,8 @@ const getSingleProduct = async () =>  {
 }
 
 const getRelatedProducts = async (id) =>  {
-    const res = await relatedShopProducts.getCategoryData(id);
+    const res = await singleShopProduct.getCategoryData(id);
     relatedShopProductsData.value = res;
-    console.log(relatedShopProductsData);
     
 }
 

@@ -127,7 +127,6 @@ onMounted(() => {
 
 <template>
   <div>
-      
          <!--=====================================
                     BANNER PART START
         =======================================-->
@@ -396,7 +395,7 @@ onMounted(() => {
                                 <button class="product-wish wish">
                                   <i class="fas fa-heart"></i>
                                 </button>
-                                <router-link class="product-image" :to="{ name: 'productDetailsPage', params: { slug:product.slug } }">
+                                <router-link class="product-image" :to="{ name: 'productDetailsPage', params: { slug:relatedData.slug } }">
                                   <a class="product-image">
                                     <img :src="relatedData?.image" alt="relatedData?.image">
                                   </a>

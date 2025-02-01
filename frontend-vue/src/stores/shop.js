@@ -30,9 +30,8 @@ export const useShop = defineStore("shop", {
           },
         });
         if (res.status === 200) {
-          console.log(res.status)
-          this.products = res.data.result;
-          return res.data.result
+          this.products = res?.data?.result;
+          return res?.data?.result
         }
       } catch (error) {
         if (error.response.data) {

@@ -27,7 +27,7 @@ onMounted (()=> {
         <div class="row">
           <div class="col-md-12 col-lg-5">
             <div class="header-top-welcome">
-             <p>{{ setting?.settings?.data?.find((i)=> i.key=="top_header_text").value }}</p>
+             <p>{{ setting?.settings?.data?.find((i)=> i.key=="top_header_text")?.value }}</p>
             </div>
           </div>
           <div class="col-md-5 col-lg-3"></div>

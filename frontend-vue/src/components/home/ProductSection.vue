@@ -21,8 +21,6 @@ const singleProductDataAdd = ref("");
 const relatedProductsAdd = ref("");
 
 // Product-related functions
-const singleShopProduct = useProduct();
-const relatedShopProducts = useProduct();
 
 
 // Ref variables
@@ -96,22 +94,21 @@ const getRelatedProductsAdd = async (id) =>  {
 
 //single shop product
 const getSingleProduct = async () => {
-  const res = await singleShopProduct?.getSingleProductData(route?.params?.slug);
-  console.log(res);
-  if (res.success){
+  const res = await singleProduct?.getSingleProductData();
+  if (res){
     singleProductData.value = res?.result;
     getRelatedProducts(res?.result?.category?.id);
   }
 }
 
 const getRelatedProducts = async(id) =>{
-  const res = await relatedShopProducts?.getCategoryData(id);
+  const res = await singleProduct?.getCategoryData(id);
   relatedShopProductsData.value = res;
-  console.log(relatedShopProductsData);
+  console.log(relatedShopProductsData.value);
 }
 
 const previewModal = async (productSlug) =>{
-  const res = await singleShopProduct?.getSingleProductData(productSlug);
+  const res = await singleProduct?.getSingleProductData(productSlug);
   if (res?.success){
     previewData.value = res?.result;
     console.log(previewData.value);

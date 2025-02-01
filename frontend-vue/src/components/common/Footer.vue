@@ -116,7 +116,7 @@ onMounted(()=> {
           <div class="col-12">
             <div class="footer-bottom">
               <p class="footer-copytext">
-                &copy; {{ footer?.settings?.data?.find((i)=> i.key == "footer_description").value }}
+                &copy; {{ footer?.settings?.data?.find((i)=> i.key == "footer_description")?.value }}
                 <a target="_blank" href="https://w3coders.net"></a>
               </p>
               <div class="footer-card">

@@ -10,7 +10,6 @@ import { addToCart } from "@/composables";
 
 
 const singleProduct = useProduct();
-const related = useProduct();
 const quantityInput = ref(1);
 const emit = defineEmits(['productVariationPrice', 'productVariationData', 'activeBtns']);
 
@@ -92,14 +91,13 @@ const getSingleProduct = async () =>  {
     const res = await singleProduct.getSingleProductData(route.params.slug);
     if(res?.success){
       singleProductData.value = res?.result;
-      console.log(singleProductData);
       
       getRelatedProducts(res?.result?.category?.id);
     }
 }
 
 const getRelatedProducts = async (id) =>  {
-    const res = await related.getCategoryData(id);
+    const res = await singleProduct.getCategoryData(id);
     relatedProducts.value = res;
 }
 
