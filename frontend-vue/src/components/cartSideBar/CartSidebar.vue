@@ -90,7 +90,7 @@ const couponBtn = () => {
                     <div class="cart-info-group">
                         <div class="cart-info">
                             <h6>
-                              <a href="product-single.html">existing product name</a>
+                              <router-link to="{ name: 'productDetailsPage'}">existing product name</router-link>
                             </h6>
                             <p>
                               {{ $filters.currencySymbol(Math.round(cart.sell_price)) }}

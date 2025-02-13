@@ -3,11 +3,19 @@ import { useAuth } from '@/stores';
 import { storeToRefs } from 'pinia';
 import { ElNotification } from 'element-plus';
 import { useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue';
 
-
-import { onMounted } from 'vue';
-import { useSettingStore } from '@/stores';
 import { useCommonIsToggleFunctionality } from "@/stores";
+import { useSettingStore } from '@/stores';
+const setting = useSettingStore();
+
+const logo = ref('');
+const phone = ref('');
+const email = ref('');
+const address = ref('');
+const whatsApp = ref('');
+const description = ref('');
+const messenger = ref('');
 
 
 const auth = useAuth();
@@ -20,9 +28,32 @@ console.log(res);
 
 const commonIsToggleFunctionality = useCommonIsToggleFunctionality();
 
-const setting = useSettingStore();
-
-
+const getSettingsData = async () => {
+  const settingData = await setting.getData();
+  settingData.data.forEach((ele) => {
+        if (ele.key == 'logo') {
+          logo.value = ele.logo;
+        }
+        if (ele.key == 'phone') {
+          phone.value = ele.value;
+        }
+        if (ele.key == 'email') {
+          email.value = ele.value;
+        }
+        if (ele.key == 'address') {
+          address.value = ele.value;
+        }
+        if (ele.key == 'whatsapp') {
+          whatsApp.value = ele.value;
+        }
+        if (ele.key == 'description') {
+          description.value = ele.value;
+        }
+        if (ele.key == 'messenger') {
+          messenger.value = ele.value;
+        }
+      });
+};
 
 
 
@@ -46,20 +77,22 @@ const cartShow = () => {
 
 onMounted (()=> {
   setting.getData();
+  getSettingsData();
 })
 
 </script>
 
 <template>
-
+   {{ phone }}
   <div>
     <header class="header-part">
       <div class="container">
-        <div class="header-content" v-if="setting?.settings?.data">
+        <div class="header-content" >
           <div class="header-media-group">
             <button class="header-user" @click="menu">
-              <img src="@/assets/images/menu.png" alt="user" />
+              <img :src="logo" alt="logo" />
             </button>
+           
 
               <router-link :to="{ name: 'index' }">
                 <img :src="setting?.settings?.data" alt="logo"/>
@@ -71,7 +104,7 @@ onMounted (()=> {
           </div>
 
           <router-link :to="{ name: 'index' }" class="header-logo">
-            <img src="@/assets/images/logo.png" alt="logo"/>
+            <img :src="logo" alt="logo"/>
           </router-link>
 
           <form class="header-form">

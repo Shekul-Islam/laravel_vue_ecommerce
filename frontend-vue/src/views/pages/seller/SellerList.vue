@@ -85,7 +85,7 @@
             ><i class="active icofont-star"></i
             ><i class="active icofont-star"></i
             ><i class="active icofont-star"></i><i class="icofont-star"></i
-            ><a href="product-video.html">(3)</a>
+            ><rotuer-link :to="{name: 'productDetailsPage'}">(3)</rotuer-link>
           </div> -->
                   <h6 class="product-name">
                     <a href="/product/laptop-charger-65w" class=""
@@ -137,7 +137,7 @@
             ><i class="active icofont-star"></i
             ><i class="active icofont-star"></i
             ><i class="active icofont-star"></i><i class="icofont-star"></i
-            ><a href="product-video.html">(3)</a>
+            ><a :to="{name: 'productDetailsPage'}">(3)</a>
           </div> -->
                   <h6 class="product-name">
                     <a href="/product/core-i3-12100-12th-gen-pc" class=""
@@ -189,7 +189,7 @@
             ><i class="active icofont-star"></i
             ><i class="active icofont-star"></i
             ><i class="active icofont-star"></i><i class="icofont-star"></i
-            ><a href="product-video.html">(3)</a>
+            ><a :to="{name: 'productDetailsPage'}">(3)</a>
           </div> -->
                   <h6 class="product-name">
                     <a
@@ -243,7 +243,7 @@
             ><i class="active icofont-star"></i
             ><i class="active icofont-star"></i
             ><i class="active icofont-star"></i><i class="icofont-star"></i
-            ><a href="product-video.html">(3)</a>
+            ><a :to="{name: 'productDetailsPage'}">(3)</a>
           </div> -->
                   <h6 class="product-name">
                     <a href="/product/canon-eos-200d-dsl-camera" class=""
@@ -295,7 +295,7 @@
             ><i class="active icofont-star"></i
             ><i class="active icofont-star"></i
             ><i class="active icofont-star"></i><i class="icofont-star"></i
-            ><a href="product-video.html">(3)</a>
+            ><a :to="{name: 'productDetailsPage'}">(3)</a>
           </div> -->
                   <h6 class="product-name">
                     <a href="/product/gopro-hero-10-black" class=""
@@ -345,7 +345,7 @@
             ><i class="active icofont-star"></i
             ><i class="active icofont-star"></i
             ><i class="active icofont-star"></i><i class="icofont-star"></i
-            ><a href="product-video.html">(3)</a>
+            ><rotuer-link :to="{name: 'productDetailsPage'}">(3)</rotuer-link>
           </div> -->
                   <h6 class="product-name">
                     <a href="/product/gaming-headphone" class=""
@@ -397,7 +397,7 @@
             ><i class="active icofont-star"></i
             ><i class="active icofont-star"></i
             ><i class="active icofont-star"></i><i class="icofont-star"></i
-            ><a href="product-video.html">(3)</a>
+            ><router-link :to="{name: 'productDetailsPage'}">(3)</router-link>
           </div> -->
                   <h6 class="product-name">
                     <a href="/product/rgb-gaming-caching" class=""
@@ -451,7 +451,7 @@
             ><i class="active icofont-star"></i
             ><i class="active icofont-star"></i
             ><i class="active icofont-star"></i><i class="icofont-star"></i
-            ><a href="product-video.html">(3)</a>
+            ><router-link :to="{name: 'productDetailsPage'}">(3)</router-link>
           </div> -->
                   <h6 class="product-name">
                     <a
@@ -505,7 +505,7 @@
             ><i class="active icofont-star"></i
             ><i class="active icofont-star"></i
             ><i class="active icofont-star"></i><i class="icofont-star"></i
-            ><a href="product-video.html">(3)</a>
+            ><router-link :to="{name: 'productDetailsPage'}">(3)</router-link>
           </div> -->
                   <h6 class="product-name">
                     <a href="/product/acer-laptop" class="">Acer Laptop</a>
@@ -553,7 +553,7 @@
             ><i class="active icofont-star"></i
             ><i class="active icofont-star"></i
             ><i class="active icofont-star"></i><i class="icofont-star"></i
-            ><a href="product-video.html">(3)</a>
+            ><router-link :to="{name: 'productDetailsPage'}">(3)</router-link>
           </div> -->
                   <h6 class="product-name">
                     <a href="/product/mouse" class="">Mouse</a>

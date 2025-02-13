@@ -52,14 +52,13 @@ onMounted (()=> {
                           <i class="fas fa-heart"></i>
                         </button>
 
-                       <a class="product-image" href="product-video.html">
+                       <router-link class="product-image" :to="{name: 'productDetailsPage'}">
                            <img :src="data?.image" alt="product"/>
-                       </a>
+                       </router-link>
                       </div>
-
                       <div class="product-content">
                         <h6 class="product-name">
-                          <a href="product-video.html">{{data?.slug}}</a>
+                          <router-link :to="{name: 'productDetailsPage'}">{{data?.slug}}</router-link>
                         </h6>
 
                         <span>{{ data?.category?.name }}</span>

@@ -12,8 +12,11 @@ export const useSettingStore = defineStore('setting', {
     async getData () {
       try {
         const res = await axiosInstance.get('/settings');
+        
         if( res?.data?.success){
           this.settings = res?.data?.result;
+          return res.data.result;
+          
         }
       } catch (error) {
         console.log(error);

@@ -130,7 +130,7 @@ onMounted(() => {
          <!--=====================================
                     BANNER PART START
         =======================================-->
-        <section class="single-banner inner-section" :style=" {background: 'url(' + bannerImage +') center center no-repeate'}">
+        <!-- <section class="single-banner inner-section" :style=" {background: 'url(' + bannerImage +') center center no-repeate'}">
             <div class="container">
                 <h2>product video</h2>
                 <ol class="breadcrumb">
@@ -139,7 +139,7 @@ onMounted(() => {
                     <li class="breadcrumb-item active" aria-current="page">product-video</li>
                 </ol>
             </div>
-        </section>
+        </section> -->
         <!--=====================================
                     BANNER PART END
         =======================================-->
@@ -413,10 +413,10 @@ onMounted(() => {
                                     <i class="active icofont-star"></i>
                                     <i class="active icofont-star"></i>
                                     <i class="icofont-star"></i>
-                                    <a href="product-video.html">(3)</a>
+                                    <a :to="{name: 'productDetailsPage'}">(3)</a>
                                 </div>
                                 <h6 class="product-name">
-                                    <a href="product-video.html">{{relatedData?.name}}</a>
+                                    <a :to="{name: 'productDetailsPage'}">{{relatedData?.name}}</a>
                                 </h6>
                                 
                               

@@ -5,6 +5,7 @@ import { storeToRefs } from "pinia";
 import { useShop, useProduct, useCart, useAuth, useCommonIsToggleFunctionality } from "@/stores";
 import { mrpOrOfferPrice } from "@/composables";
 import ModalFade from "../../../components/modal/ModalFade.vue";
+import ShopSidebar from "../../../components/shopsidebar/ShopSidebar.vue";
 
 
 // All Variable  Code Is Here.....................................................................................................
@@ -225,12 +226,16 @@ onMounted(() => {
         <h2>Shop Page</h2>
       </div>
     </section>
-
+    <ShopSidebar/>
     <section class="inner-section shop-part" >
       <div class="container">
         <div class="row content-reverse">
 
-          <div class="col-lg-3" >
+          <div class="col-lg-3">
+          
+          </div>
+
+          <!-- <div class="col-lg-3" >
             <div class="shop-widget">
               <h6 class="shop-widget-title">Filter by Price</h6>
               <form>
@@ -285,7 +290,7 @@ onMounted(() => {
                 </button>
               </form>
             </div>
-          </div>
+          </div> -->
 
           <div class="col-lg-9">
             <div class="row">
@@ -344,7 +349,7 @@ onMounted(() => {
                 
                   <div class="product-content">
                     <h6 class="product-name">
-                      <a href="product-video.html">{{product?.name}}</a>
+                      <router-link :to="{name: 'productDetailsPage'}">{{product?.name}}</router-link>
                     </h6>
                     <h6 class="product-category">
                       <a href="">{{ product?.category?.name }}</a>

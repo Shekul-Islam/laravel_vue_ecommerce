@@ -60,7 +60,7 @@ export const useShop = defineStore("shop", {
     async sideBarAttributeData() {
       try {
         const res = await axiosInstance.get("/attributes");
-        
+        console.log(res);
         if (res.status === 200) {
            return res.data.result.data;
         }

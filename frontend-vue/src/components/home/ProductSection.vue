@@ -104,7 +104,6 @@ const getSingleProduct = async () => {
 const getRelatedProducts = async(id) =>{
   const res = await singleProduct?.getCategoryData(id);
   relatedShopProductsData.value = res;
-  console.log(relatedShopProductsData.value);
 }
 
 const previewModal = async (productSlug) =>{
@@ -181,7 +180,7 @@ onMounted(() => {
 
               <div class="product-content">
                 <h6 class="product-name">
-                  <a href="product-video.html">{{data?.name}}</a>
+                  <router-link :to="{name: 'productDetailsPage'}">{{data?.name}}</router-link>
                 </h6>
                 <span style="font-size:12px;">
                   <span style="font-weight:700;">Category :</span> 
@@ -252,7 +251,7 @@ onMounted(() => {
         <div class="row">
           <div class="col-lg-12">
             <div class="section-btn-25">
-              <a href="shop-4column.html" class="btn btn-outline"
+              <a href="shop" class="btn btn-outline"
                 ><i class="fas fa-eye"></i><span>show more</span></a
               >
             </div>

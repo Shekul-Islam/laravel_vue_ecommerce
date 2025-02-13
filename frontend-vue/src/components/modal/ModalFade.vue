@@ -81,10 +81,11 @@ const decrementCartItem = () => {
 
 
 const handleProductVariationData = (data) => {
-  productVariationData.value = data  
+  productVariationData.value = data
   emit('productVariationData', data);
 }
 // product prices end
+
 
 // addtoCart
 const getSingleProduct = async () =>  {
@@ -180,7 +181,7 @@ onMounted(() => {
                     ><i class="active icofont-star"></i
                     ><i class="active icofont-star"></i
                     ><i class="icofont-star"></i
-                    ><a href="product-video.html">(3 reviews)</a>
+                    ><a :to="{name: 'productDetailsPage'}">(3 reviews)</a>
                   </div>
                  
                   <span v-if="previewData?.variations?.data?.length"> 

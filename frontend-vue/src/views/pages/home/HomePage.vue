@@ -21,7 +21,6 @@ const getTopbarData = async () => {
     const response = await axiosInstance.get(`/sliders`);
     if (response?.data.result) {
       topbarDatas.value = response.data.result;
-      console.log(response);
     }
   } catch (error) {
     console.log(error);
