@@ -128,6 +128,7 @@ const getProducts = () => {
     searchQuery.value,
     paginateSize.value,
   );
+  
 };
 
 function clearFilter(data) {
@@ -231,7 +232,6 @@ onMounted(() => {
         <div class="row content-reverse">
 
           <div class="col-lg-3">
-            Hello Sidebar
             <ShopSidebar/>
           </div>
 
@@ -318,6 +318,7 @@ onMounted(() => {
                 </div>
               </div>
             </div>
+            {{ products }}
             <!-- {{ relatedShopProductsData }} -->
             <div class="row row-cols-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4" >
               <div class="col"  v-for="(product, id) in products?.data" :key="id">
@@ -326,7 +327,6 @@ onMounted(() => {
 
                     <div class="product-label">
                       <label class="label-text rate">Popular</label>
-                      
                       <label class="view-label off">-2%</label>
                     </div>
 
@@ -363,31 +363,7 @@ onMounted(() => {
                                 <span v-if="product?.variation_price_range?.min_price == product?.variation_price_range?.max_price ">{{ $filters?.currencySymbol(product?.variation_price_range?.min_price || product?.variation_price_range?.max_price) }}</span>
                             </h6>
                            </span>
-                           
-                           <!-- <span v-else>
-                              <h6 :class="`${type}-price details-price`">
-                                <del>{{ $filters.currencySymbol(product.mrp) }}</del>
-                                <span>{{ $filters.currencySymbol( mrpOrOfferPrice( product?.mrp, product?.offer_price ))}}</span>
-                              </h6>
-                              <h6 :class="`${type}-price details-price` " >
-                                <span v-if="product?.mrp === product?.offer_price">{{ product?.mrp}}</span>
-                              </h6>
-                            </span> -->
-
-                            <!-- <span v-else>
-                              <h6 :class="`${type}-price details-price`">
-                               
-                                <template v-if="product.mrp == product.offer_price">
-                                  {{ $filters.currencySymbol(mrpOrOfferPrice(product.mrp)) }}
-                                </template>
-                                <template v-else>
-                                  {{ product?.mrp }}
-                                  {{ product?.offer_price }}
-                                  <del>{{ $filters.currencySymbol(product.mrp) }}</del>
-                                  <span>{{ $filters.currencySymbol(mrpOrOfferPrice(product.mrp, product.offer_price)) }}</span>
-                                </template>
-                              </h6>
-                            </span> -->
+                         
                             <span v-else>
                               <h6 :class="`${type}-price details-price`">
                                
@@ -463,6 +439,7 @@ onMounted(() => {
 
 .product-add span a {
   font-family: initial;
+  color: var(--white);
 }
 
 .product-add .icon-style {

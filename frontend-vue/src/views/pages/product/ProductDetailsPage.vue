@@ -126,7 +126,7 @@ onMounted(() => {
 
 
 <template>
-  <div>
+  <div class="container">
          <!--=====================================
                     BANNER PART START
         =======================================-->
@@ -159,7 +159,7 @@ onMounted(() => {
                   PRODUCT TAB PART START
         =======================================-->
         <section class="inner-section">
-            <div class="container">
+            <div >
                 <div class="row">
                     <div class="col-lg-12">
                         <ul class="nav nav-tabs">

@@ -166,6 +166,8 @@ onMounted(() => {
 </script>
 
 <template>
+
+{{ singleProduct }}
   <div :class="`${type}-gallery`">
     <div :class="`${type}-label-group`" >
       <label :class="`${type}-label`" v-if="singleProduct.type">{{
@@ -177,6 +179,7 @@ onMounted(() => {
         >-{{ singleProduct.offer_percent }}%</label
       >
     </div>
+
     <div class="product-imgs">
       <div class="img-display">
         <div

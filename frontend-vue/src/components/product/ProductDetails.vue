@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, computed } from "vue";
 import { useRoute } from "vue-router";
 import { useProduct, useCart, useNotification, useShop, useSettingStore, } from "@/stores";
 import { storeToRefs } from "pinia";
@@ -15,7 +15,6 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
-
 
 const commonIsToggleFunctionality = useCommonIsToggleFunctionality();
 const emit = defineEmits(['productVariationPrice', 'productVariationData', 'activeBtns']);
@@ -58,6 +57,7 @@ const productVariationData  = ref("");
 const productVariationPrice = ref("");
 const activeBtns            = ref(false);
 const singleProductData = ref("");
+// const singleProduct = ref('');
 const relatedProducts = ref("");
 
 
@@ -89,12 +89,15 @@ const getSingleProduct = async () =>  {
   console.log("Fetching product for slug:", route.params.slug);
     const res = await singleData.getSingleProductData(route.params.slug);
     if(res?.success){
-      singleProductData.value = res?.result;
+      singleProductData.value = res?.result?.data;
       console.log(singleProductData);
       
       console.log("Single Product Data:", singleProductData.value);
     }
 }
+
+
+
 
 const getRelatedProducts = async (id) =>  {
     const res = await singleData.getCategoryData(id);
@@ -102,6 +105,8 @@ const getRelatedProducts = async (id) =>  {
 }
 
 // single product
+
+
 
 
 
@@ -250,25 +255,30 @@ onMounted(() => {
 </script>
 
 <template>
-  
+
+  {{ singleProductData }}
+
+  <div v-if="singleProductData">
+    {{ singleProductData }}
+
   <div class="row ">
     <div class="col-lg-6">
     <div>
-        <ProductImage :singleProduct="singleProduct" :type="'details'"/>
+        <ProductImage :singleProductData="singleProductData?.image" :type="'details'"/>
     </div>
   </div>
 
 <div class="col-lg-6">
   <div  :class="`${type}-content`">
   <h3 :class="`${type}-name`">
-    <a href="#">{{ singleProduct?.name }}</a>
+    <a href="#">{{ singleProductData?.name }}</a>
   </h3>
       <!-- Price Section start -->
   <!-- Product Variation Price Section start -->
-  <span v-if="singleProduct?.variations?.data.length > 0">
+  <span v-if="singleProductData?.variations?.data.length > 0">
     <h3 :class="`${type}-price my-2`" v-if="productVariationPrice == '' || productVariationPrice == undefined">
-      <span v-if="singleProduct.variation_price_range.min_price == singleProduct.variation_price_range.max_price">{{ $filters.currencySymbol( singleProduct.variation_price_range.min_price || singleProduct.variation_price_range.max_price ) }}</span>
-      <span v-else>{{ $filters.currencySymbol( singleProduct.variation_price_range.min_price ) }} - {{ $filters.currencySymbol( singleProduct.variation_price_range.max_price ) }}</span>
+      <span v-if="singleProductData.variation_price_range.min_price == singleProductData.variation_price_range.max_price">{{ $filters.currencySymbol( singleProductData?.variation_price_range.min_price || singleProductData?.variation_price_range?.max_price ) }}</span>
+      <span v-else>{{ $filters.currencySymbol( singleProductData.variation_price_range.min_price ) }} - {{ $filters.currencySymbol( singleProductData.variation_price_range.max_price ) }}</span>
     </h3>
     <h3 :class="`${type}-price my-2`" v-else>
       <span>{{
@@ -279,49 +289,49 @@ onMounted(() => {
   <!-- Product Variation Price Section end -->
   <span v-else>
     <h3 :class="`${type}-price`">
-      <del>{{ $filters.currencySymbol(singleProduct.mrp) }}</del>
-      <span>{{ $filters.currencySymbol( mrpOrOfferPrice( singleProduct.mrp, singleProduct.offer_price ))}}</span>
-      <a class="discout_amount" v-if="singleProduct.offer_price != 0" >Save {{ Math.round(singleProduct.mrp - singleProduct.offer_price) }}৳</a >
+      <del>{{ $filters.currencySymbol(singleProductData.mrp) }}</del>
+      <span>{{ $filters.currencySymbol( mrpOrOfferPrice( singleProductData.mrp, singleProductData.offer_price ))}}</span>
+      <a class="discout_amount" v-if="singleProductData.offer_price != 0" >Save {{ Math.round(singleProductData.mrp - singleProductData.offer_price) }}৳</a >
     </h3>
   </span>
   <!-- Price Section end -->
 
   <div :class="`${type}-meta`">
-    <p v-if="singleProduct?.sku">SKU:<span>{{ singleProduct?.sku }}</span></p>
-    <p v-if="singleProduct?.brand">
-      BRAND:<a href="#">{{ singleProduct?.brand?.name }}</a>
+    <p v-if="singleProductData?.sku">SKU:<span>{{ singleProductData?.sku }}</span></p>
+    <p v-if="singleProductData?.brand">
+      BRAND:<a href="#">{{ singleProductData?.brand?.name }}</a>
     </p>
   </div>
   <div :class="`${type}-meta`">
-    <p v-if="singleProduct?.category">
-      Category:<a href="#">{{ singleProduct?.category?.name }}</a>
+    <p v-if="singleProductData?.category">
+      Category:<a href="#">{{ singleProductData?.category?.name }}</a>
     </p>
-    <p v-if="singleProduct?.sub_category">
+    <p v-if="singleProductData?.sub_category">
       Sub Category:<a href="#">{{
-        singleProduct?.sub_category?.name
+        singleProductData?.sub_category?.name
       }}</a>
     </p>
   </div>
 
   <!-- <p
     :class="`${type}-desc mt-2`" 
-    v-if="singleProduct.short_description"
+    v-if="singleProductData.short_description"
   >Quick Overview :</p>
   <p
     :class="`${type}-desc mt-2`"
-    v-if="singleProduct.short_description"
-    v-html="singleProduct.short_description"
+    v-if="singleProductData.short_description"
+    v-html="singleProductData.short_description"
   ></p> -->
 
   <!-- Product Variation Price Section start -->
 
-  <ProductVariation :productVariations="productVariations" :allVariations="singleProduct?.variations?.data" @productVariationPrice="handleProductVariationPrice" @productVariationData="handleProductVariationData" @activeBtns="handleActiveBtns"  />
+  <ProductVariation :productVariations="productVariations" :allVariations="singleProductData?.variations?.data" @productVariationPrice="handleProductVariationPrice" @productVariationData="handleProductVariationData" @activeBtns="handleActiveBtns"  />
 
   <!-- Product Variation Price Section end -->
 
-  <div :class="`${type}-list-group`" v-if="singleProduct?.video_url">
+  <div :class="`${type}-list-group`" v-if="singleProductData?.video_url">
     <div class="videoHW">
-      <iframe class="mt-5"  :src="getEmbedUrl(singleProduct?.video_url)" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>              
+      <iframe class="mt-5"  :src="getEmbedUrl(singleProductData?.video_url)" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>              
     </div>
   </div>
 
@@ -367,7 +377,7 @@ onMounted(() => {
             </div> -->
   
             
-            <div class="details-add-group" v-if="singleProduct?.variations?.data.length > 0">
+            <div class="details-add-group" v-if="singleProductData?.variations?.data.length > 0">
               <div class="row">
                 <span
                   class="row d-block text-center text-danger"
@@ -375,9 +385,9 @@ onMounted(() => {
                   >প্রথমে কোয়ানটিটি সিলেক্ট করুন তারপর<span class="fw-bold">অর্ডার করুন</span> বাটনে ক্লিক করুন অথবা<span class="fw-bold">কার্টে যোগ করুন</span>বাটনে ক্লিক করুন </span
                 >
                 <div class="col-md-3 col-sm-4 mt-2">
-                  <div class="quentyDefaultClass" :class="{ 'quantity-disabled': activeBtns === false && singleProduct?.variations?.data.length > 0, } " >
+                  <div class="quentyDefaultClass" :class="{ 'quantity-disabled': activeBtns === false && singleProductData?.variations?.data.length > 0, } " >
                     <button class="minus" :disabled=" activeBtns === false && 
-                      singleProduct?.variations?.data.length > 0"
+                      singleProductData?.variations?.data.length > 0"
                       aria-label="Decrease" @click.prevent="decrementCartItem">
                       &minus;
                     </button>
@@ -385,7 +395,7 @@ onMounted(() => {
                     <input class="action-input text-center" :class="selectedSize == null ? 'disabled' : ''"
                       title="Quantity Number" type="text" name="quantity" v-model="quantityInput"/>
 
-                    <button class="plus" :disabled=" activeBtns === false && singleProduct?.variations?.data.length > 0"
+                    <button class="plus" :disabled=" activeBtns === false && singleProductData?.variations?.data.length > 0"
                       aria-label="Increase" @click.prevent="incrementCartItem">
                       &plus;
                     </button>
@@ -398,7 +408,7 @@ onMounted(() => {
                     title="Add to Cart"
                     :disabled="activeBtns === false && selectedSize == null ? true : false"
                     :class="selectedSize == null ? 'disabled' : ''"
-                    @click.prevent="addToCart(singleProduct, quantityInput)"
+                    @click.prevent="addToCart(singleProductData, quantityInput)"
                   >
                     <template v-if="isloading">
                       <beat-loader
@@ -419,10 +429,10 @@ onMounted(() => {
 
                 <div class="col-md-6 mt-2" v-if="activeBtns === false">
                   <router-link
-                    :to="{ name: 'checkoutPage' }"
+                    :to="{ name: 'user.checkoutPage' }"
                     :disabled="productPrices == null ? true : false"
                     class="product-add bg-warning text-dark main-order-btn"
-                    @click.prevent="addToCart(singleProduct, quantityInput, productVariationData, productVariationPrice, campaignSlug); modalClose()"
+                    @click.prevent="addToCart(singleProductData, quantityInput, productVariationData, productVariationPrice, campaignSlug); modalClose()"
                      :class="{ 'singleProductBtn ': activeBtns === false }"
                   >
                     <i class="fas fa-shopping-basket fs-4"></i>
@@ -432,9 +442,9 @@ onMounted(() => {
                 
                 <div class="col-md-6 mt-2" v-else>
                   <router-link
-                    :to="{ name: 'checkoutPage' }"
+                    :to="{ name: 'user.checkoutPage' }"
                     class="product-add bg-warning text-dark main-order-btn"
-                    @click.prevent="addToCart(singleProduct, quantityInput, productVariationData, productVariationPrice, campaignSlug); modalClose()"
+                    @click.prevent="addToCart(singleProductData, quantityInput, productVariationData, productVariationPrice, campaignSlug); modalClose()"
                     :class="selectedSize == null ? 'disabled' : ''"
                   >
                     <i class="fas fa-shopping-basket fs-4"></i>
@@ -459,7 +469,7 @@ onMounted(() => {
                 <div class="col-md-3 mt-2">
                   <div class="quentyDefaultClass">
 
-                    <button class="minus" :disabled=" activeBtns === false && singleProduct?.variations?.data.length > 0 "
+                    <button class="minus" :disabled=" activeBtns === false && singleProductData?.variations?.data.length > 0 "
                       aria-label="Decrease" @click.prevent="decrementCartItem">
                       &minus;
                     </button>
@@ -470,7 +480,7 @@ onMounted(() => {
                       class="plus"
                       :disabled="
                         activeBtns === false &&
-                        singleProduct?.variations?.data.length > 0
+                        singleProductData?.variations?.data.length > 0
                       "
                       aria-label="Increase"
                       @click.prevent="incrementCartItem"
@@ -484,7 +494,7 @@ onMounted(() => {
                   <button
                     class="product-add"
                     title="Add to Cart"
-                    @click.prevent="addToCart(singleProduct, quantityInput)"
+                    @click.prevent="addToCart(singleProductData, quantityInput)"
                   >
                     <template v-if="isloading">
                       <beat-loader
@@ -501,10 +511,10 @@ onMounted(() => {
 
                 <div class="col-md-6 mt-2">
                   <router-link
-                    :to="{ name: 'checkoutPage' }"
+                    :to="{ name: 'user.checkoutPage' }"
                     class="product-add bg-warning text-dark main-order-btn"
                     title="Add to Cart"
-                    @click.prevent="addToCart(singleProduct, quantityInput)"
+                    @click.prevent="addToCart(singleProductData, quantityInput)"
                   >
                     <i class="fas fa-shopping-basket"></i>
                     <span class="order-btn">অর্ডার করুন</span>
@@ -527,6 +537,8 @@ onMounted(() => {
   
  
 </div>
+
+  </div>
 
 </template>
 

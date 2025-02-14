@@ -1032,8 +1032,8 @@ button:focus {
   border-radius: 6px;
   text-align: center;
   text-transform: capitalize;
-  color: var(--heading);
-  background: var(--border);
+  color: var(--white);
+  background: var(--primary);
   text-shadow: var(-primary-tshadow);
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1052,10 +1052,16 @@ button:focus {
   
 }
 .product-add i {
+  color: var(--white);
   font-size: 14px;
   margin-right: 5px;
   font-family: sans-serif;
 }
+
+.product-add span {
+  color: var(--white);
+}
+
 .product-action {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1529,6 +1535,8 @@ tbody tr td:last-child {
     font: 14px;
   }
 }
+
+
 .product-card {
   width: 100%;
   overflow: hidden;
@@ -1537,7 +1545,11 @@ tbody tr td:last-child {
   padding: 15px 18px;
   border-radius: 8px;
   background: var(--white);
-  border: 1px solid var(--white);
+  border: 1px solid var(--primary);
+  border-top: 1px solid var(--primary) !important;
+  border-left: 1px solid var(--primary) !important;
+  border-bottom: 3px solid var(--primary) !important;
+  border-right: 2px solid var(--primary) !important;
   transition: all linear 0.3s;
   -webkit-transition: all linear 0.3s;
   -moz-transition: all linear 0.3s;
@@ -1545,7 +1557,7 @@ tbody tr td:last-child {
   -o-transition: all linear 0.3s;
 }
 .product-card:hover {
-  border-color: var(--primary);
+  border-color: var(--primary) !important;
   -webkit-box-shadow: 0px 8px 15px 0px rgba(0, 0, 0, 0.1);
   box-shadow: 0px 8px 15px 0px rgba(0, 0, 0, 0.1);
 }

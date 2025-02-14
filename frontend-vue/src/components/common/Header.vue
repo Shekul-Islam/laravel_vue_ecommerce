@@ -7,6 +7,7 @@ import { ref, onMounted } from 'vue';
 
 import { useCommonIsToggleFunctionality } from "@/stores";
 import { useSettingStore } from '@/stores';
+import { useCart } from '../../stores/cart';
 const setting = useSettingStore();
 
 const logo = ref('');
@@ -20,6 +21,8 @@ const messenger = ref('');
 
 const auth = useAuth();
 const {user, loading} = storeToRefs(auth);
+const cart = useCart();
+const { cartItemCount, totalPrice } = storeToRefs(cart);
 const router = useRouter();
 const userLogout = async () => {
 const res = await auth.logout();
@@ -175,9 +178,11 @@ onMounted (()=> {
             </router-link>
 
             <button class="header-widget header-cart" @click="cartShow" title="Cartlist">
-              <i class="fas fa-shopping-basket"></i><sup>9+</sup>
-              <span>total price<small>$345.00</small></span>
+              <i class="fas fa-shopping-basket"></i>
+              <sup>{{ cartItemCount }}+</sup>
+              <span>total price<small>{{ $filters.currencySymbol(totalPrice) }}</small></span>
             </button>
+          
           </div>
         </div>
       </div>
