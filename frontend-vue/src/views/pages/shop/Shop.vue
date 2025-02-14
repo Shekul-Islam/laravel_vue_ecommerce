@@ -226,13 +226,13 @@ onMounted(() => {
         <h2>Shop Page</h2>
       </div>
     </section>
-    <ShopSidebar/>
     <section class="inner-section shop-part" >
       <div class="container">
         <div class="row content-reverse">
 
           <div class="col-lg-3">
-          
+            Hello Sidebar
+            <ShopSidebar/>
           </div>
 
           <!-- <div class="col-lg-3" >
@@ -403,7 +403,7 @@ onMounted(() => {
                    
 
                     <button class="product-add" title="View Details">
-                      <span><router-link :to="{name: 'productDetailsPage', params:{ slug:product.slug } }" class="fas fa-shopping-basket">Product Preview</router-link></span>
+                      <span><router-link :to="{name: 'productDetailsPage', params:{ slug:product.slug } }" ><i class="fa-solid fa-shopping-basket icon-style"></i>Product Preview</router-link></span>
                     </button>
                   </div>
                 </div>
@@ -459,6 +459,15 @@ onMounted(() => {
 .product-widget a[title="Product View"]:hover, .product-widget a[title="Product Video"]:hover {
   background-color: var(--secondary-color);
   color: var(--white);
+}
+
+.product-add span a {
+  font-family: initial;
+}
+
+.product-add .icon-style {
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
 }
 
 </style>

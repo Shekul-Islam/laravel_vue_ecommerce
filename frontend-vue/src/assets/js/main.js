@@ -1,5 +1,6 @@
 
-
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 //========================================
 //          HEADER SCROLL FIXED
