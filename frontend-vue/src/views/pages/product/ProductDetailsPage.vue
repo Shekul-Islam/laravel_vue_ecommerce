@@ -18,37 +18,14 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
 
-
 const route = useRoute();
 const singleProduct = useProduct();
 const shopProduct = useShop();
-
 
 const singleProductData = ref("");
 const productVariationPrice = ref("");
 const relatedProducts = ref("");
 const previewData = ref({});
-
-// ✅ Get Single Product
-const getSingleProduct = async () => {
-  console.log("Fetching product for slug:", route.params.slug);
-  const res = await singleProduct.getSingleProductData(route.params.slug);
-  if (res?.success) {
-    singleProductData.value = res?.result;
-    console.log("Single Product Data:", singleProductData.value);
-
-    if (res?.result?.category?.id) {
-      getRelatedProducts(res.result.category.id);
-    }
-  }
-};
-
-const getRelatedProducts = async (id) =>  {
-    const res = await singleProduct.getCategoryData(id);
-    relatedProducts.value = res;
-}
-
-
 const productType = ref("");
 const selectedBrandIds = ref([]);
 const selectedCategoryIds = ref([]);
@@ -57,6 +34,29 @@ const selectedSubCategoryIds = ref("");
 const sortingPrice = ref([]);
 const searchQuery = ref("");
 const paginateSize = ref("");
+
+// ✅ Get Single Product
+const getSingleProduct = async () => {
+  console.log("Fetching product for slug:", route.params.slug);
+  const res = await singleProduct.getSingleProductData(route.params.slug);
+  
+  if (res?.success) {
+    singleProductData.value = res?.result;
+    console.log("Single Product Data:", singleProductData.value);
+
+    if (res?.result?.category?.id) {
+      getRelatedProducts(res.result.category.id);
+    }
+  }
+  
+};
+
+const getRelatedProducts = async (id) =>  {
+    const res = await singleProduct.getCategoryData(id);
+    relatedProducts.value = res;
+}
+
+
 
 const color = "white";
 const size = "8px";

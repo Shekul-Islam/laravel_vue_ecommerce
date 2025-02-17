@@ -138,7 +138,7 @@ const moveTouchLens = (event) => {
 // image zooming effect end
 
 const props = defineProps({
-  singleProduct: {
+  singleProductItems: {
     type: [Object, String],
     default: () => ({}), // Empty object as default
   },
@@ -166,20 +166,17 @@ onMounted(() => {
 </script>
 
 <template>
-
-{{ singleProduct }}
-  <div :class="`${type}-gallery`">
+  <div class="col-lg-12">
+    <div :class="`${type}-gallery`">
     <div :class="`${type}-label-group`" >
-      <label :class="`${type}-label`" v-if="singleProduct.type">{{
-        singleProduct.type
-      }}</label>
+      <label :class="`${type}-label`" v-if="singleProductItems.type">
+        {{ singleProductItems.type }}</label>
       <label
         :class="`${type}-label off`"
-        v-if="singleProduct.offer_percent != 0.0"
-        >-{{ singleProduct.offer_percent }}%</label
+        v-if="singleProductItems.offer_percent != 0.0"
+        >-{{ singleProductItems.offer_percent }}%</label
       >
     </div>
-
     <div class="product-imgs">
       <div class="img-display">
         <div
@@ -192,7 +189,7 @@ onMounted(() => {
         >
           <div ref="lens" class="zoom-lens"></div>
           <img
-            :src="singleProduct?.image"
+            :src="singleProductItems?.image"
             alt="shoe image"
             ref="image"
             class="image"
@@ -210,7 +207,7 @@ onMounted(() => {
       <div class="image-gallery">
         <div
           class="img-item"
-          v-for="(img, index) in singleProduct?.images"
+          v-for="(img, index) in singleProductItems?.images"
           :key="index"
           :class="[activeImage == index ? 'active-thumb' : '']"
         >
@@ -222,6 +219,7 @@ onMounted(() => {
         </div>
       </div>
     </div>
+  </div>
   </div>
 </template>
 
@@ -236,16 +234,19 @@ onMounted(() => {
   cursor: crosshair;
 }
 
+
+
 .image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: 80%;
+  width: 100%; /* Aspect ratio ঠিক রাখার জন্য */
+  object-fit: contain; /* ইমেজ যাতে ক্রপ না হয় */
 }
+
 
 .zoom-lens {
   position: absolute;
-  width: 250px;
-  height: 250px;
+  width: 150px;
+  height: 150px;
   border: 2px solid #000;
   background-repeat: no-repeat;
   visibility: hidden;
@@ -269,7 +270,7 @@ img {
   transition: all 0.5s ease;
 }
 .img-showcase img {
-  min-width: 100%;
+  max-width: 100%;
 }
 .img-select {
   display: flex;

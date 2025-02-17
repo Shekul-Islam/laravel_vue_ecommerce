@@ -47,6 +47,7 @@ const props = defineProps({
 
 </script>
 
+
 <template>
   <div class="modal fade" id="product-view" style="display: none;" aria-hidden="true">
     <div class="modal-dialog"> 

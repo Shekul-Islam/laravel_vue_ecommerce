@@ -7,6 +7,7 @@ import { ProductVariation } from "@/components";
 import { mrpOrOfferPrice, addToCart } from "@/composables";
 import { useCommonIsToggleFunctionality } from "@/stores";
 import axiosInstance from "@/services/axiosService.js";
+import ProductImage from "./ProductImage.vue";
 /*===============
     Swipper
 ================*/
@@ -19,25 +20,28 @@ import { Pagination, Navigation, Autoplay } from "swiper/modules";
 const commonIsToggleFunctionality = useCommonIsToggleFunctionality();
 const emit = defineEmits(['productVariationPrice', 'productVariationData', 'activeBtns']);
 
-const props = defineProps({
- singleProduct: {
-    type: [Object, String],
-    default: {},
-  },
+// const props = defineProps({
+//  singleProducts: {
+//     type: [Object, String],
+//     default: {},
+//   },
 
- productVariations: {
-    type: Object,
-    default: {}, 
-  },
- campaignSlug: {
-    type: String,
-    default: null,
-  },
- type: {
-    type: String,
-    default: null, 
-  },
-});
+//  productVariations: {
+//     type: Object,
+//     default: {}, 
+//   },
+//  campaignSlug: {
+//     type: String,
+//     default: null,
+//   },
+//  type: {
+//     type: String,
+//     default: null,
+//   },
+// });
+
+
+
 
 
 const sizeName      = ref("");
@@ -57,6 +61,7 @@ const productVariationData  = ref("");
 const productVariationPrice = ref("");
 const activeBtns            = ref(false);
 const singleProductData = ref("");
+const singleProductItems = ref("");
 // const singleProduct = ref('');
 const relatedProducts = ref("");
 
@@ -83,19 +88,30 @@ const decrementCartItem = () => {
 };
 
 
-
 // single product
-const getSingleProduct = async () =>  {
+const getSingleProduct = async () => {
   console.log("Fetching product for slug:", route.params.slug);
-    const res = await singleData.getSingleProductData(route.params.slug);
-    if(res?.success){
-      singleProductData.value = res?.result?.data;
-      console.log(singleProductData);
-      
-      console.log("Single Product Data:", singleProductData.value);
-    }
-}
+  const res = await singleData.getSingleProductData(route.params.slug);
 
+  if (res?.success) {
+    singleProductData.value = res?.result?.data;
+
+    // প্রথম অবজেক্টটা আলাদা করে নেওয়া
+    if (singleProductData.value.length > 0) {
+      singleProductItems.value = singleProductData.value[0];
+    }
+
+    console.log("Single Product Data:", singleProductData.value);
+    console.log("First Product Item:", singleProductItem.value);
+  }
+};
+
+
+
+
+
+
+// const productPriceRange = computed(()=> product.value)
 
 
 
@@ -256,22 +272,21 @@ onMounted(() => {
 
 <template>
 
-  {{ singleProductData }}
+  {{ singleProductItems }} 
 
-  <div v-if="singleProductData">
-    {{ singleProductData }}
+  <div >
 
   <div class="row ">
     <div class="col-lg-6">
-    <div>
-        <ProductImage :singleProductData="singleProductData?.image" :type="'details'"/>
+    <div >
+        <ProductImage :singleProductItems="singleProductItems" :type="'details'"/>
     </div>
   </div>
 
 <div class="col-lg-6">
   <div  :class="`${type}-content`">
   <h3 :class="`${type}-name`">
-    <a href="#">{{ singleProductData?.name }}</a>
+    <a href="#">{{ singleProductData[0]?.name }}</a>
   </h3>
       <!-- Price Section start -->
   <!-- Product Variation Price Section start -->

@@ -90,7 +90,6 @@ const getRelatedProductsAdd = async (id) =>  {
 }
 // single product
 
- 
 
 //single shop product
 const getSingleProduct = async () => {
