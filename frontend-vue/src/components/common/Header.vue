@@ -6,9 +6,9 @@ import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 
 import { useCommonIsToggleFunctionality } from "@/stores";
-import { useSettingStore } from '@/stores';
+import { useSetting } from '@/stores';
 import { useCart } from '../../stores/cart';
-const setting = useSettingStore();
+const setting = useSetting();
 
 const logo = ref('');
 const phone = ref('');

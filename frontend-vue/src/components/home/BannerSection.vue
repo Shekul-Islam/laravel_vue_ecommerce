@@ -16,7 +16,7 @@ onMounted (()=> {
 
 </script>
 <template>
-  <div>
+  <div class="container">
     <section class="banner-part" >
       <div>
       </div>

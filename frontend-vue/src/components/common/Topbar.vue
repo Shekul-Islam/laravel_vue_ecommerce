@@ -2,9 +2,9 @@
 
 import {ref, onMounted} from 'vue';
 import { storeToRefs } from 'pinia';
-import { useSettingStore } from '@/stores';
+import { useSetting } from '@/stores';
 
-const setting = useSettingStore();
+const setting = useSetting();
 const phone = ref('');
 const email = ref('');
 const description = ref('');

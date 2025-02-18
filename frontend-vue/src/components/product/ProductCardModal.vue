@@ -38,7 +38,6 @@ onMounted(() => {
     $(".venobox").venobox();
   });
 
-
 });
 
 const props = defineProps({
@@ -47,7 +46,6 @@ const props = defineProps({
 
 </script>
 
-
 <template>
   <div class="modal fade" id="product-view" style="display: none;" aria-hidden="true">
     <div class="modal-dialog"> 
@@ -55,10 +53,10 @@ const props = defineProps({
         <button class="modal-close icofont-close" data-bs-dismiss="modal"><i class="fas fa-times"></i></button>
         <div class="product-view">
           <div class="row">
-            <div class="col-md-12 col-lg-6">
+            <!-- <div class="col-md-12 col-lg-6">
               <ProductImage :singleProduct="modalProduct" :type="'view'" />
-            </div>
-            <div class="col-md-12 col-lg-6 ps-5 pe-5 pb-3 pt-4">
+            </div> -->
+            <div class="col-md-12 col-lg-12 ps-5 pe-5 pb-3 pt-4">
               <ProductDetails :singleProduct="modalProduct" :productVariations="productVariations" :type="'view'"/>
             </div>
           </div>

@@ -4,7 +4,7 @@ import { onMounted, ref, watch } from "vue";
 import { useRoute } from 'vue-router';
 import { mrpOrOfferPrice } from "@/composables";
 import { ProductVariation } from "@/components";
-import { useProduct, useCart, useNotification, useShop, useSettingStore, } from "@/stores";
+import { useProduct, useCart, useNotification, useShop, useSetting, } from "@/stores";
 import { addToCart } from "@/composables";
 
 

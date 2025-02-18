@@ -12,7 +12,7 @@
                 <h2>Order invoice</h2>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><router-link :to="{name: 'index'}">Home</router-link></li>
-                    <li class="breadcrumb-item"><router-link :to="{name: 'shop'}">shop grid</router-link></li>
+                    <li class="breadcrumb-item"><router-link :to="{name: 'shopPage'}">shop grid</router-link></li>
                     <li class="breadcrumb-item"><router-link :to="{name: 'productDetailsPage'}">product details</router-link></li>
                     <li class="breadcrumb-item"><router-link :to="{name: 'user.checkoutPage'}">checkout</router-link></li>
                     <li class="breadcrumb-item active" aria-current="page">invoice</li>

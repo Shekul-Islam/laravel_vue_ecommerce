@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import axiosInstance from "@/services/axiosService";
 
-export const useSettingStore = defineStore('setting', {
+export const useSetting = defineStore('setting', {
   state: () => ({
     settings : {},
   }),

@@ -1,79 +1,64 @@
 <script setup>
-import { ref, onMounted, watch, computed } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
-import { useProduct, useCart, useNotification, useShop, useSettingStore, } from "@/stores";
+import BeatLoader from "vue-spinner/src/BeatLoader.vue";
+import { useProduct, useCart, useNotification, useShop, useSetting } from "@/stores";
 import { storeToRefs } from "pinia";
 import { ProductVariation } from "@/components";
 import { mrpOrOfferPrice, addToCart } from "@/composables";
-import { useCommonIsToggleFunctionality } from "@/stores";
 import axiosInstance from "@/services/axiosService.js";
-import ProductImage from "./ProductImage.vue";
-/*===============
-    Swipper
-================*/
-import { Swiper, SwiperSlide } from "swiper/vue";
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
-import { Pagination, Navigation, Autoplay } from "swiper/modules";
-
-const commonIsToggleFunctionality = useCommonIsToggleFunctionality();
 const emit = defineEmits(['productVariationPrice', 'productVariationData', 'activeBtns']);
 
-// const props = defineProps({
-//  singleProducts: {
-//     type: [Object, String],
-//     default: {},
-//   },
-
-//  productVariations: {
-//     type: Object,
-//     default: {}, 
-//   },
-//  campaignSlug: {
-//     type: String,
-//     default: null,
-//   },
-//  type: {
-//     type: String,
-//     default: null,
-//   },
-// });
-
+const props = defineProps({
+ singleProduct: {
+    type: [Object, String],
+    default: {},
+  },
+ productVariations: {
+    type: Object,
+    default: {}, 
+  },
+ campaignSlug: {
+    type: String,
+    default: null, 
+  },
+ type: {
+    type: String,
+    default: null, 
+  },
+});
 
 
+const sizeName              = ref("");
+const productPrices         = ref("");
+const route                 = useRoute();
+const shop                  = useShop();
+const cart                  = useCart();
+const { loading }           = storeToRefs(cart);
+const isloading             = ref(loading);
+const selectedSize          = ref();
+const notify                = useNotification();
+const quantityInput         = ref(1);
+const setting               = useSetting();
 
-
-const sizeName      = ref("");
-const productPrices = ref("");
-const route         = useRoute();
-const singleData    = useProduct();
-const shop          = useShop();
-const cart          = useCart();
-const { loading }   = storeToRefs(cart);
-const notify        = useNotification();
-const quantityInput = ref(1);
-const setting       = useSettingStore();
 
 
 // product variations start
 const productVariationData  = ref("");
 const productVariationPrice = ref("");
 const activeBtns            = ref(false);
-const singleProductData = ref("");
-const singleProductItems = ref("");
-// const singleProduct = ref('');
-const relatedProducts = ref("");
 
 
 // social Icons start
-const socialShares = ref("");
+const socialShares          = ref("");
 // social Icons end
 // Setting data start
-const websiteUrl  = ref("");
-const phone       = ref("");
-const whatsapp    = ref("");
-const messengerId = ref("");
+const websiteUrl            = ref("");
+const phone                 = ref("");
+const whatsapp              = ref("");
+const messengerId           = ref("");
+const whatsappText          = ref("");
+const phoneText             = ref("");
 // Setting data end
 
 // get products variation working end
@@ -87,54 +72,21 @@ const decrementCartItem = () => {
   }
 };
 
-
-// single product
-const getSingleProduct = async () => {
-  console.log("Fetching product for slug:", route.params.slug);
-  const res = await singleData.getSingleProductData(route.params.slug);
-
-  if (res?.success) {
-    singleProductData.value = res?.result?.data;
-
-    // প্রথম অবজেক্টটা আলাদা করে নেওয়া
-    if (singleProductData.value.length > 0) {
-      singleProductItems.value = singleProductData.value[0];
-    }
-
-    console.log("Single Product Data:", singleProductData.value);
-    console.log("First Product Item:", singleProductItem.value);
-  }
-};
-
-
-
-
-
-
-// const productPriceRange = computed(()=> product.value)
-
-
-
-const getRelatedProducts = async (id) =>  {
-    const res = await singleData.getCategoryData(id);
-    relatedProducts.value = res;
-}
-
-// single product
-
-
-
-
-
 // setting data start
 const getSettingsData = async () => {
-  const settingData = await setting.getData();
+  const settingData = await setting.getData();  
   settingData.data.map((ele) => {
     if (ele.key == "phone_number") {
       phone.value = ele;
     }
+    if (ele.key == "phone_text") {
+      phoneText.value = ele;
+    }
     if (ele.key == "whatsapp_number") {
       whatsapp.value = ele;
+    }
+    if (ele.key == "whatsapp_text") {
+      whatsappText.value = ele;      
     }
     if (ele.key == "website_url") {
       websiteUrl.value = ele;
@@ -145,6 +97,33 @@ const getSettingsData = async () => {
   });
 };
 // setting data end
+
+
+// const connectWhatsApp = (whatsappNumber)=>{
+//   const phoneNumber = whatsappNumber;
+//   const whatsappLink = `https://wa.me+88${phoneNumber}?text=hello!`;
+//   window.location.href = whatsappLink
+// }
+
+// const connectPhone = (number)=>{
+//   const phoneNumber = number;
+//   const phoneLink = `tel:${phoneNumber}`;
+//   window.location.href = phoneLink;
+// }
+
+
+const getPrices = async (sizeI, name) => {
+  try {
+    const res = await axiosInstance.get(`/products/${route.params.id}/${sizeI}`);
+    selectedSize.value = sizeI;
+    productPrices.value = res.data.result;
+  } catch (error) {
+    console.log(error);
+  }  
+  sizeName.value = name;
+  console.log(selectedSize.value);
+
+};
 
 
 // social media link  start
@@ -179,7 +158,7 @@ const socialURL = (socialType, socialUrl) => {
     Messenger: `https://www.messenger.com/t/${socialUrl}/`,
     Linkedin: `https://www.linkedin.com/${socialUrl}/`,
     Instagram: `https://www.instagram.com/${socialUrl}/`,
-    Phone: `https://m.me/+88${socialUrl}`,
+    Phone: `tel:${socialUrl}`,
   };
   return iconMapping[socialType] || "default-icon-class";
 };
@@ -191,7 +170,7 @@ const backgroundImageUrl = ref("https://wpmet.com/plugin/elementskit/popup-modal
 const handleBeforeUnload = (event) => {
 
   event.preventDefault();
-  event.returnValue = 'fdsfsdf';
+  event.returnValue = 'fdsfsdf'; 
   
 
   setTimeout(() => {
@@ -199,6 +178,7 @@ const handleBeforeUnload = (event) => {
     modal.show();
   }, 10);
 };
+
 
 
 
@@ -229,7 +209,7 @@ const handleProductVariationData = (data) => {
 
 // product prices start
 const handleActiveBtns = (data) => {
-  activeBtns.value = data
+  activeBtns.value = data  
   emit('activeBtns', data);
 }
 // product prices end
@@ -238,321 +218,291 @@ const handleActiveBtns = (data) => {
   $('#product-view').modal('hide')
  }
 
- 
-// function cartShow() {
-//   $("body").css("overflow", "hidden"), $(".cart-sidebar").addClass("active");
-// }
-
-const cartShow = () => {
-  commonIsToggleFunctionality.isCartSideBarOpenOrClose();
-};
-
-
-watch(
-  () => route.params.slug,
-  (newSlug, oldSlug) => {
-    console.log("Slug changed from:", oldSlug, "to:", newSlug);
-    if (newSlug) {
-      getSingleProduct();
-    }
-  },
-  { immediate: true } // Component লোড হওয়ার সাথেই watch কাজ করবে
-);
-
 
 onMounted(() => {
-  console.log("Route params on mount:", route.params);
-  console.log("Fetching product for slug:", route.params.slug);
-  if (route.params.slug) {
-    getSingleProduct();
-  }
+  // socialMedia();
+  getSettingsData();
 });
-
 </script>
 
+
 <template>
-
-  {{ singleProductItems }} 
-
-  <div >
-
-  <div class="row ">
-    <div class="col-lg-6">
-    <div >
-        <ProductImage :singleProductItems="singleProductItems" :type="'details'"/>
-    </div>
-  </div>
-
-<div class="col-lg-6">
-  <div  :class="`${type}-content`">
-  <h3 :class="`${type}-name`">
-    <a href="#">{{ singleProductData[0]?.name }}</a>
-  </h3>
-      <!-- Price Section start -->
-  <!-- Product Variation Price Section start -->
-  <span v-if="singleProductData?.variations?.data.length > 0">
-    <h3 :class="`${type}-price my-2`" v-if="productVariationPrice == '' || productVariationPrice == undefined">
-      <span v-if="singleProductData.variation_price_range.min_price == singleProductData.variation_price_range.max_price">{{ $filters.currencySymbol( singleProductData?.variation_price_range.min_price || singleProductData?.variation_price_range?.max_price ) }}</span>
-      <span v-else>{{ $filters.currencySymbol( singleProductData.variation_price_range.min_price ) }} - {{ $filters.currencySymbol( singleProductData.variation_price_range.max_price ) }}</span>
-    </h3>
-    <h3 :class="`${type}-price my-2`" v-else>
-      <span>{{
-        $filters.currencySymbol(productVariationPrice?.sell_price)
-      }}</span>
-    </h3>
-  </span>
-  <!-- Product Variation Price Section end -->
-  <span v-else>
-    <h3 :class="`${type}-price`">
-      <del>{{ $filters.currencySymbol(singleProductData.mrp) }}</del>
-      <span>{{ $filters.currencySymbol( mrpOrOfferPrice( singleProductData.mrp, singleProductData.offer_price ))}}</span>
-      <a class="discout_amount" v-if="singleProductData.offer_price != 0" >Save {{ Math.round(singleProductData.mrp - singleProductData.offer_price) }}৳</a >
-    </h3>
-  </span>
-  <!-- Price Section end -->
-
-  <div :class="`${type}-meta`">
-    <p v-if="singleProductData?.sku">SKU:<span>{{ singleProductData?.sku }}</span></p>
-    <p v-if="singleProductData?.brand">
-      BRAND:<a href="#">{{ singleProductData?.brand?.name }}</a>
-    </p>
-  </div>
-  <div :class="`${type}-meta`">
-    <p v-if="singleProductData?.category">
-      Category:<a href="#">{{ singleProductData?.category?.name }}</a>
-    </p>
-    <p v-if="singleProductData?.sub_category">
-      Sub Category:<a href="#">{{
-        singleProductData?.sub_category?.name
-      }}</a>
-    </p>
-  </div>
-
-  <!-- <p
-    :class="`${type}-desc mt-2`" 
-    v-if="singleProductData.short_description"
-  >Quick Overview :</p>
-  <p
-    :class="`${type}-desc mt-2`"
-    v-if="singleProductData.short_description"
-    v-html="singleProductData.short_description"
-  ></p> -->
-
-  <!-- Product Variation Price Section start -->
-
-  <ProductVariation :productVariations="productVariations" :allVariations="singleProductData?.variations?.data" @productVariationPrice="handleProductVariationPrice" @productVariationData="handleProductVariationData" @activeBtns="handleActiveBtns"  />
-
-  <!-- Product Variation Price Section end -->
-
-  <div :class="`${type}-list-group`" v-if="singleProductData?.video_url">
-    <div class="videoHW">
-      <iframe class="mt-5"  :src="getEmbedUrl(singleProductData?.video_url)" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>              
-    </div>
-  </div>
-
-  <div :class="`${type}-list-group`">
-    <label
-    :class="`${type}-list-title`"
-      v-show="socialShares?.data?.length > 0"
-      >Share:</label
-    >
-    <ul :class="`${type}-share-list`">
-      <li
-        v-for="(socialShare, index) in socialShares?.data"
-        :key="index"
-      >
-        <a
-          :href="socialURL(socialShare.title, socialShare.link)"
-          target="_blank"
-          title=""
-          ><i :class="socialIcons(socialShare.title)"></i
-        ></a>
-      </li>
-    </ul>
-  </div>
-</div>
-</div>
-</div>
-
-
-  <div>
-    <div class="col-lg-12 mt-3">
-          <div class="details-content">
-            <!-- <div class="details-list-group">
-              <label class="details-list-title" v-show="socialShares.length > 0"
-                >Share:</label
-              >
-              <ul class="details-share-list">
-                <li v-for="(socialShare, index) in socialShares" :key="index">
-                  <a :href="socialURL(socialShare.type, socialShare.contact)" target="_blank" title=""
-                    ><i :class="socialIcons(socialShare.type)"></i
-                  ></a>
-                </li>
-              </ul>
-            </div> -->
   
-            
-            <div class="details-add-group" v-if="singleProductData?.variations?.data.length > 0">
-              <div class="row">
-                <span
-                  class="row d-block text-center text-danger"
-                  v-if="productPrices == null"
-                  >প্রথমে কোয়ানটিটি সিলেক্ট করুন তারপর<span class="fw-bold">অর্ডার করুন</span> বাটনে ক্লিক করুন অথবা<span class="fw-bold">কার্টে যোগ করুন</span>বাটনে ক্লিক করুন </span
+    <div class="row ">
+      <div class="col-lg-6">
+      <div>
+          <ProductImage :singleProduct="singleProduct" :type="'details'"/>
+      </div>
+    </div>
+
+  <div class="col-lg-6">
+    <div  :class="`${type}-content`">
+    <h3 :class="`${type}-name`">
+      <a href="#">{{ singleProduct?.name }}</a>
+    </h3>
+        <!-- Price Section start -->
+    <!-- Product Variation Price Section start -->
+    <span v-if="singleProduct?.variations?.data.length > 0">
+      <h3 :class="`${type}-price my-2`" v-if="productVariationPrice == '' || productVariationPrice == undefined">
+        <span v-if="singleProduct.variation_price_range.min_price == singleProduct.variation_price_range.max_price">{{ $filters.currencySymbol( singleProduct.variation_price_range.min_price || singleProduct.variation_price_range.max_price ) }}</span>
+        <span v-else>{{ $filters.currencySymbol( singleProduct.variation_price_range.min_price ) }} - {{ $filters.currencySymbol( singleProduct.variation_price_range.max_price ) }}</span>
+      </h3>
+      <h3 :class="`${type}-price my-2`" v-else>
+        <span>{{
+          $filters.currencySymbol(productVariationPrice?.sell_price)
+        }}</span>
+      </h3>
+    </span>
+    <!-- Product Variation Price Section end -->
+    <span v-else>
+      <h3 :class="`${type}-price`">
+        <del>{{ $filters.currencySymbol(singleProduct.mrp) }}</del>
+        <span>{{ $filters.currencySymbol( mrpOrOfferPrice( singleProduct.mrp, singleProduct.offer_price ))}}</span>
+        <a class="discout_amount" v-if="singleProduct.offer_price != 0" >Save {{ Math.round(singleProduct.mrp - singleProduct.offer_price) }}৳</a >
+      </h3>
+    </span>
+    <!-- Price Section end -->
+
+    <div :class="`${type}-meta`">
+      <p v-if="singleProduct?.sku">SKU:<span>{{ singleProduct?.sku }}</span></p>
+      <p v-if="singleProduct?.brand">
+        BRAND:<a href="#">{{ singleProduct?.brand?.name }}</a>
+      </p>
+    </div>
+    <div :class="`${type}-meta`">
+      <p v-if="singleProduct?.category">
+        Category:<a href="#">{{ singleProduct?.category?.name }}</a>
+      </p>
+      <p v-if="singleProduct?.sub_category">
+        Sub Category:<a href="#">{{
+          singleProduct?.sub_category?.name
+        }}</a>
+      </p>
+    </div>
+
+    <!-- <p
+      :class="`${type}-desc mt-2`" 
+      v-if="singleProduct.short_description"
+    >Quick Overview :</p>
+    <p
+      :class="`${type}-desc mt-2`"
+      v-if="singleProduct.short_description"
+      v-html="singleProduct.short_description"
+    ></p> -->
+
+    <!-- Product Variation Price Section start -->
+
+    <ProductVariation :productVariations="productVariations" :allVariations="singleProduct?.variations?.data" @productVariationPrice="handleProductVariationPrice" @productVariationData="handleProductVariationData" @activeBtns="handleActiveBtns"  />
+
+    <!-- Product Variation Price Section end -->
+
+    <div :class="`${type}-list-group`" v-if="singleProduct?.video_url">
+      <div class="videoHW">
+        <iframe class="mt-5"  :src="getEmbedUrl(singleProduct?.video_url)" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>              
+      </div>
+    </div>
+
+    <div :class="`${type}-list-group`">
+      <label
+      :class="`${type}-list-title`"
+        v-show="socialShares?.data?.length > 0"
+        >Share:</label
+      >
+      <ul :class="`${type}-share-list`">
+        <li
+          v-for="(socialShare, index) in socialShares?.data"
+          :key="index"
+        >
+          <a
+            :href="socialURL(socialShare.title, socialShare.link)"
+            target="_blank"
+            title=""
+            ><i :class="socialIcons(socialShare.title)"></i
+          ></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  </div>
+  </div>
+
+
+    <div>
+      <div class="col-lg-12 mt-3">
+            <div class="details-content">
+              <!-- <div class="details-list-group">
+                <label class="details-list-title" v-show="socialShares.length > 0"
+                  >Share:</label
                 >
-                <div class="col-md-3 col-sm-4 mt-2">
-                  <div class="quentyDefaultClass" :class="{ 'quantity-disabled': activeBtns === false && singleProductData?.variations?.data.length > 0, } " >
-                    <button class="minus" :disabled=" activeBtns === false && 
-                      singleProductData?.variations?.data.length > 0"
-                      aria-label="Decrease" @click.prevent="decrementCartItem">
-                      &minus;
-                    </button>
-                    
-                    <input class="action-input text-center" :class="selectedSize == null ? 'disabled' : ''"
-                      title="Quantity Number" type="text" name="quantity" v-model="quantityInput"/>
-
-                    <button class="plus" :disabled=" activeBtns === false && singleProductData?.variations?.data.length > 0"
-                      aria-label="Increase" @click.prevent="incrementCartItem">
-                      &plus;
-                    </button>
-                  </div>
-                </div>
-
-                <div class="col-md-3 col-sm-6 mt-2 add-to-cart" >
-                  <button
-                    class="product-add"
-                    title="Add to Cart"
-                    :disabled="activeBtns === false && selectedSize == null ? true : false"
-                    :class="selectedSize == null ? 'disabled' : ''"
-                    @click.prevent="addToCart(singleProductData, quantityInput)"
-                  >
-                    <template v-if="isloading">
-                      <beat-loader
-                        :loading="loading"
-                        :color="color"
-                        :size="size"
-                      ></beat-loader>
-                    </template>
-                    <template v-else><i class="fas fa-shopping-basket"></i></template>
-                    <span>কার্টে যোগ করুন</span>
-                  </button>
-                </div>
-
-                
-
-                
-               
-
-                <div class="col-md-6 mt-2" v-if="activeBtns === false">
-                  <router-link
-                    :to="{ name: 'user.checkoutPage' }"
-                    :disabled="productPrices == null ? true : false"
-                    class="product-add bg-warning text-dark main-order-btn"
-                    @click.prevent="addToCart(singleProductData, quantityInput, productVariationData, productVariationPrice, campaignSlug); modalClose()"
-                     :class="{ 'singleProductBtn ': activeBtns === false }"
-                  >
-                    <i class="fas fa-shopping-basket fs-4"></i>
-                    <span class="order-btn">অর্ডার করুন</span>
-                  </router-link>
-                </div>
-                
-                <div class="col-md-6 mt-2" v-else>
-                  <router-link
-                    :to="{ name: 'user.checkoutPage' }"
-                    class="product-add bg-warning text-dark main-order-btn"
-                    @click.prevent="addToCart(singleProductData, quantityInput, productVariationData, productVariationPrice, campaignSlug); modalClose()"
-                    :class="selectedSize == null ? 'disabled' : ''"
-                  >
-                    <i class="fas fa-shopping-basket fs-4"></i>
-                    <span class="order-btn">অর্ডার করুন</span>
-                  </router-link>
-                </div>
-               
-              </div>
+                <ul class="details-share-list">
+                  <li v-for="(socialShare, index) in socialShares" :key="index">
+                    <a :href="socialURL(socialShare.type, socialShare.contact)" target="_blank" title=""
+                      ><i :class="socialIcons(socialShare.type)"></i
+                    ></a>
+                  </li>
+                </ul>
+              </div> -->
+    
               
-              <div class="row mt-lg-3 mt-0">
-                <div class="col-md-6 mt-2">
-                  <a class="product-add bg-success" ><span> <i class="fab fa-whatsapp" style="font-size:18px"></i> <span class="fw-bold"> {{whatsapp?.value}}</span></span></a>
+              <div class="details-add-group" v-if="singleProduct?.variations?.data.length > 0">
+                <div class="row">
+                  <span
+                    class="row d-block text-center text-danger"
+                    v-if="productPrices == null"
+                    >প্রথমে কোয়ানটিটি সিলেক্ট করুন তারপর<span class="fw-bold">অর্ডার করুন</span> বাটনে ক্লিক করুন অথবা<span class="fw-bold">কার্টে যোগ করুন</span>বাটনে ক্লিক করুন </span
+                  >
+                  <div class="col-md-3 col-sm-4 mt-2">
+                    <div class="quentyDefaultClass" :class="{ 'quantity-disabled': activeBtns === false && singleProduct?.variations?.data.length > 0, } " >
+                      <button class="minus" :disabled=" activeBtns === false && 
+                        singleProduct?.variations?.data.length > 0"
+                        aria-label="Decrease" @click.prevent="decrementCartItem">
+                        &minus;
+                      </button>
+                      
+                      <input class="action-input text-center" :class="selectedSize == null ? 'disabled' : ''"
+                        title="Quantity Number" type="text" name="quantity" v-model="quantityInput"/>
+
+                      <button class="plus" :disabled=" activeBtns === false && singleProduct?.variations?.data.length > 0"
+                        aria-label="Increase" @click.prevent="incrementCartItem">
+                        &plus;
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3 col-sm-6 mt-2 add-to-cart" >
+                    <button
+                      class="product-add"
+                      title="Add to Cart"
+                      :disabled="activeBtns === false && selectedSize == null ? true : false"
+                      :class="selectedSize == null ? 'disabled' : ''"
+                      @click.prevent="addToCart(singleProduct, quantityInput)"
+                    >
+                      <template v-if="isloading">
+                        <beat-loader
+                          :loading="loading"
+                          :color="color"
+                          :size="size"
+                        ></beat-loader>
+                      </template>
+                      <template v-else><i class="fas fa-shopping-basket"></i></template>
+                      <span>কার্টে যোগ করুন</span>
+                    </button>
+                  </div>
+
+                  
+
+                  
+                 
+
+                  <div class="col-md-6 mt-2" v-if="activeBtns === false">
+                    <router-link
+                      :to="{ name: 'user.checkoutPage' }"
+                      :disabled="productPrices == null ? true : false"
+                      class="product-add bg-warning text-dark main-order-btn"
+                      @click.prevent="addToCart(singleProduct, quantityInput, productVariationData, productVariationPrice, campaignSlug); modalClose()"
+                       :class="{ 'singleProductBtn ': activeBtns === false }"
+                    >
+                      <i class="fas fa-shopping-basket fs-4"></i>
+                      <span class="order-btn">অর্ডার করুন</span>
+                    </router-link>
+                  </div>
+                  
+                  <div class="col-md-6 mt-2" v-else>
+                    <router-link
+                      :to="{ name: 'user.checkoutPage' }"
+                      class="product-add bg-warning text-dark main-order-btn"
+                      @click.prevent="addToCart(singleProduct, quantityInput, productVariationData, productVariationPrice, campaignSlug); modalClose()"
+                      :class="selectedSize == null ? 'disabled' : ''"
+                    >
+                      <i class="fas fa-shopping-basket fs-4"></i>
+                      <span class="order-btn">অর্ডার করুন</span>
+                    </router-link>
+                  </div>
+                 
                 </div>
-                <div class="col-md-6 mt-2">
-                  <a class="product-add bg-success" :href="socialURL('Phone', phone?.value)" ><span>হট লাইন নাম্বার : <span class="fw-bold"> {{phone?.value}}</span></span></a>
+                
+                <div class="row mt-lg-3 mt-0">
+                  <div class="col-md-6 mt-2">
+                    <a class="product-add bg-success" ><span> <i class="fab fa-whatsapp" style="font-size:18px"></i> <span class="fw-bold"> {{whatsapp?.value}}</span></span></a>
+                  </div>
+                  <div class="col-md-6 mt-2">
+                    <a class="product-add bg-success" :href="socialURL('Phone', phone?.value)" ><span>হট লাইন নাম্বার : <span class="fw-bold"> {{phone?.value}}</span></span></a>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div class="details-add-group" v-else>
-              <div class="row">
-                <div class="col-md-3 mt-2">
-                  <div class="quentyDefaultClass">
+              <div class="details-add-group" v-else>
+                <div class="row">
+                  <div class="col-md-3 mt-2">
+                    <div class="quentyDefaultClass">
 
-                    <button class="minus" :disabled=" activeBtns === false && singleProductData?.variations?.data.length > 0 "
-                      aria-label="Decrease" @click.prevent="decrementCartItem">
-                      &minus;
-                    </button>
+                      <button class="minus" :disabled=" activeBtns === false && singleProduct?.variations?.data.length > 0 "
+                        aria-label="Decrease" @click.prevent="decrementCartItem">
+                        &minus;
+                      </button>
 
-                    <input class="action-input text-center" title="Quantity Number" type="text" name="quantity" v-model="quantityInput"/>
+                      <input class="action-input text-center" title="Quantity Number" type="text" name="quantity" v-model="quantityInput"/>
 
+                      <button
+                        class="plus"
+                        :disabled="
+                          activeBtns === false &&
+                          singleProduct?.variations?.data.length > 0
+                        "
+                        aria-label="Increase"
+                        @click.prevent="incrementCartItem"
+                      >
+                        &plus;
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3 mt-2 add-to-cart">
                     <button
-                      class="plus"
-                      :disabled="
-                        activeBtns === false &&
-                        singleProductData?.variations?.data.length > 0
-                      "
-                      aria-label="Increase"
-                      @click.prevent="incrementCartItem"
+                      class="product-add"
+                      title="Add to Cart"
+                      @click.prevent="addToCart(singleProduct, quantityInput)"
                     >
-                      &plus;
+                      <template v-if="isloading">
+                        <beat-loader
+                          :loading="loading"
+                          :color="color"
+                          :size="size"
+                        ></beat-loader>
+                      </template>
+                      <template v-else><i class="fas fa-shopping-basket"></i></template>
+                      <span>কার্টে যোগ করুন</span>
                     </button>
+                  </div>
+
+
+                  <div class="col-md-6 mt-2">
+                    <router-link
+                      :to="{ name: 'user.checkoutPage' }"
+                      class="product-add bg-warning text-dark main-order-btn"
+                      title="Add to Cart"
+                      @click.prevent="addToCart(singleProduct, quantityInput)"
+                    >
+                      <i class="fas fa-shopping-basket"></i>
+                      <span class="order-btn">অর্ডার করুন</span>
+                    </router-link>
                   </div>
                 </div>
 
-                <div class="col-md-3 mt-2 add-to-cart">
-                  <button
-                    class="product-add"
-                    title="Add to Cart"
-                    @click.prevent="addToCart(singleProductData, quantityInput)"
-                  >
-                    <template v-if="isloading">
-                      <beat-loader
-                        :loading="loading"
-                        :color="color"
-                        :size="size"
-                      ></beat-loader>
-                    </template>
-                    <template v-else><i class="fas fa-shopping-basket"></i></template>
-                    <span>কার্টে যোগ করুন</span>
-                  </button>
+                <div class="row mt-2">
+                  <div class="col-md-6 mt-2">
+                    <a class="product-add bg-success"><span><i class="fab fa-whatsapp" style="font-size:18px"></i> <span class="fw-bold"> </span> {{ whatsapp?.value }}</span></a>
+                  </div>
+                  <div class="col-md-6 mt-2">
+                    <a class="product-add bg-success"><span>হট লাইন নাম্বার : <span class="fw-bold"> <i class="fas fa-phone-alt"></i> {{ phone?.value }}</span></span></a>
+                  </div>
                 </div>
 
-
-                <div class="col-md-6 mt-2">
-                  <router-link
-                    :to="{ name: 'user.checkoutPage' }"
-                    class="product-add bg-warning text-dark main-order-btn"
-                    title="Add to Cart"
-                    @click.prevent="addToCart(singleProductData, quantityInput)"
-                  >
-                    <i class="fas fa-shopping-basket"></i>
-                    <span class="order-btn">অর্ডার করুন</span>
-                  </router-link>
-                </div>
               </div>
-
-              <div class="row mt-2">
-                <div class="col-md-6 mt-2">
-                  <a class="product-add bg-success"><span><i class="fab fa-whatsapp" style="font-size:18px"></i> <span class="fw-bold"> </span> {{ whatsapp?.value }}</span></a>
-                </div>
-                <div class="col-md-6 mt-2">
-                  <a class="product-add bg-success"><span>হট লাইন নাম্বার : <span class="fw-bold"> <i class="fas fa-phone-alt"></i> {{ phone?.value }}</span></span></a>
-                </div>
-              </div>
-
             </div>
           </div>
-        </div>
-  
- 
-</div>
-
+    
+   
   </div>
 
 </template>
@@ -560,6 +510,12 @@ onMounted(() => {
 
 
 <style scoped>
+
+
+
+.top-details{
+  height: 25%;
+}
 
 /* video section start */
 .videoHW iframe{
@@ -576,14 +532,14 @@ onMounted(() => {
 /* image zooming start*/
 .image-container {
   position: relative;
-  width: 400px;
+  width: 200px;
   overflow: hidden;
   cursor: crosshair;
 }
 
 .image {
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: cover;
 }
 
@@ -610,6 +566,9 @@ onMounted(() => {
   margin: 20px 0px 15px;
 }
 
+.add-to-cart{
+  padding-left: 0px;
+}
 
 /* MOdla css */
 
@@ -793,16 +752,18 @@ img {
 .quentyDefaultClass {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 5px;
 }
 
 .quentyDefaultClass button {
-  font-size: 28px;
+  font-size: 30px;
 }
 
 .quentyDefaultClass input {
   margin: 0px 8px;
   border-radius: 5px;
+  width: 40%;
 }
 
 .btnColor {

@@ -19,7 +19,7 @@ import ProductDetailsPage from "@/views/pages/product/ProductDetailsPage.vue";
 
 const routes = [
   { path: "/",                        name: "index",               component: HomePage,              meta: { title: "Home" },},
-  { path: "/shop",                    name: "shop",                component: Shop,                  meta: { title: "Shop" },},
+  { path: "/shop",                    name: "shopPage",            component: Shop,                  meta: { title: "Shop" },},
   { path: "/blog",                    name: "blog",                component: Blog,                  meta: { title: "blog" },},
   // { path: "/single-product/:slug?", name: "single-product",     component: SingleProduct,         meta: { title: "Single Product" },},
   { path: "/user/profile",            name: "user.profile",        component: MyProfile,             meta: { title: "My Profile", requiresAuth: true },},

@@ -318,7 +318,6 @@ onMounted(() => {
                 </div>
               </div>
             </div>
-            {{ products }}
             <!-- {{ relatedShopProductsData }} -->
             <div class="row row-cols-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4" >
               <div class="col"  v-for="(product, id) in products?.data" :key="id">

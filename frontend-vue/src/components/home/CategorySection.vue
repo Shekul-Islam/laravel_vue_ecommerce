@@ -38,7 +38,7 @@ onMounted (() => {
             <div class="product-card">
               <ul>
                 <li >
-                  <a class="suggest-card" href="shop">
+                  <a class="suggest-card" href="shopPage">
                     <img :src="data.image" :alt="data.name"/>
                   </a>
                 </li>

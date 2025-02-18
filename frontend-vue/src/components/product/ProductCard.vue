@@ -23,8 +23,8 @@ const quantityInput = ref(1);
 const setting       = useSetting();
 const props = defineProps({
  product: {
-    type: Object,
-    default: "", // Empty object as default
+   type: Object,
+   default: "", // Empty object as default
   },
   types: {
     type: String,
@@ -41,7 +41,6 @@ const props = defineProps({
     type: String,
   },
 });
-
 
 // settings variables
 const addToCartButton      = ref('Add Cart');
@@ -144,6 +143,7 @@ onMounted(() => {
           </div>
           
           <!-- campaign product er jonno ei route start -->
+          
            <span  v-if="isCampaign">
             <router-link :to="{ name: 'CampaignProductDetails', params: { campaign_slug: campaignSlug ? campaignSlug : '', product_slug: product?.slug ? product?.slug : '' } }" class="hover14 column hover01 column">
                <div class="product-image">
@@ -159,7 +159,8 @@ onMounted(() => {
                </div>
              </router-link>
            </span>
-           
+          
+                    
           <div class="product-widget">
             <a title="Product View" href="#" class="fas fa-eye" data-bs-toggle="modal" data-bs-target="#product-view" @click.prevent="getProductDetails(product?.id)"></a>
             <a title="Product Video" v-show="product?.video_url" :href="product?.video_url" class="venobox fas fa-play" data-vbtype="video" data-autoplay="true"></a>
@@ -182,12 +183,12 @@ onMounted(() => {
           </h6>
 
 
-          <!-- <button class="product-add" title="Add to Cart" @click.prevent="addToCart(product)">
+          <button class="product-add" title="Add to Cart" @click.prevent="addToCart(product)">
               <i :class="loading == product.id ? 'fa-solid fa-spinner fa-spin' : 'fas fa-shopping-basket'"></i>
-              <span>add</span>
-          </button> -->
+              <span>order Now</span>
+          </button>
 
-          <!-- <div class="row" v-if="product?.variations?.data?.length > 0">
+           <!-- <div class="row" v-if="product?.variations?.data?.length > 0">
             <div class="col-xl-6 col-lg-12 col-12 mt-2">
               <button  class="product-add btnColorOrder" :disabled="isButtonDisabled" :class="isButtonDisabled ? 'disabled btn border-dark' : ''" title="Add to Cart" @click.prevent="addToCart(product)">
                 <i :class="loading == product.id ? 'fa-solid fa-spinner fa-spin' : 'fas fa-shopping-basket'"></i>
@@ -209,7 +210,7 @@ onMounted(() => {
               </button>
             </div>
             <div class="col-xl-6 col-lg-12 col-12 mt-2">
-              <router-link :to="{ name: 'user.checkoutPage' }"  class="product-add standard-wishs" @click.prevent="addToCart(product)">
+              <router-link :to="{ name: 'user.checkoutPage' }" class="product-add standard-wishs" @click.prevent="addToCart(product)">
                 <i class="fas fa-shopping-basket"></i>
                 <span>{{ orderButton }}</span>
               </router-link>
@@ -520,7 +521,7 @@ border: 2px solid #119744;
     font-size: 16px !important;
   }
   .product-price span{
-    font-size: 18px !important;
+    font-size: 17px !important;
   }
 }
 

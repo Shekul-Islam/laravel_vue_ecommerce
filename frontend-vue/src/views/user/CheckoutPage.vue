@@ -504,7 +504,7 @@ const placeOrder = async() => {
                               </span>
                             </div>
                             <div class="col-md-6">
-                                  <router-link :to="{name: 'shop'}" class="btn btn-link">← Continue Shopping</router-link>
+                                  <router-link :to="{name: 'shopPage'}" class="btn btn-link">← Continue Shopping</router-link>
                               <div class="mt-3 coupon-section">
                                 <input type="text" class="form-control d-inline-block w-75" placeholder="Apply Coupon . . ." v-model="coupon">
                                 <button class="btn btn-primary small-btn" @click.prevent="couponCalculate">Apply</button>

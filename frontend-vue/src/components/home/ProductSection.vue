@@ -250,7 +250,7 @@ onMounted(() => {
         <div class="row">
           <div class="col-lg-12">
             <div class="section-btn-25">
-              <a href="shop" class="btn btn-outline"
+              <a href="shopPage" class="btn btn-outline"
                 ><i class="fas fa-eye"></i><span>show more</span></a
               >
             </div>

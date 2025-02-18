@@ -1,8 +1,8 @@
 <script setup>
 import { onMounted } from 'vue';
-import { useSettingStore } from '@/stores';
+import { useSetting } from '@/stores';
 
-const footer = useSettingStore();
+const footer = useSetting();
 
 
 onMounted(()=> {

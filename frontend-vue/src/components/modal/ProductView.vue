@@ -79,7 +79,7 @@ const schemaTwo = yup.object({
                     <div class="row justify-content-center">
                         <div class="col-12 col-sm-10 col-md-12 col-lg-12 col-xl-10">
                             <div class="user-form-logo">
-                                <router-link :to="{name: 'homePage'}"><img src="@/assets/images/maxfit.png" alt="logo" /></router-link>
+                                <router-link :to="{name: 'homePage'}"><img src="@/assets/images/logo.png" alt="logo" /></router-link>
                             </div>
                             <div class="user-form-card my-5">
                                 <span class="text-danger">আপনার নাম্বারে একটি ওটিপি কোড পাঠানো হয়েছে সেই কোডটি এখানে সাবমিট করুন</span>
